@@ -44,8 +44,7 @@ namespace _3DPart.DAL.BULayer
                 {
                     foreach (DictionaryEntry dEntry in pas)
                     {
-                        da.SelectCommand.Parameters.Add(dEntry.Key);
-                        da.SelectCommand.Parameters[dEntry.Key.ToString()].Value = dEntry.Value;
+                        da.SelectCommand.Parameters.Add(new SqlParameter(dEntry.Key.ToString(), dEntry.Value));
                     }
 
                 }
@@ -89,8 +88,7 @@ namespace _3DPart.DAL.BULayer
                 {
                     foreach (DictionaryEntry dEntry in pas)
                     {
-                        da.SelectCommand.Parameters.Add(dEntry.Key);
-                        da.SelectCommand.Parameters[dEntry.Key.ToString()].Value = dEntry.Value;
+                        da.SelectCommand.Parameters.Add(new SqlParameter(dEntry.Key.ToString(), dEntry.Value));
                     }
 
                 }
@@ -141,8 +139,7 @@ namespace _3DPart.DAL.BULayer
                 {
                     foreach (DictionaryEntry dEntry in pas)
                     {
-                        cmd.Parameters.Add(dEntry.Key);
-                        cmd.Parameters[dEntry.Key.ToString()].Value = dEntry.Value;
+                       cmd.Parameters.Add(new SqlParameter(dEntry.Key.ToString(), dEntry.Value));
                     }
                 }
                 conn.Open();
@@ -191,8 +188,7 @@ namespace _3DPart.DAL.BULayer
                 {
                     foreach (DictionaryEntry dEntry in pas)
                     {
-                        cmd.Parameters.Add(dEntry.Key);
-                        cmd.Parameters[dEntry.Key.ToString()].Value = dEntry.Value;
+                        cmd.Parameters.Add(new SqlParameter(dEntry.Key.ToString(), dEntry.Value));
                     }
                 }
                 conn.Open();
@@ -264,8 +260,7 @@ namespace _3DPart.DAL.BULayer
                 {
                     foreach (DictionaryEntry dEntry in pas)
                     {
-                        cmd.Parameters.Add(dEntry.Key);
-                        cmd.Parameters[dEntry.Key.ToString()].Value = dEntry.Value;
+                        cmd.Parameters.Add(new SqlParameter(dEntry.Key.ToString(), dEntry.Value));
                     }
                 }
 
@@ -338,8 +333,7 @@ namespace _3DPart.DAL.BULayer
             {
                 foreach (DictionaryEntry dEntry in pas)
                 {
-                    cmd.Parameters.Add(dEntry.Key);
-                    cmd.Parameters[dEntry.Key.ToString()].Value = dEntry.Value;
+                    cmd.Parameters.Add(new SqlParameter(dEntry.Key.ToString(), dEntry.Value));
                 }
             }
             conn.Open();
@@ -387,6 +381,6 @@ namespace _3DPart.DAL.BULayer
 
         #endregion
 
-      
+
     }
 }

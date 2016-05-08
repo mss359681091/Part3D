@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+﻿using _3DPart.DAL.BULayer;
+using _3DPart.DAL.BULayer.Schema;
+using Part3D.models;
+using System;
+using System.Web.Services;
 
 namespace Part3D
 {
@@ -14,37 +12,41 @@ namespace Part3D
         {
             if (!IsPostBack)
             {
-                if (Request.Form["username"] != null)
-                {
-                    if (Request.Form["username"].ToString() == "admin")
-                    {
-                        string username = Request.Form["username"].ToString();//用户名
-                        string roles = "Administrator";  //从其他地方取得用户角色数据
 
-                        FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, username, DateTime.Now, DateTime.Now.AddMinutes(30), true, roles, FormsAuthentication.FormsCookiePath);
-
-                        string strticket = FormsAuthentication.Encrypt(ticket);
-
-                        HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, strticket);
-
-                        if (ticket.IsPersistent) cookie.Expires = ticket.Expiration;
-
-                        Response.Cookies.Add(cookie);
-                        Response.Write("登录成功");
-
-                    }
-
-                }
             }
 
         }
 
-        protected void Button1_Click(object sender, EventArgs e)
+        [WebMethod(Description = "登录", EnableSession = true)]
+        public static string DoLogin(string paramUsername, string paramPassword, string paramRemember)
         {
-            FormsAuthentication.SignOut();//注销授权
-            Session.Clear();  //从会话状态集合中移除所有的键和值
-            Session.Abandon(); //取消当前会话
+            string returnValue = string.Empty;
 
+            if (paramUsername.Trim() == string.Empty)
+            {
+                return "-1";//状态-1：用不名空值
+            }
+            if (paramPassword.Trim() == string.Empty)
+            {
+                return "-2";//状态-2：密码空值
+            }
+            returnValue = CommonManager.LoginValidate(paramUsername, paramPassword, paramRemember);//登录验证
+            return returnValue;
         }
+
+        [WebMethod(Description = "验证用户名是否存在", EnableSession = true)]
+        public static string ChkUsername(string paramUsername)
+        {
+            string returnValue = string.Empty;
+
+            string strUserID = new sysUserManager().GetParams(new sysUserQuery() { Username = paramUsername }, sysUser.ID);
+            if (strUserID.Length > 0)
+            {
+                returnValue = "-1";//用户名已存在
+            }
+            return returnValue;
+        }
+
+
     }
 }

@@ -1174,7 +1174,7 @@ header .navbar a:hover {
         }
 
 .Mun_V {
-    padding: 70px 0 70px 100px;
+    padding: 30px 0 70px 100px;
 }
 
     .Mun_V h1 {
@@ -1220,7 +1220,9 @@ header .navbar a:hover {
             float: left;
             width: 400px;
         }
-
+        .Mun_V ul li input {
+          color:#888;
+        }
         .Mun_V ul li .hover {
             background: #fffaf7;
             border: 1px #F60 solid;

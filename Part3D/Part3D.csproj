@@ -156,6 +156,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="scripts\common.js" />
     <Content Include="scripts\dialog.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />
     <Content Include="scripts\jquery-ui-1.10.4.min.js" />
@@ -173,6 +174,7 @@
     <Content Include="content\uploadify.css" />
     <Content Include="user\jqUploadify\scripts\uploadify.swf" />
     <Content Include="user\jqUploadify\WebUpload.aspx" />
+    <Content Include="user\Loginout.aspx" />
     <Content Include="user\PersonalDownloadRecord.aspx" />
     <Content Include="user\PersonalInfo.aspx" />
     <Content Include="user\PersonalResouces.aspx" />
@@ -210,6 +212,7 @@
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
+    <Compile Include="models\CommonManager.cs" />
     <Compile Include="models\DBHelper.cs" />
     <Compile Include="models\dpAdvertisement\dpAdvertisementManager.cs" />
     <Compile Include="models\dpAdvertisement\dpAdvertisementSchema.cs" />
@@ -251,6 +254,13 @@
     </Compile>
     <Compile Include="user\jqUploadify\WebUpload.aspx.designer.cs">
       <DependentUpon>WebUpload.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="user\Loginout.aspx.cs">
+      <DependentUpon>Loginout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="user\Loginout.aspx.designer.cs">
+      <DependentUpon>Loginout.aspx</DependentUpon>
     </Compile>
     <Compile Include="user\PersonalDownloadRecord.aspx.cs">
       <DependentUpon>PersonalDownloadRecord.aspx</DependentUpon>

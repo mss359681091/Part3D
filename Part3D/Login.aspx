@@ -29,16 +29,7 @@
     <!-- SliderLock -->
     <link href="/content/sliderlock.css" rel="stylesheet" media="screen">
 
-    <script type="text/javascript">
-        function fnLogin() {
-            var username = $("#txtusername").val();
-            var password = $("#txtpassword").val();
-            $.post("Login.aspx", { username: '' + username + '' }, function (data) {
-                alert(data);
-            });
-        }
-
-    </script>
+    <script type="text/javascript" src="/scripts/common.js"></script>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -72,24 +63,25 @@
                     <dd class="block">
                         <h1>Hi，登录网站与设计师，一起分享快乐吧！</h1>
                         <ul>
-                            <li><span>帐号：</span><input id="txtusername" type="text" placeholder="请输入登录帐号或绑定邮箱..." class="inp" value=""><i>提示</i></li>
-                            <li><span>密码：</span><input id="txtpassword" type="password" placeholder="请输入6-20个字符..." class="inp"></li>
+                            <li><span>用户名：</span><input id="txtusername" maxlength="20" type="text" placeholder="请输入登录帐号/绑定邮箱/手机号..." class="inp" value=""><i id="tipusername"></i></li>
+                            <li><span>密码：</span><input id="txtpassword" maxlength="20" type="password" placeholder="请输入6-20个字符..." class="inp"><i id="tippassword"></i></li>
                             <li>
                                 <label>
-                                    <input type="checkbox" />
-                                    下次自动登录</label><a href="#" class="Oth">忘记密码？</a></li>
+                                    <input id="chkremember" type="checkbox" />
+                                    下次自动登录</label><a href="javascript:void(0);" class="Oth" onclick="setTab_T(0,2)">忘记密码？</a></li>
                             <li>
-                                <button type="button" onclick="fnLogin()">立即登录</button><a href="#" style="margin-left: 20px;">注册<asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Button" />
+                                <button type="button" onclick="fnLogin()">立即登录</button><a href="javascript:void(0);" onclick="setTab_T(0,1)" style="margin-left: 20px;">注册
                                 </a></li>
                         </ul>
                     </dd>
                     <dd>
                         <ul>
-                            <li><span>帐号：</span><input type="text" placeholder="请输入登录帐号..." class="inp" value=""><i></i></li>
-                            <li><span>邮箱：</span><input type="text" placeholder="请输入邮箱..." class="inp" value=""><i></i></li>
-                            <li><span>昵称：</span><input type="text" placeholder="请输入用户名..." class="inp"></li>
-                            <li><span>密码：</span><input type="password" placeholder="请输入6-20个字符..." class="inp"></li>
-                            <li><span>确认密码：</span><input type="password" placeholder="请再输入一次密码！" class="inp"></li>
+                            <li><span>用户名：</span><input id="txt_regUsername" maxlength="20" type="text" placeholder="请填写登录帐号..." class="inp" value="" onblur="fnCheckedUsername()"><i></i></li>
+                            <li><span>邮箱：</span><input id="txt_regEmail" maxlength="50" type="text" onblur="fnCheckedEmail()" placeholder="请填写邮箱..." class="inp" value=""><i></i></li>
+                            <li><span>昵称：</span><input id="txt_regNickname" maxlength="20" type="text" placeholder="请填写昵称..." class="inp"><i></i></li>
+                            <li><span>手机号：</span><input id="txt_regMobile" maxlength="50" type="text" onblur="fnCheckedMobile()" placeholder="请填写手机号..." class="inp"><i></i></li>
+                            <li><span>密码：</span><input id="txt_regPassword" maxlength="20" type="password" placeholder="请填写6-20个字符..." class="inp"><i></i></li>
+                            <li><span>确认密码：</span><input id="txt_regPassword1" maxlength="50" type="password" placeholder="请再输入一次密码！" class="inp"><i></i></li>
                             <li>
                                 <span>验证：</span>
                                 <div style="width: 400px; height: 40px; line-height: 40px; margin-top: 8px; float: left;">
@@ -97,14 +89,14 @@
                                         <p>用鼠标点击箭头向右滑动解锁</p>
                                     </div>
                                 </div>
-                                <i class="slider_tip">通过验证才能注册</i>
+                                <i class="slider_tip">通过验证才能注册！</i>
                             </li>
                             <li>
                                 <label>
-                                    <input type="checkbox" />
+                                    <input id="chkreaded" type="checkbox" />
                                     我已阅读并接受 <a href="#">版权声明</a> 和 <a href="#">隐私保护</a> 条款</label></li>
                             <li>
-                                <button class="chkhk" type="button" onclick="fn();">马上注册</button><a href="#" style="margin-left: 20px;">己有帐号</a></li>
+                                <button class="chkhk" type="button" onclick="fnChecked();">马上注册</button><a href="javascript:void(0);" onclick="setTab_T(0,0)" style="margin-left: 20px;">己有帐号</a></li>
 
                         </ul>
                     </dd>
@@ -112,7 +104,7 @@
                         <ul>
                             <li><span>邮箱：</span><input type="text" placeholder="请输入绑定邮箱..." class="inp"><i></i></li>
                             <li>
-                                <button class="chkhk" type="button" onclick="fn();">下一步，安全验证</button></li>
+                                <button class="chkhk" type="button" onclick="fnNext();">下一步，安全验证</button></li>
                         </ul>
 
                         <!--以下内容，可以新一个页面里-->

@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="/content/ui-dialog.css" />
     <script type="text/javascript" src="/scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="/scripts/dialog.js"></script>
+        <script type="text/javascript" src="/scripts/common.js"></script>
 </head>
 <body class="body_Bg">
     <form id="form1" runat="server">

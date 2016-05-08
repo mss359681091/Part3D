@@ -15,11 +15,12 @@
     <meta name="keywords" content="">
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
     <title>个人中心-我的资源</title>
- <link rel="stylesheet" type="text/css" href="/content/Style.css" />
+    <link rel="stylesheet" type="text/css" href="/content/Style.css" />
     <link rel="stylesheet" href="/contenticonfont/iconfont.css" />
     <link rel="stylesheet" href="/content/ui-dialog.css" />
     <script type="text/javascript" src="/scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="/scripts/dialog.js"></script>
+    <script type="text/javascript" src="/scripts/common.js"></script>
 </head>
 <body>
     <form id="form1" runat="server">

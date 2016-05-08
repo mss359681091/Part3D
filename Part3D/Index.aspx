@@ -21,7 +21,7 @@
     <script type="text/javascript" src="/scripts/scriptC.js"></script>
     <script type="text/javascript" src="/scripts/jquery.kinMaxShow-1.1.min.js"></script>
     <script type="text/javascript" src="/scripts/dialog.js"></script>
-
+    <script type="text/javascript" src="/scripts/common.js"></script>
 </head>
 <body>
     <form id="form1" runat="server">

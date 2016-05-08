@@ -1,7 +1,8 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="WUCTop.ascx.cs" Inherits="Part3D.WUCTop" %>
 <div class="Container">
     <div class="Left">
-        <a href="/Index.aspx">首页</a><span>|</span><b onmouseover="MM_showHideLayers('T_Class','','show')" onmouseout="MM_showHideLayers('T_Class','','hide')">分类 <i class="iconfont">&#xe603;</i>
+        <a href="/Index.aspx">首页</a><span>|</span>
+        <b onmouseover="MM_showHideLayers('T_Class','','show')" onmouseout="MM_showHideLayers('T_Class','','hide')">分类 <i class="iconfont">&#xe603;</i>
             <div id="T_Class">
                 <strong>
                     <img src="/images/TOp_T.png" alt="" /></strong>
@@ -17,7 +18,12 @@
                     </li>
                 </ul>
             </div>
-        </b><span>|</span><a href="#">论坛</a>
+        </b>
+        <span>|</span><a href="#">论坛</a>
     </div>
-    <div class="Right"><a href="/Login.aspx"><i class="iconfont">&#xe606;</i>登录</a><!--<a href="#"><i class="iconfont">&#xe604;</i>暂存架<font>(6)</font></a>--><a href="/user/jqUploadify/WebUpload.aspx"><i class="iconfont">&#xe605;</i>上传</a></div>
+    <div class="Right">
+
+        <a id="lnkLogin" runat="server" href="/Login.aspx"><i class="iconfont">&#xe606;</i>登录</a>
+        <a id="lnkLogined" visible="false" runat="server" href="/Index.aspx"></a><a id="lnkLoginout" runat="server" visible="false" href="/user/Loginout.aspx">注销<i class="iconfont">&#xe603;</i></a><a href="/user/jqUploadify/WebUpload.aspx"><i class="iconfont">&#xe605;</i>上传</a>
+    </div>
 </div>
