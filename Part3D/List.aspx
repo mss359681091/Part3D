@@ -18,7 +18,15 @@
     <link rel="stylesheet" type="text/css" href="/content/Style.css" />
     <link rel="stylesheet" href="/content/iconfont.css" />
     <link rel="stylesheet" href="/content/ui-dialog.css" />
-
+    <script type="text/javascript" src="/scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="/scripts/dialog.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".Top_Class li").bind("click", function () {
+                $(this).addClass("hover").siblings().removeClass("hover");
+            });
+        });
+    </script>
 </head>
 <body>
     <form id="form1" runat="server">
