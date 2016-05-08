@@ -99,8 +99,6 @@ namespace _3DPart.DAL.BULayer
         #endregion
 
         #region 执行非查询存储过程和SQL语句-----------------------------
-
-
         public static int ExcuteProc(string ProcName)
         {
             return ExcuteSQL(ProcName, null, CommandType.StoredProcedure);
@@ -154,15 +152,10 @@ namespace _3DPart.DAL.BULayer
         #endregion
 
         #region 执行查询返回第一行，第一列---------------------------------
-
-
-
-
         public static int ExcuteScalarSQL(string strSQL)
         {
             return ExcuteScalarSQL(strSQL, null);
         }
-
         public static int ExcuteScalarSQL(string strSQL, Hashtable pas)
         {
             return ExcuteScalarSQL(strSQL, pas, CommandType.Text);

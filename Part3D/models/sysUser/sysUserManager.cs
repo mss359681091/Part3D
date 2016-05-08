@@ -78,7 +78,6 @@ namespace _3DPart.DAL.BULayer
             return myDs;
         }
 
-
         public DataSet DSLogin(sysUserQuery QueryData)
         {
             string strQuery = @"SELECT "
@@ -87,6 +86,7 @@ namespace _3DPart.DAL.BULayer
             + sysUser.Email_FULL + ","
             + sysUser.Mobile_FULL + ","
             + sysUser.Password_FULL + ","
+            + sysUser.Nickname_FULL + ","
             + sysRoles.Name_FULL + " as Rolename ,"
             + sysUser.Photo_FULL
             + " FROM " + sysUser.TABLENAME + "," + sysRoles.TABLENAME + "," + sysRoleUser.TABLENAME + " WHERE 1 = 1 "
@@ -154,9 +154,17 @@ namespace _3DPart.DAL.BULayer
                 myParam.Add("@Mobile", QueryData.Mobile);
             }
 
+            if (QueryData.Email.Length > 0)
+            {
+                strQuery += " AND " + sysUser.Email_FULL + " = @Email ";
+                myParam.Add("@Email", QueryData.Email);
+            }
             try
             {
-                returnValue = SQLHelper.GetObject(strQuery, myParam).ToString();
+                if (SQLHelper.GetObject(strQuery, myParam) != null)
+                {
+                    returnValue = SQLHelper.GetObject(strQuery, myParam).ToString();
+                }
             }
             catch (Exception myEx)
             {
@@ -178,15 +186,17 @@ namespace _3DPart.DAL.BULayer
         public string Username = string.Empty;
         public string Mobile = string.Empty;
         public string Password = string.Empty;
+        public string Email = string.Empty;
 
         public string SortField = " ID ";
         public string SortDir = " DESC ";
-        public sysUserQuery(string paramID, string paramUsername, string paramMobile, string paramPassword)
+        public sysUserQuery(string paramID, string paramUsername, string paramMobile, string paramPassword, string paramEmail)
         {
             this.ID = paramID;
             this.Username = paramUsername;
             this.Mobile = paramMobile;
             this.Password = paramPassword;
+            this.Email = paramEmail;
         }
         public sysUserQuery()
         {

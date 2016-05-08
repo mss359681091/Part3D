@@ -8,7 +8,7 @@ function refreshSwatch() {
     if ($SliderValue == 100) {
         $('.sliderLock').slider("value", 86);
         $(".chkhk").removeAttr("disabled");
-        $(".slider_tip").text("通过验证").css("color", "green");
+        $(".slider_tip").text("通过验证√").css("color", "green");
         $(".sliderLock").unbind();
     }
 }

@@ -33,7 +33,7 @@ namespace Part3D
                     this.lnkLogin.Visible = false;
                     this.lnkLogined.Visible = true;
                     this.lnkLoginout.Visible = true;
-                    this.lnkLogined.InnerHtml = "<i class='iconfont'>&#xe606;</i>" + Session[sysUser.Username].ToString();
+                    this.lnkLogined.InnerHtml = "<i class='iconfont'>&#xe606;</i>" + Session[sysUser.Nickname].ToString();
                 }
             }
         }

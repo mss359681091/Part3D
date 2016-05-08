@@ -92,16 +92,13 @@ function fnChecked() {
             $("#txt_regPassword1").focus();
             return;
         }
+
         fnRegister(username, password, nickname, email, mobile);
 
     }
     else {
         alert("请阅读并接受相关条款！");
     }
-}
-
-function fnRegister(username, password, nickname, email, mobile) {
-    alert(username + "," + password + "," + nickname + "," + email + "," + mobile);
 }
 
 function fnCheckedUsername() {
@@ -136,17 +133,37 @@ function fnCheckedUsername() {
     });
 }
 
-function fnCheckedEmail() {
-    var email = $("#txt_regEmail").val();
+function fnCheckedEmail(obj) {
+    var email = $(obj).val();
     var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
     if (!myreg.test(email)) {
-        $("#txt_regEmail").next("i").text("邮箱格式不正确！");
+        $(obj).next("i").text("邮箱格式不正确！");
         //$("#txt_regEmail").focus();
         return false;
     }
     else {
-        $("#txt_regEmail").next("i").text("");
+        $(obj).next("i").text("");
     }
+    //do something
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/Login.aspx/ChkEmail",
+        data: "{paramEmail:'" + email + "'}",
+        dataType: 'json',
+        success: function (result) {
+            if (result.d == "-1") {
+                $("#txt_regEmail").next("i").text("该邮箱已经关联一个账号！");
+                //$("#txt_regEmail").focus();
+                return;
+            }
+            else {
+                $("#txt_regEmail").next("i").text("");
+            }
+        }
+    });
+
 }
 
 function fnCheckedMobile() {
@@ -160,4 +177,54 @@ function fnCheckedMobile() {
         $("#txt_regMobile").next("i").text("");
     }
 
+}
+
+function fnRegister(username, password, nickname, email, mobile) {
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/Login.aspx/FnRegister",
+        data: "{paramUsername:'" + username + "',paramPassword:'" + password + "',paramNickname:'" + nickname + "',paramEmail:'" + email + "',paramMobile:'" + mobile + "'}",
+        dataType: 'json',
+        success: function (result) {
+
+            switch (result.d) {
+                case "1":
+                    alert("注册成功!");
+                    return;
+                    break;
+                case "-1":
+                    alert("注册信息不能为空!");
+                    return;
+                    break;
+                case "-2":
+                    $("#txt_regUsername").next("i").text("用户名包含非法字符！");
+                    $("#txt_regUsername").focus();
+                    return;
+                    break;
+                case "-3":
+                    $("#txt_regPassword").next("i").text("密码包含非法字符！");
+                    $("#txt_regPassword").focus();
+                    return;
+                    break;
+                case "-4":
+                    $("#txt_regUsername").next("i").text("该用户名已经存在！");
+                    $("#txt_regUsername").focus();
+                    return;
+                    break;
+                case "-5":
+                    $("#txt_regEmail").next("i").text("该邮箱已经关联一个账号！");
+                    $("#txt_regEmail").focus();
+                    return;
+                    break;
+                case "-6":
+                    $("#txt_regEmail").next("i").text("邮箱格式不正确！");
+                    $("#txt_regEmail").focus();
+                    return;
+                    break;
+                default:
+                    break;
+            }
+        }
+    });
 }

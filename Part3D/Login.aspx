@@ -30,6 +30,31 @@
     <link href="/content/sliderlock.css" rel="stylesheet" media="screen">
 
     <script type="text/javascript" src="/scripts/common.js"></script>
+
+    <script type="text/javascript">
+        function fnNext() {
+            if ($("#lisend").next("i").text().length > 0) {
+                return;
+            }
+            var lisend = $("#lisend").val();
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/Login.aspx/SendEmail",
+                data: "{paramEmail:'" + lisend + "'}",
+                dataType: 'json',
+                success: function (result) {
+                    if (result.d == "1") {
+                        $("#femail").text(lisend);
+                        $("#ulsend").hide();
+                        $("#ulsuccess").show();
+                        return;
+                    }
+
+                }
+            });
+        }
+    </script>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -76,12 +101,12 @@
                     </dd>
                     <dd>
                         <ul>
-                            <li><span>用户名：</span><input id="txt_regUsername" maxlength="20" type="text" placeholder="请填写登录帐号..." class="inp" value="" onblur="fnCheckedUsername()"><i></i></li>
-                            <li><span>邮箱：</span><input id="txt_regEmail" maxlength="50" type="text" onblur="fnCheckedEmail()" placeholder="请填写邮箱..." class="inp" value=""><i></i></li>
+                            <li><span>用户名：</span><input id="txt_regUsername" maxlength="20" type="text" placeholder="请填写4-20个字符..." class="inp" value="" onblur="fnCheckedUsername()"><i></i></li>
+                            <li><span>邮箱：</span><input id="txt_regEmail" maxlength="50" type="text" onblur="fnCheckedEmail(this)" placeholder="请填写正确邮箱..." class="inp" value=""><i></i></li>
                             <li><span>昵称：</span><input id="txt_regNickname" maxlength="20" type="text" placeholder="请填写昵称..." class="inp"><i></i></li>
                             <li><span>手机号：</span><input id="txt_regMobile" maxlength="50" type="text" onblur="fnCheckedMobile()" placeholder="请填写手机号..." class="inp"><i></i></li>
                             <li><span>密码：</span><input id="txt_regPassword" maxlength="20" type="password" placeholder="请填写6-20个字符..." class="inp"><i></i></li>
-                            <li><span>确认密码：</span><input id="txt_regPassword1" maxlength="50" type="password" placeholder="请再输入一次密码！" class="inp"><i></i></li>
+                            <li><span>确认密码：</span><input id="txt_regPassword1" maxlength="50" type="password" placeholder="请再输入一次密码..." class="inp"><i></i></li>
                             <li>
                                 <span>验证：</span>
                                 <div style="width: 400px; height: 40px; line-height: 40px; margin-top: 8px; float: left;">
@@ -101,17 +126,17 @@
                         </ul>
                     </dd>
                     <dd>
-                        <ul>
-                            <li><span>邮箱：</span><input type="text" placeholder="请输入绑定邮箱..." class="inp"><i></i></li>
+                        <ul id="ulsend">
+                            <li><span>邮箱：</span><input id="lisend" type="text" placeholder="请输入绑定邮箱..." onblur="fnCheckedEmail(this)" class="inp"><i></i></li>
                             <li>
-                                <button class="chkhk" type="button" onclick="fnNext();">下一步，安全验证</button></li>
+                                <button type="button" onclick="fnNext()">下一步，安全验证</button></li>
                         </ul>
 
                         <!--以下内容，可以新一个页面里-->
-                        <ul class="Pw_Main">
+                        <ul id="ulsuccess" style="display: none" class="Pw_Main">
                             <h2>已发送重设密码邮件</h2>
                             <img src="/images/mail.png" alt="" />
-                            <li>重设密码邮件已发送到 <font>wangguifu@chengrui.com.cn</font>
+                            <li>重设密码邮件已发送到 <font id="femail">wangguifu@chengrui.com.cn</font>
                                 <br>
                                 点击邮箱中的链接即可完成重设密码
                             </li>

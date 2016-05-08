@@ -109,7 +109,22 @@ namespace _3DPart.DAL.BULayer.Schema {
         /// 
         /// </summary>
         public static string Photo_TABLE_FULL = "sysUserPhoto";
-        
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static string Nickname = "Nickname";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static string Nickname_FULL = "sysUser.Nickname";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static string Nickname_TABLE_FULL = "sysUserNickname";
+
         /// <summary>
         /// 
         /// </summary>

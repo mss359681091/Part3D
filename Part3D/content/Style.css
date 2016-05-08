@@ -1220,9 +1220,11 @@ header .navbar a:hover {
             float: left;
             width: 400px;
         }
+
         .Mun_V ul li input {
-          color:#888;
+            color: #888;
         }
+
         .Mun_V ul li .hover {
             background: #fffaf7;
             border: 1px #F60 solid;
@@ -1267,7 +1269,7 @@ header .navbar a:hover {
     .Mun_V ul.Pw_Main {
         width: 450px;
         text-align: center;
-        margin: 0 auto;
+        margin-left: 160px;
     }
 
     .Mun_V ul h2 {
