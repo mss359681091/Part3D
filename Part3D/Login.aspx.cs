@@ -3,6 +3,7 @@ using _3DPart.DAL.BULayer.Schema;
 using Part3D.models;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Web.Services;
 
@@ -32,6 +33,7 @@ namespace Part3D
             {
                 return "-2";//状态-2：密码空值
             }
+            paramPassword = DESEncrypt.Encrypt(paramPassword);//加密
             returnValue = CommonManager.LoginValidate(paramUsername, paramPassword, paramRemember);//登录验证
             return returnValue;
         }
@@ -102,6 +104,7 @@ namespace Part3D
             paramNickname = CommonManager.FilterHtmlTarget(paramNickname);
             paramEmail = CommonManager.FilterHtmlTarget(paramEmail);
             paramMobile = CommonManager.FilterHtmlTarget(paramMobile);
+            paramPassword = DESEncrypt.Encrypt(paramPassword);//密码加密
 
             Hashtable myHashtable = new Hashtable();
             myHashtable.Add(sysUser.Username, paramUsername);
@@ -120,7 +123,16 @@ namespace Part3D
         public static string SendEmail(string paramEmail)
         {
             string returnValue = string.Empty;
-
+            string strPassword = string.Empty;
+            strPassword = new sysUserManager().GetParams(new sysUserQuery { Email = paramEmail }, sysUser.Password);
+            strPassword = DESEncrypt.Decrypt(strPassword);
+            List<string> emails = new List<string>();
+            emails.Add(paramEmail);
+            string strbody = string.Empty;
+            strbody += "<p>你好：" + paramEmail + "</p>";
+            strbody += "<p>你的当前密码为：" + strPassword + "</p>";
+            strbody += "<p>请妥善保管你的密码，可以到个人中心重置密码！</p>";
+            SendEmailUtility.SendEmail(emails, "3DPart安全中心", strbody, "");
             returnValue = "1";
             return returnValue;
         }

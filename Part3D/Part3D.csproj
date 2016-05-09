@@ -210,6 +210,7 @@
     <Compile Include="Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
     </Compile>
+    <Compile Include="models\DESEncrypt.cs" />
     <Compile Include="user\jqUploadify\scripts\upload.ashx.cs">
       <DependentUpon>upload.ashx</DependentUpon>
     </Compile>

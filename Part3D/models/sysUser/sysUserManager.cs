@@ -89,12 +89,11 @@ namespace _3DPart.DAL.BULayer
             + sysUser.Nickname_FULL + ","
             + sysRoles.Name_FULL + " as Rolename ,"
             + sysUser.Photo_FULL
-            + " FROM " + sysUser.TABLENAME + "," + sysRoles.TABLENAME + "," + sysRoleUser.TABLENAME + " WHERE 1 = 1 "
-            + " AND " + sysUser.ID_FULL + " = " + sysRoleUser.UserID_FULL
-            + " AND " + sysRoles.ID_FULL + " = " + sysRoleUser.RoleID_FULL
-            + " AND " + sysUser.Enabled_FULL + " = 1"
-            + " AND " + sysRoles.Enabled_FULL + " = 1"
-            + " AND " + sysRoleUser.Enabled_FULL + " = 1";
+            + " FROM " + sysUser.TABLENAME
+            + " LEFT JOIN " + sysRoleUser.TABLENAME + " ON " + sysRoleUser.UserID_FULL + " = " + sysUser.ID_FULL
+            + " LEFT JOIN " + sysRoles.TABLENAME + " ON " + sysRoleUser.RoleID_FULL + " = " + sysRoles.ID_FULL
+            + " WHERE 1 = 1 "
+            + " AND " + sysUser.Enabled_FULL + " = 1";
 
             Hashtable myParam = new Hashtable();
 

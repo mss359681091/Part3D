@@ -52,6 +52,7 @@
                 success: function (result) {
                     if (result.d == "1") {
                         $("#femail").text(lisend);
+                        $("#lnkmaileto").attr("href", "mailto:" + lisend);
                         $("#ulsend").hide();
                         $("#ulsuccess").show();
                         return;
@@ -140,16 +141,16 @@
 
                         <!--以下内容，可以新一个页面里-->
                         <ul id="ulsuccess" style="display: none" class="Pw_Main">
-                            <h2>已发送重设密码邮件</h2>
+                            <h2>已发送找回密码邮件</h2>
                             <img src="/images/mail.png" alt="" />
-                            <li>重设密码邮件已发送到 <font id="femail">wangguifu@chengrui.com.cn</font>
+                            <li>找回密码邮件已发送到 <font id="femail"></font>
                                 <br>
                                 点击邮箱中的链接即可完成重设密码
                             </li>
                             <li>
-                                <button type="button">登陆邮箱完成验证</button></li>
+                                <button type="button"><a style="color:#ffffff" id="lnkmaileto" target="_blank" href="#">登陆邮箱完成验证</a></button></li>
                             <p>
-                                1. 如果您没有收到重设密码邮件，请检查垃圾邮箱或广告邮箱目录;<br>
+                                1. 如果您没有收到找回密码邮件，请检查垃圾邮箱或广告邮箱目录;<br>
                                 2. 邮件到达可能需要几分钟，如果仍没有收到，点击这里 重新发送重设密码邮件;<br>
                                 3. 如果一直没有收到邮件，请您使用注册邮件联系我们：support@geetest.com
                             </p>

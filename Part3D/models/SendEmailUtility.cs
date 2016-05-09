@@ -26,16 +26,16 @@ namespace Part3D.models
         /// <param name="attachmentFiles">附件</param>
         /// <param name="body">显示名称</param>
         /// <returns></returns>
-        private static MailMessage EmailCompose(string fromMail, List<string> toMail, string subject, string body, string attachmentFiles, string displayName)
+        private static MailMessage EmailCompose(string fromMail, List<string> toMail, string subject, string body, string attachmentFiles)
         {
             MailMessage message = new MailMessage();
-            message.From = new MailAddress(fromMail, displayName, Encoding);
+            message.From = new MailAddress(fromMail, "3DPart官网", Encoding);
             //邮件群发
             foreach (string str in toMail)
             {
                 message.Bcc.Add(str);
             }
-            message.Body = body.Length > 0 ? body : displayName;
+            message.Body = body.Length > 0 ? body : "3DPart官网";
             message.BodyEncoding = System.Text.Encoding.UTF8;
             message.Subject = subject;
             message.SubjectEncoding = Encoding;
@@ -65,53 +65,45 @@ namespace Part3D.models
         /// <param name="body">邮件内容</param>
         /// <param name="attachmentFiles">附件</param>
         /// <returns></returns>
-        //public static bool SendEmail(List<string> toMail, string subject, string body, string attachmentFiles, string siteID)
-        //{
-        //    string mailServer = string.Empty;
-        //    string userName = string.Empty;
-        //    string passWord = string.Empty;
-        //    string fromMail = string.Empty;
-        //    string strSiteName = string.Empty;
+        public static bool SendEmail(List<string> toMail, string subject, string body, string attachmentFiles)
+        {
+            string mailServer = string.Empty;
+            string userName = string.Empty;
+            string passWord = string.Empty;
+            string fromMail = string.Empty;
+            string strSiteName = string.Empty;
 
-        //    string[] list = { CMS_Mail.Port, CMS_Mail.Host, CMS_Mail.Username, CMS_Mail.Password };
+            //string[] list = { CMS_Mail.Port, CMS_Mail.Host, CMS_Mail.Username, CMS_Mail.Password };
 
-        //    CMS_MailManager myCMS_MailManager = new CMS_MailManager();
-        //    CMS_MailQuery myCMS_MailQuery = new CMS_MailQuery();
-        //    LindonSoft.SubstrateLayer.DALayer.DataCrypto myDataCrypto = new LindonSoft.SubstrateLayer.DALayer.DataCrypto();
-        //    myCMS_MailQuery.SiteID = siteID;
-        //    DataSet myds = myCMS_MailManager.Search(null, myCMS_MailQuery);
-        //    if (myds.Tables[0].Rows.Count > 0)
-        //    {
-        //        mailServer = myds.Tables[0].Rows[0]["Host"].ToString();
-        //        fromMail = myds.Tables[0].Rows[0]["Port"].ToString();
-        //        userName = myds.Tables[0].Rows[0]["Username"].ToString();
-        //        //passWord = DESEncrypt.Decrypt(myds.Tables[0].Rows[0]["Password"].ToString());
-        //        passWord = myDataCrypto.Decrypto(myds.Tables[0].Rows[0]["Password"].ToString());//解密
-        //        strSiteName = myds.Tables[0].Rows[0]["SiteName"].ToString();
-        //    }
-        //    try
-        //    {
-        //        MailMessage message;
-        //        message = EmailCompose(fromMail, toMail, subject, body, attachmentFiles, strSiteName);
-        //        SmtpClient client = new SmtpClient(mailServer);
-        //        client.DeliveryMethod = SmtpDeliveryMethod.Network;
-        //        //表示以当前登录用户的默认凭据进行身份验证
-        //        client.UseDefaultCredentials = false;
-        //        //获取或设置一个值，该值指示电子邮件正文是否为  HTML。 
-        //        message.IsBodyHtml = true;
-        //        if (userName.Length > 0)
-        //        {
-        //            client.Credentials = new System.Net.NetworkCredential(userName, passWord);
-        //        }
-        //        client.Send(message);
-        //        message.Dispose();
-        //        return true;
-        //    }
-        //    catch
-        //    {
-        //        return false;
-        //    }
-        //}
+
+            mailServer = "smtp.sina.com";
+            fromMail = "mss2129877@sina.com";
+            userName = "mss2129877";
+            passWord = "mss13966103580";
+
+            try
+            {
+                MailMessage message;
+                message = EmailCompose(fromMail, toMail, subject, body, attachmentFiles);
+                SmtpClient client = new SmtpClient(mailServer);
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                //表示以当前登录用户的默认凭据进行身份验证
+                client.UseDefaultCredentials = false;
+                //获取或设置一个值，该值指示电子邮件正文是否为  HTML。 
+                message.IsBodyHtml = true;
+                if (userName.Length > 0)
+                {
+                    client.Credentials = new System.Net.NetworkCredential(userName, passWord);
+                }
+                client.Send(message);
+                message.Dispose();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         public static Encoding Encoding
         {
