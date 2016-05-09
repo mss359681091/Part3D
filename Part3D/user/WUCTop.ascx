@@ -9,7 +9,7 @@
                 <ul>
                     <li>
                         <p><a target="_blank" href="/List.aspx">国标</a></p>
-                        <a href="#">组合件</a><span>/</span><a href="#">连接副</a><span>/</span><a href="#">焊钉</a><span>/</span><a href="#">螺栓</a><span>/</span><a href="#">螺母销</a><span>/</span><a href="#">柳钉</a><span>/</span><a href="#">挡圈</a><span>/</span><a href="#">螺钉</a></li>
+                        <a href="/user/jqUploadify/WebUpload.aspx">组合件</a><span>/</span><a href="#">连接副</a><span>/</span><a href="#">焊钉</a><span>/</span><a href="#">螺栓</a><span>/</span><a href="#">螺母销</a><span>/</span><a href="#">柳钉</a><span>/</span><a href="#">挡圈</a><span>/</span><a href="#">螺钉</a></li>
                     <li>
                         <p><a target="_blank" href="/List.aspx">3D素材</a></p>
                     </li>

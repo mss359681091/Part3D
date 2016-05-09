@@ -153,6 +153,22 @@
     <Content Include="images\user_li.png" />
     <Content Include="images\user_T.jpg" />
     <Content Include="Index.aspx" />
+    <Content Include="user\jqUploadify\images\BeginUpload.gif" />
+    <Content Include="user\jqUploadify\images\cancel.png" />
+    <Content Include="user\jqUploadify\images\CancelUpload.gif" />
+    <Content Include="user\jqUploadify\images\SelectUpload.gif" />
+    <Content Include="user\jqUploadify\images\Thumbs.db" />
+    <Content Include="user\jqUploadify\scripts\default.css" />
+    <Content Include="user\jqUploadify\scripts\jquery-1.7.2.min.js" />
+    <Content Include="user\jqUploadify\scripts\jquery.uploadify.min.js" />
+    <Content Include="user\jqUploadify\scripts\swfobject.js" />
+    <Content Include="user\jqUploadify\scripts\upload.ashx" />
+    <Content Include="user\jqUploadify\scripts\uploadify-cancel.png" />
+    <Content Include="user\jqUploadify\scripts\uploadify.css" />
+    <Content Include="user\jqUploadify\scripts\uploadify.swf" />
+    <Content Include="user\jqUploadify\scripts\uploads\08.jpg" />
+    <Content Include="user\jqUploadify\scripts\uploads\111.png" />
+    <Content Include="user\jqUploadify\WebUpload.aspx" />
     <Content Include="List.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="scripts\ai.0.15.0-build58334.js" />
@@ -169,16 +185,7 @@
     <Content Include="scripts\scriptC.js" />
     <Content Include="scripts\sliderlock.js" />
     <Content Include="scripts\top.js" />
-    <Content Include="user\jqUploadify\images\BeginUpload.gif" />
-    <Content Include="user\jqUploadify\images\cancel.png" />
-    <Content Include="user\jqUploadify\images\CancelUpload.gif" />
-    <Content Include="user\jqUploadify\images\SelectUpload.gif" />
-    <Content Include="scripts\jquery.uploadify.min.js" />
-    <Content Include="scripts\swfobject.js" />
     <Content Include="images\uploadify-cancel.png" />
-    <Content Include="content\uploadify.css" />
-    <Content Include="user\jqUploadify\scripts\uploadify.swf" />
-    <Content Include="user\jqUploadify\WebUpload.aspx" />
     <Content Include="user\Loginout.aspx" />
     <Content Include="user\PersonalDownloadRecord.aspx" />
     <Content Include="user\PersonalInfo.aspx" />
@@ -202,6 +209,16 @@
     </Compile>
     <Compile Include="Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="user\jqUploadify\scripts\upload.ashx.cs">
+      <DependentUpon>upload.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="user\jqUploadify\WebUpload.aspx.cs">
+      <DependentUpon>WebUpload.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="user\jqUploadify\WebUpload.aspx.designer.cs">
+      <DependentUpon>WebUpload.aspx</DependentUpon>
     </Compile>
     <Compile Include="List.aspx.cs">
       <DependentUpon>List.aspx</DependentUpon>
@@ -252,16 +269,6 @@
     <Compile Include="models\tModule\tModuleSchema.cs" />
     <Compile Include="models\UnZipClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="user\jqUploadify\scripts\upload.ashx.cs">
-      <DependentUpon>upload.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="user\jqUploadify\WebUpload.aspx.cs">
-      <DependentUpon>WebUpload.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="user\jqUploadify\WebUpload.aspx.designer.cs">
-      <DependentUpon>WebUpload.aspx</DependentUpon>
-    </Compile>
     <Compile Include="user\Loginout.aspx.cs">
       <DependentUpon>Loginout.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -342,8 +349,6 @@
     <Content Include="content\iconfont.eot" />
     <Content Include="content\iconfont.ttf" />
     <Content Include="content\iconfont.woff" />
-    <Content Include="user\jqUploadify\images\Thumbs.db" />
-    <Content Include="user\jqUploadify\scripts\upload.ashx" />
     <Content Include="user\Web.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

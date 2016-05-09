@@ -16,10 +16,12 @@
     <link rel="stylesheet" href="/content/iconfont.css" />
     <link rel="stylesheet" href="/content/ui-dialog.css" />
     <link href="/content/Style.css" rel="stylesheet" />
-    <script type="text/javascript" src="/scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="/scripts/jquery.min.js"></script>
     <script type="text/javascript" src="/scripts/dialog.js"></script>
     <!--上传控件-->
-    <link href="/scripts/uploadify.css" rel="stylesheet" type="text/css" />
+    <link href="scripts/uploadify.css" rel="stylesheet" type="text/css" />
+    <link href="scripts/default.css" rel="stylesheet" type="text/css" />
+
 </head>
 <body>
     <form id="form1" runat="server">
@@ -47,7 +49,7 @@
                 </ul>
                 <ul class="Clear"></ul>
                 <ul class="All">
-                    <li style="margin-bottom: 3px;"><span class="_span"><b>3D上传文件：</b><i>推荐大小：单个文件30M之内</i></span></li>
+                    <li style="margin-bottom: 3px;"><span class="_span"><b>3D上传文件：</b><i>推荐大小：单个文件10M之内</i></span></li>
                     <div class="_div">
                         <button type="button">
                             <div id="file_upload"></div>
@@ -107,8 +109,9 @@
 
         </div>
         <!--上传控件-->
-        <script src="/scripts/swfobject.js" type="text/javascript"></script>
-        <script src="/scripts/jquery.uploadify.min.js" type="text/javascript"></script>
+        <script src="scripts/jquery-1.7.2.min.js"></script>
+        <script src="scripts/swfobject.js" type="text/javascript"></script>
+        <script src="scripts/jquery.uploadify.min.js" type="text/javascript"></script>
         <script type="text/javascript">
             $(function () {
                 var filenames = "";
@@ -118,7 +121,7 @@
                     'debug': false,
                     //是否自动上传
                     'auto': false,
-                    'buttonText': '选择照片',
+                    'buttonText': '选择文件',
                     //flash
                     'swf': "scripts/uploadify.swf",
                     //文件选择后的容器ID
@@ -129,7 +132,7 @@
                     'multi': true,
                     'fileTypeDesc': '支持的格式：',
                     'fileTypeExts': '*.jpg;*.jpge;*.gif;*.png',
-                    'fileSizeLimit': '30MB',
+                    'fileSizeLimit': '10MB',
                     'removeTimeout': 1,
 
                     //返回一个错误，选择文件的时候触发

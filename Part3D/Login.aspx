@@ -33,10 +33,16 @@
 
     <script type="text/javascript">
         function fnNext() {
+
+
             if ($("#lisend").next("i").text().length > 0) {
                 return;
             }
             var lisend = $("#lisend").val();
+            if (lisend.length == "") {
+                $("#lisend").next("i").text("请输入邮箱！");
+                return;
+            }
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
