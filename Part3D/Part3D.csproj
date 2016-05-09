@@ -168,6 +168,7 @@
     <Content Include="user\jqUploadify\scripts\uploadify.swf" />
     <Content Include="user\jqUploadify\scripts\uploads\08.jpg" />
     <Content Include="user\jqUploadify\scripts\uploads\111.png" />
+    <Content Include="user\jqUploadify\uploads\s\08.jpg" />
     <Content Include="user\jqUploadify\WebUpload.aspx" />
     <Content Include="List.aspx" />
     <Content Include="Login.aspx" />
@@ -351,6 +352,7 @@
     <Content Include="content\iconfont.ttf" />
     <Content Include="content\iconfont.woff" />
     <Content Include="user\Web.config" />
+    <None Include="Properties\PublishProfiles\3dpart发布包.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -358,9 +360,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="user\jqUploadify\uploads\s\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

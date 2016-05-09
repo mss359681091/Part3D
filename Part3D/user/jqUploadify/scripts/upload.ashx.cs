@@ -26,12 +26,16 @@ namespace jqUploadify.scripts
 
             HttpPostedFile file = context.Request.Files["Filedata"];
             string uploadPath = context.Server.MapPath("..\\uploads\\");
-
+            string uploadPaths = context.Server.MapPath("..\\uploads\\s\\");
             if (file != null)
             {
                 if (!Directory.Exists(uploadPath))
                 {
                     Directory.CreateDirectory(uploadPath);
+                }
+                if (!Directory.Exists(uploadPaths))
+                {
+                    Directory.CreateDirectory(uploadPaths);
                 }
                 file.SaveAs(uploadPath + file.FileName);
                 //生成缩略图
