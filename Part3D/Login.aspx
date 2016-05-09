@@ -21,45 +21,23 @@
     <link rel="stylesheet" href="/content/ui-dialog.css" />
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" media="screen" href="/content/bootstrap.min.css">
+    <%--    <link rel="stylesheet" media="screen" href="/content/bootstrap.min.css">--%>
 
     <!-- jQuery ui -->
     <link href="/content/jquery-ui-1.10.4.min.css" rel="stylesheet" media="screen">
 
     <!-- SliderLock -->
     <link href="/content/sliderlock.css" rel="stylesheet" media="screen">
-
+    <script type="text/javascript" src="/scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="/scripts/common.js"></script>
 
+
     <script type="text/javascript">
-        function fnNext() {
-
-
-            if ($("#lisend").next("i").text().length > 0) {
-                return;
+        document.onkeydown = function (event) {
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            if (e && e.keyCode == 13) {
+                fnLogin();
             }
-            var lisend = $("#lisend").val();
-            if (lisend.length == "") {
-                $("#lisend").next("i").text("请输入邮箱！");
-                return;
-            }
-            $.ajax({
-                type: "POST",
-                contentType: "application/json",
-                url: "/Login.aspx/SendEmail",
-                data: "{paramEmail:'" + lisend + "'}",
-                dataType: 'json',
-                success: function (result) {
-                    if (result.d == "1") {
-                        $("#femail").text(lisend);
-                        $("#lnkmaileto").attr("href", "mailto:" + lisend);
-                        $("#ulsend").hide();
-                        $("#ulsuccess").show();
-                        return;
-                    }
-
-                }
-            });
         }
     </script>
 </head>
@@ -148,7 +126,7 @@
                                 点击邮箱中的链接即可完成重设密码
                             </li>
                             <li>
-                                <button type="button"><a style="color:#ffffff" id="lnkmaileto" target="_blank" href="#">登陆邮箱完成验证</a></button></li>
+                                <button type="button"><a style="color: #ffffff" id="lnkmaileto" target="_blank" href="#">登陆邮箱完成验证</a></button></li>
                             <p>
                                 1. 如果您没有收到找回密码邮件，请检查垃圾邮箱或广告邮箱目录;<br>
                                 2. 邮件到达可能需要几分钟，如果仍没有收到，点击这里 重新发送重设密码邮件;<br>
@@ -168,10 +146,10 @@
             </div>
 
         </div>
-        <script type="text/javascript" src="/scripts/jquery-1.10.2.min.js"></script>
+
         <script type="text/javascript" src="/scripts/dialog.js"></script>
         <script src="/scripts/sliderlock.js"></script>
-        <script src="/scripts/bootstrap.min.js"></script>
+        <%-- <script src="/scripts/bootstrap.min.js"></script>--%>
         <script src="/scripts/jquery-ui-1.10.4.min.js"></script>
 
     </form>

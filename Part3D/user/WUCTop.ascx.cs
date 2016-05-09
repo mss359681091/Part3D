@@ -1,6 +1,9 @@
-﻿using _3DPart.DAL.BULayer.Schema;
+﻿using _3DPart.DAL.BULayer;
+using _3DPart.DAL.BULayer.Schema;
 using Part3D.models;
 using System;
+using System.Data;
+using System.Web.Services;
 
 namespace Part3D
 {

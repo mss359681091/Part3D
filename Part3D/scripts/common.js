@@ -228,3 +228,54 @@ function fnRegister(username, password, nickname, email, mobile) {
         }
     });
 }
+
+function fnChooseme(ClassifyID, obj) {
+    $(obj).parents("ul").data("ClassifyID", ClassifyID);
+    $("#ulclassify li a").removeClass("hover");
+    $(obj).addClass("hover");
+    $(".txtClassifyID").val($(obj).text());
+    document.getElementById("hidClassfiyID").value = ClassifyID;
+}
+
+$(document).ready(function () {
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/Index.aspx/GetClassify",
+        data: "{paramtype:'0'}",
+        dataType: 'json',
+        success: function (result) {
+            $("#top_ul").append(result.d);
+        }
+    });
+
+});
+
+function fnNext() {
+    if ($("#lisend").next("i").text().length > 0) {
+        return;
+    }
+    var lisend = $("#lisend").val();
+    if (lisend.length == "") {
+        $("#lisend").next("i").text("请输入邮箱！");
+        return;
+    }
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/Login.aspx/SendEmail",
+        data: "{paramEmail:'" + lisend + "'}",
+        dataType: 'json',
+        success: function (result) {
+            if (result.d == "1") {
+                $("#femail").text(lisend);
+                $("#lnkmaileto").attr("href", "mailto:" + lisend);
+                $("#ulsend").hide();
+                $("#ulsuccess").show();
+                return;
+            }
+
+        }
+    });
+}

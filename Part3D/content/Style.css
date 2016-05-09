@@ -1132,9 +1132,14 @@ header .navbar a:hover {
         font-size: 16px;
     }
 
-    #Class_L ul li p {
-        font-weight: bold;
-    }
+#ulclassify li .hover {
+    color: #f60;
+}
+
+
+#Class_L ul li p {
+    font-weight: bold;
+}
 
 .Login_L {
     background: #FFF;

@@ -2,10 +2,13 @@
 using _3DPart.DAL.BULayer.Schema;
 using System;
 using System.Data;
+using System.Drawing;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Security;
+using System.Web.UI.WebControls;
 
 namespace Part3D.models
 {
@@ -195,6 +198,69 @@ namespace Part3D.models
             paramHtml.Replace("\r\n", "");
             paramHtml = HttpContext.Current.Server.HtmlEncode(paramHtml).Trim();
             return paramHtml;
+        }
+        #endregion
+
+        #region public void GetThumbnail(FileUpload paramFileUpload, string paramFilePath, int tWidth, int tHeight) 生成缩略图
+        /// <summary>
+        /// 生成缩略图
+        /// </summary>
+        /// <param name="paramFileUpload"></param>
+        /// <param name="paramFilePath"></param>
+        /// <param name="tWidth"></param>
+        /// <param name="tHeight"></param>
+        public static void GetThumbnail(FileUpload paramFileUpload, string paramFilePath, int tWidth, int tHeight)
+        {
+            try
+            {
+                //生成原图
+                byte[] oFileByte = new byte[paramFileUpload.PostedFile.ContentLength];
+                Stream oStream = paramFileUpload.PostedFile.InputStream;
+                System.Drawing.Image oImage = System.Drawing.Image.FromStream(oStream);
+                int oWidth = oImage.Width;//原图宽度
+                int oHeight = oImage.Height;//原图高度
+                if (tWidth == 0)
+                {
+                    tWidth = 120;
+                }
+                if (tHeight == 0)
+                {
+                    tHeight = 120;
+                }
+                if (tWidth > oWidth)
+                {
+                    tWidth = oWidth;
+                }
+                if (tHeight > oHeight)
+                {
+                    tHeight = oHeight;
+                }
+                //按比例计算出缩略图的宽度和高度
+                if (oWidth >= oHeight)
+                {
+                    tHeight = (int)Math.Floor(Convert.ToDouble(tWidth) * Convert.ToDouble(oHeight) / Convert.ToDouble(oWidth));
+                }
+                else
+                {
+                    tWidth = (int)Math.Floor(Convert.ToDouble(tHeight) * Convert.ToDouble(oWidth) / Convert.ToDouble(oHeight));
+                }
+                //生成缩略图
+                Bitmap tImage = new Bitmap(tWidth, tHeight);
+                Graphics g = Graphics.FromImage(tImage);
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;//设置高质量插值法
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;//设置高质量，低速度呈现平滑程度
+                g.Clear(Color.Transparent);//清空画布并以透明背景色填充
+                g.DrawImage(oImage, new Rectangle(0, 0, tWidth, tHeight), new Rectangle(0, 0, oWidth, oHeight), GraphicsUnit.Pixel);
+                tImage.Save(paramFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
+                //释放资源                    
+                oImage.Dispose();
+                g.Dispose();
+                tImage.Dispose();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
         #endregion
     }

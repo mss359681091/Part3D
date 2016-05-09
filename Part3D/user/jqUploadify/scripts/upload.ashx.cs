@@ -39,7 +39,7 @@ namespace jqUploadify.scripts
                 }
                 file.SaveAs(uploadPath + file.FileName);
                 //生成缩略图
-                MakeThumbnail(uploadPath + file.FileName, uploadPath + "\\s\\" + file.FileName, 80, 80);
+                MakeThumbnail(uploadPath + file.FileName, uploadPath + "\\s\\" + file.FileName, 240, 170);
             }
 
         }
