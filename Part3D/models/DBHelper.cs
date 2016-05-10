@@ -137,11 +137,18 @@ namespace _3DPart.DAL.BULayer
                 {
                     foreach (DictionaryEntry dEntry in pas)
                     {
-                       cmd.Parameters.Add(new SqlParameter(dEntry.Key.ToString(), dEntry.Value));
+                        cmd.Parameters.Add(new SqlParameter(dEntry.Key.ToString(), dEntry.Value));
                     }
                 }
+
+                //对应存储过程getAge的输出参数@age  
+                SqlParameter parID = new SqlParameter("@RETURN_VALUE", "");
+                parID.Direction = ParameterDirection.ReturnValue;
+                cmd.Parameters.Add(parID);
+
                 conn.Open();
-                i = cmd.ExecuteNonQuery();
+                cmd.ExecuteNonQuery();
+                i = int.Parse(parID.Value.ToString());//返回ID
                 conn.Close();
             }
             return i;

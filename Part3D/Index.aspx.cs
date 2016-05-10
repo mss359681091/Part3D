@@ -17,6 +17,7 @@ namespace Part3D
         {
 
         }
+
         /// <summary>
         /// 获取组件类别
         /// </summary>

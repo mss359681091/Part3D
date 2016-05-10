@@ -169,8 +169,6 @@
     <Content Include="user\jqUploadify\scripts\uploadify.swf" />
     <Content Include="user\jqUploadify\scripts\uploads\08.jpg" />
     <Content Include="user\jqUploadify\scripts\uploads\111.png" />
-    <Content Include="user\jqUploadify\uploads\f\08.jpg" />
-    <Content Include="user\jqUploadify\uploads\s\08.jpg" />
     <Content Include="user\jqUploadify\WebUpload.aspx" />
     <Content Include="List.aspx" />
     <Content Include="Login.aspx" />
@@ -360,7 +358,10 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="user\jqUploadify\uploads\f\" />
+    <Folder Include="user\jqUploadify\uploads\s\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
