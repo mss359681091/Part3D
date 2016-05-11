@@ -42,7 +42,7 @@ namespace jqUploadify.scripts
                 string fileName = System.IO.Path.GetFileNameWithoutExtension(uploadPath + file.FileName).ToLower();//文件扩展名
                 file.SaveAs(uploadPath + ran + fileExtname);
                 //生成缩略图
-                MakeThumbnail(uploadPath + ran + fileExtname, uploadPath + "\\s\\" + ran + fileExtname, 240, 170);
+               // MakeThumbnail(uploadPath + ran + fileExtname, uploadPath + "\\s\\" + ran + fileExtname, 240, 170);
                 if (HttpContext.Current.Session["modefile"] != null)
                 {
                     HttpContext.Current.Session["modefile"] += fileName + ";" + fileExtname + ";" + @"/user/jqUploadify/uploads/" + ran + fileExtname + ";" + file.ContentLength + ",";

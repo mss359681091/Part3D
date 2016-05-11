@@ -41,9 +41,9 @@ namespace _3DPart.DAL.BULayer
             + dpPart.CreateDate_FULL + ","
             + dpPart.ModifyStaff_FULL + ","
             + dpPart.ModifyDate_FULL
-             + " FROM " + dpPart.TABLENAME + " WHERE 1 = 1 ";
+            + " FROM " + dpPart.TABLENAME + " WHERE 1 = 1 ";
 
-            
+
             Hashtable myParam = new Hashtable();
 
             if (QueryData.ID.Length > 0)
@@ -75,7 +75,6 @@ namespace _3DPart.DAL.BULayer
                 strQuery += " AND " + dpPart.Name_FULL + " LIKE @Name ";
                 myParam.Add("@Name", "%" + QueryData.Name.Replace(" ", "%") + "%");
             }
-            // strQuery += ") AS " + dpPart.TABLENAME;
 
             DataSet myDs = new DataSet();
             try
@@ -95,7 +94,81 @@ namespace _3DPart.DAL.BULayer
             return myDs;
         }
 
+        public DataSet SearchPaging(dpPartQuery QueryData)
+        {
 
+            string strQuery = @" SELECT TOP " + QueryData.PageSize + " * FROM ( "
+            + " SELECT ROW_NUMBER() OVER ( ORDER BY " + dpPart.ID_FULL + ") AS RowNumber , "
+            + dpPart.ID_FULL + ","
+            + dpPart.ParentID_FULL + ","
+            + dpPart.UserID_FULL + ","
+            + dpPart.ClassifyID_FULL + ","
+            + dpPart.Name_FULL + ","
+            + dpPart.Preview_FULL + ","
+            + dpPart.PreviewSmall_FULL + ","
+            + dpPart.Description_FULL + ","
+            + dpPart.Limits_FULL + ","
+            + dpPart.Keyword_FULL + ","
+            + dpPart.Remark_FULL + ","
+            + dpPart.Enabled_FULL + ","
+            + dpPart.CreateStaff_FULL + ","
+            + dpPart.CreateDate_FULL + ","
+            + dpPart.ModifyStaff_FULL + ","
+            + dpPart.ModifyDate_FULL
+            + " FROM " + dpPart.TABLENAME + " WHERE 1 = 1 ";
+
+
+            Hashtable myParam = new Hashtable();
+
+            if (QueryData.ID.Length > 0)
+            {
+                strQuery += " AND " + dpPart.ID_FULL + " = @ID ";
+                myParam.Add("@ID", QueryData.ID);
+            }
+
+            if (QueryData.ParentID.Length > 0)
+            {
+                strQuery += " AND " + dpPart.ParentID_FULL + " = @ParentID ";
+                myParam.Add("@ParentID", QueryData.ParentID);
+            }
+
+            if (QueryData.UserID.Length > 0)
+            {
+                strQuery += " AND " + dpPart.UserID_FULL + " = @UserID ";
+                myParam.Add("@UserID", QueryData.UserID);
+            }
+
+            if (QueryData.ClassifyID.Length > 0)
+            {
+                strQuery += " AND " + dpPart.ClassifyID_FULL + " = @ClassifyID ";
+                myParam.Add("@ClassifyID", QueryData.ClassifyID);
+            }
+
+            if (QueryData.Name.Length > 0)
+            {
+                strQuery += " AND " + dpPart.Name_FULL + " LIKE @Name ";
+                myParam.Add("@Name", "%" + QueryData.Name.Replace(" ", "%") + "%");
+            }
+            strQuery += " ) A ";
+            strQuery += " WHERE RowNumber > " + QueryData.PageSize * (QueryData.CurrentIndex - 1);
+
+            DataSet myDs = new DataSet();
+            try
+            {
+
+                myDs = SQLHelper.GetDataSet(strQuery, myParam);
+            }
+            catch (Exception myEx)
+            {
+
+                throw new Exception(myEx.Message + "\r\n SQL:" + strQuery);
+            }
+            finally
+            {
+
+            }
+            return myDs;
+        }
     }
 
     [Serializable()]
@@ -106,6 +179,8 @@ namespace _3DPart.DAL.BULayer
         public string UserID = string.Empty;
         public string ClassifyID = string.Empty;
         public string Name = string.Empty;
+        public int CurrentIndex = 1;
+        public int PageSize = 12;
 
         public string SortField = " ID ";
         public string SortDir = " DESC ";

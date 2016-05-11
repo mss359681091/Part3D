@@ -1,9 +1,11 @@
 ﻿using _3DPart.DAL.BULayer;
 using _3DPart.DAL.BULayer.Schema;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -83,6 +85,46 @@ namespace Part3D.models
             if (ticket.IsPersistent) cookie.Expires = ticket.Expiration;
             HttpContext.Current.Response.Cookies.Add(cookie);
         }
+
+        #region  将dataTable数据转化为List<>
+        /// <summary>
+        /// 将dataTable数据转化为List<>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="table"></param>
+        /// <returns></returns>
+        public static IList<T> GetList<T>(DataTable table)
+        {
+            IList<T> list = new List<T>();
+            T t = default(T);
+            PropertyInfo[] propertypes = null;
+            string tempName = string.Empty;
+            foreach (DataRow row in table.Rows)
+            {
+                t = Activator.CreateInstance<T>();
+                propertypes = t.GetType().GetProperties();
+                foreach (PropertyInfo pro in propertypes)
+                {
+                    tempName = pro.Name;
+                    if (table.Columns.Contains(tempName.ToUpper()))
+                    {
+                        //object value = row[tempName];
+                        //pro.SetValue(t, value, null);
+
+                        // 判断此属性是否有Setter  
+                        if (!pro.CanWrite) continue;//该属性不可写，直接跳出  
+                        //取值  
+                        object value = row[tempName];
+                        //如果非空，则赋给对象的属性  
+                        if (value != DBNull.Value)
+                            pro.SetValue(t, value, null);
+                    }
+                }
+                list.Add(t);
+            }
+            return list;
+        }
+        #endregion
 
         #region 按字节截取字符串 李赛赛 2013/06/26
 

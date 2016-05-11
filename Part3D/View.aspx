@@ -45,7 +45,7 @@
                     </div>
                 </div>
                 <div class="V_Img">
-                    <img src="/images/Img.jpg" alt="" />
+                    <img src="/images/Img.jpg" alt="" style="max-width: 850px;" />
                 </div>
                 <h5>
                     <button type="button" data-event="D_Step">下载IGS</button>

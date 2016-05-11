@@ -49,7 +49,7 @@
             <div class="upload_List Container">
 
                 <ul class="Left">
-                    <li style="margin-bottom: 2px;"><span class="_span"><b>预览图：</b><i>格式:JPG,PNG,GIF，大小：小于10M</i></span></li>
+                    <li style="margin-bottom: 2px;"><span class="_span"><b>预览图：</b><i>格式:JPG,PNG,GIF，推荐大小：小于2M</i></span></li>
                     <!--<div><img src="Img/img.png" alt="" /></div>-->
                     <!--己上传完成。显示图片。-->
                     <div id="addpic" class="Up _div"><a style="line-height: 36px;" href="javascript:void(0);" onclick="fnChooseImg();"><i class="iconfont">&#xe608;</i>上传图片</a></div>
@@ -163,7 +163,7 @@
                     'height': '24',
                     'multi': true,
                     'fileTypeDesc': '支持的格式：',
-                    'fileTypeExts': '*.jpg;*.jpge;*.gif;*.png',
+                    'fileTypeExts': '*.jpg;*.jpge;*.gif;*.png;*.IGS;*.STEP;*.x_t',
                     'fileSizeLimit': '10MB',
                     'removeTimeout': 1,
 
@@ -190,7 +190,7 @@
                     },
                     //上传到服务器，服务器返回相应信息到data里(单个文件触发)
                     'onUploadSuccess': function (file, data, response) {
-                      //do something
+                        //do something
                     },
                     'onQueueComplete': function (queueData) {
                         //  fnSaveImg(filenames, queueData.uploadsSuccessful);//记录上传文件
@@ -200,7 +200,7 @@
                 $(".swfupload").css("left", "0");
             });
 
-   
+
         </script>
     </form>
 </body>

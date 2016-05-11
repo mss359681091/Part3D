@@ -167,8 +167,6 @@
     <Content Include="user\jqUploadify\scripts\uploadify-cancel.png" />
     <Content Include="user\jqUploadify\scripts\uploadify.css" />
     <Content Include="user\jqUploadify\scripts\uploadify.swf" />
-    <Content Include="user\jqUploadify\scripts\uploads\08.jpg" />
-    <Content Include="user\jqUploadify\scripts\uploads\111.png" />
     <Content Include="user\jqUploadify\WebUpload.aspx" />
     <Content Include="List.aspx" />
     <Content Include="Login.aspx" />
@@ -212,6 +210,7 @@
       <DependentUpon>Index.aspx</DependentUpon>
     </Compile>
     <Compile Include="models\DESEncrypt.cs" />
+    <Compile Include="models\dpPart\dpPartData.cs" />
     <Compile Include="user\jqUploadify\scripts\upload.ashx.cs">
       <DependentUpon>upload.ashx</DependentUpon>
     </Compile>
