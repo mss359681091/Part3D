@@ -177,9 +177,9 @@ namespace _3DPart.DAL.BULayer
 
             string strQuery = @"SELECT ";
             strQuery += " SUM( 1 ) as countall,";
-            strQuery += " sum(case when " + dpClassify.ParentID_FULL + "=1 then 1 else 0 end) as count1, ";
-            strQuery += " sum(case when " + dpClassify.ParentID_FULL + "=12 then 1 else 0 end) as count2, ";
-            strQuery += " sum(case when " + dpClassify.ParentID_FULL + "=13 then 1 else 0 end) as count3 ";
+            strQuery += " sum(case when " + dpClassify.ParentID_FULL + "=1  or dp_Part.ClassifyID=1 then 1 else 0 end) as count1, ";
+            strQuery += " sum(case when " + dpClassify.ParentID_FULL + "=12 or dp_Part.ClassifyID=12 then 1 else 0 end) as count2, ";
+            strQuery += " sum(case when " + dpClassify.ParentID_FULL + "=13 or dp_Part.ClassifyID=13 then 1 else 0 end) as count3 ";
             strQuery += " FROM " + dpPart.TABLENAME;
             strQuery += " LEFT JOIN " + dpClassify.TABLENAME + " ON " + dpPart.ClassifyID_FULL + " = " + dpClassify.ID_FULL;
             strQuery += " WHERE 1 = 1 ";

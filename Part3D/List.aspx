@@ -28,7 +28,9 @@
             $("#lnkclass li ").bind("click", function () {
                 $(this).addClass("hover").siblings().removeClass("hover");
                 var classid = $(this).children().data("classid");
-                fnGetList('', '', classid, '', '1', '12');
+                $("#Claa_S").data("classid", classid)
+                //fnGetList('', '', classid, '', '1', '12');
+                binddate($(this).data("count"));
             });
         });
 
@@ -47,35 +49,38 @@
                         strs = result.d.split(","); //字符分割 
                         for (i = 0; i < strs.length ; i++) {
                             $("#lnkclass li span").eq(i).text("( " + strs[i] + " )");//赋值
+                            $("#lnkclass li ").eq(i).data("count", strs[i]);//赋值
                         }
-                        var allcount = strs[0];//计算总数
-
-                        //开始执行分页
-                        var nums = 12; //每页出现的数量
-                        allcount = (allcount < nums) ? nums : allcount;
-                        var all = allcount;
-                        var pages = Math.ceil(all / nums); //得到总页数
-
-                        laypage({
-                            cont: $('#page'), //容器。值支持id名、原生dom对象，jquery对象,
-                            pages: pages, //总页数
-                            skip: true, //是否开启跳页
-                            skin: '#F60',
-                            groups: 5, //连续显示分页数
-                            jump: function (obj) {
-                                fnGetList('', '', $("#Claa_S").data("classid"), $("#txtkey").val(), obj.curr, nums);
-                            }
-                        });
+                        binddate($("#lnkclass li").eq(0).data("count"));
                     }
 
                 }
             });
         }
+        function binddate(allcount) {
+            //开始执行分页
+            var nums = 2; //每页出现的数量
+            allcount = (allcount < nums) ? nums : allcount;
+            var all = allcount;
+            var pages = Math.ceil(all / nums); //得到总页数
 
+            laypage({
+                cont: $('#page'), //容器。值支持id名、原生dom对象，jquery对象,
+                pages: pages, //总页数
+                skip: true, //是否开启跳页
+                skin: '#F60',
+                groups: 5, //连续显示分页数
+                jump: function (obj) {
+                    fnGetList('', '', $("#Claa_S").data("classid"), $("#txtkey").val(), obj.curr, nums);
+                }
+            });
+        }
     </script>
+
+
+
     <script type="text/javascript">
         $(document).ready(function () {
-
 
         });
 
@@ -95,10 +100,10 @@
 
             <div class="Top_Class">
                 <ul id="lnkclass">
-                    <li class="hover"><a data-classid="" href="javascript:void(0);">全部</a><span id="spall" data-count="0">(0)</span></li>
-                    <li><a data-classid="1" href="javascript:void(0);">国标</a><span>(0)</span></li>
-                    <li><a data-classid="12" href="javascript:void(0);">3D素材</a><span>(0)</span></li>
-                    <li><a data-classid="13" href="javascript:void(0);">3D模型</a><span>(0)</span></li>
+                    <li data-count="0" class="hover"><a data-classid="" href="javascript:void(0);">全部</a><span>(0)</span></li>
+                    <li data-count="0"><a data-classid="1" href="javascript:void(0);">国标</a><span>(0)</span></li>
+                    <li data-count="0"><a data-classid="12" href="javascript:void(0);">3D素材</a><span>(0)</span></li>
+                    <li data-count="0"><a data-classid="13" href="javascript:void(0);">3D模型</a><span>(0)</span></li>
                 </ul>
             </div>
 

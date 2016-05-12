@@ -1,4 +1,19 @@
-﻿
+﻿$(document).ready(function () {
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/Index.aspx/GetClassify",
+        data: "{paramtype:'0'}",
+        dataType: 'json',
+        success: function (result) {
+            $("#top_ul").append(result.d);
+        }
+    });
+
+});
+
+
 function MM_showHideLayers() { //v9.0
     var i, p, v, obj, args = MM_showHideLayers.arguments;
     for (i = 0; i < (args.length - 2) ; i += 3)
@@ -237,21 +252,6 @@ function fnChooseme(ClassifyID, obj) {
     document.getElementById("hidClassifyId").value = ClassifyID;
 }
 
-$(document).ready(function () {
-
-    $.ajax({
-        type: "POST",
-        contentType: "application/json",
-        url: "/Index.aspx/GetClassify",
-        data: "{paramtype:'0'}",
-        dataType: 'json',
-        success: function (result) {
-            $("#top_ul").append(result.d);
-        }
-    });
-
-});
-
 function fnNext() {
     if ($("#lisend").next("i").text().length > 0) {
         return;
@@ -279,7 +279,6 @@ function fnNext() {
         }
     });
 }
-
 
 //图片上传预览    IE是用了滤镜。
 function previewImage(file) {
@@ -316,6 +315,7 @@ function previewImage(file) {
     $("#addpic").hide();
     $("#preview").show();
 }
+
 function clacImgZoomParam(maxWidth, maxHeight, width, height) {
     var param = { top: 0, left: 0, width: width, height: height };
     if (width > maxWidth || height > maxHeight) {
@@ -335,6 +335,7 @@ function clacImgZoomParam(maxWidth, maxHeight, width, height) {
     param.top = Math.round((maxHeight - param.height) / 2);
     return param;
 }
+
 function fnChooseImg() {
     $("#btnfile").click();
 }
