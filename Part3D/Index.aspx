@@ -22,43 +22,21 @@
     <script type="text/javascript" src="/scripts/dialog.js"></script>
     <script type="text/javascript" src="/scripts/common.js"></script>
     <script type="text/javascript">
+
         $(document).ready(function () {
-            //加载最新推荐
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
-                url: "/List.aspx/GetPartList",
-                data: "{ParentID:'',UserID:'',ClassifyID:'',Name:'',CurrentIndex:'1',PageSize:'2'}",
+                url: "/Index.aspx/GetClassify",
+                data: "{paramtype:'2',parentid:'1'}",
                 dataType: 'json',
                 success: function (result) {
-                    var status = result.d.result;//状态
-                    //var errmsg = result.d.errmsg;//错误信息
-                    var returnData = result.d.returnData;
-                    if (returnData != null) {
-                        var strli = "";
-                        $.each(returnData, function (i, item) {
-                            strli += "<li><span>";
-                            strli += "<button type='button' data-event='D_Step'>IGS</button>";
-                            strli += "<button type='button' data-event='D_Step'>STEP</button>";
-                            strli += "<button type='button' data-event='D_Step'>X_T</button></span>";
-                            strli += "<p>";
-                            strli += "<a target='_blank' href='/View.aspx?partid=" + item.ID + "' style='padding: 0'><img  src='" + item.PreviewSmall + "' alt='" + item.Name + "' /></a>";
-                            strli += "</p>";
-                            strli += "<a target='_blank' href='/View.aspx?partid=" + item.ID + "'>" + item.Name + "</a></li>";
-                        });
-                        $(".Index_List ul").append(strli);
-                        $('button[data-event=D_Step]').on('click', function () {
-                            var d = dialog({
-                                fixed: true,
-                                title: 'IGS格式',
-                                content: document.getElementById('D_Step')
-                            })
-                            d.width(960);
-                            d.showModal();
-                        });
-                    }
+                    $(".Index_Top ul").append(result.d);
                 }
             });
+
+            //加载最新推荐
+            fnGetList('', '', '', '', '1', '12');
         });
 
     </script>
@@ -77,17 +55,18 @@
             </div>
             <div class="Search absolute_T">
                 <div class="Class" onmouseover="MM_showHideLayers('Claa_S','','show')" onmouseout="MM_showHideLayers('Claa_S','','hide')">
-                    <b>组件</b><i class="iconfont">&#xe603;</i>
-                    <div id="Claa_S">
+                    <b>全部</b><i class="iconfont">&#xe603;</i>
+                    <div id="Claa_S" data-classid="">
                         <ul>
-                            <li>全部</li>
-                            <li>3D素材</li>
-                            <li>3D模型</li>
+                            <li data-classid="">全部</li>
+                            <li data-classid="1">国标</li>
+                            <li data-classid="12">3D素材</li>
+                            <li data-classid="13">3D模型</li>
                         </ul>
                     </div>
                 </div>
-                <input type="text" placeholder="4332个精品组件" />
-                <button type="button"><i class="iconfont">&#xe600;</i>搜索组件</button>
+                <input id="txtkey" type="text" maxlength="30" placeholder="请输入关键字..." />
+                <button type="button" onclick="fnsearch()"><i class="iconfont">&#xe600;</i>搜索组件</button>
             </div>
             <script type="text/javascript">
                 $(function () {
@@ -124,7 +103,7 @@
                 <div class="Container">
                     <img src="/images/Tatle1.png" alt="" />
                     <ul>
-                        <li><a href="#"><i class="Ico1"></i>组合件</a></li>
+                        <%--  <li><a href="#"><i class="Ico1"></i>组合件</a></li>
                         <li><a href="#"><i class="Ico2"></i>连接副</a></li>
                         <li><a href="#"><i class="Ico3"></i>焊钉</a></li>
                         <li><a href="#"><i class="Ico4"></i>螺栓</a></li>
@@ -134,7 +113,7 @@
                         <li><a href="#"><i class="Ico8"></i>螺钉</a></li>
                         <li><a href="#"><i class="Ico9"></i>销</a></li>
                         <li><a href="#"><i class="Ico10"></i>挡圈</a></li>
-                        <li><a href="#"><i class="Ico11"></i>更多标准</a></li>
+                        <li><a href="#"><i class="Ico11"></i>更多标准</a></li>--%>
                     </ul>
                 </div>
             </div>
@@ -229,12 +208,10 @@
                 $("#Claa_S li").bind("click", function () {
                     var $this = $(this).text();
                     $("#Claa_S").prev().prev().text($this);
+                    $("#Claa_S").data("classid", $(this).data("classid"))
                     MM_showHideLayers('Claa_S', '', 'hide');
                 });
             });
-            function fnmore() {
-                window.open("list.aspx");
-            }
         </script>
     </form>
 </body>

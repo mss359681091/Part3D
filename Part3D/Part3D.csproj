@@ -154,6 +154,8 @@
     <Content Include="images\user_T.jpg" />
     <Content Include="Index.aspx" />
     <Content Include="scripts\jquery.form.js" />
+    <Content Include="scripts\laypage\laypage.js" />
+    <Content Include="scripts\laypage\skin\laypage.css" />
     <Content Include="user\jqUploadify\images\BeginUpload.gif" />
     <Content Include="user\jqUploadify\images\cancel.png" />
     <Content Include="user\jqUploadify\images\CancelUpload.gif" />

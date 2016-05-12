@@ -21,12 +21,64 @@
     <script type="text/javascript" src="/scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="/scripts/dialog.js"></script>
     <script type="text/javascript" src="/scripts/common.js"></script>
+    <script src="/scripts/laypage/laypage.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $(".Top_Class li").bind("click", function () {
+
+            $("#lnkclass li ").bind("click", function () {
                 $(this).addClass("hover").siblings().removeClass("hover");
+                var classid = $(this).children().data("classid");
+                fnGetList('', '', classid, '', '1', '12');
             });
         });
+
+        //获取各个类别组件总数
+        function getcount() {
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/List.aspx/GetCount",
+                async: false,
+                dataType: 'json',
+                success: function (result) {
+                    if (result.d.length > 0) {
+                        var strs = new Array(); //定义一数组 
+                        strs = result.d.split(","); //字符分割 
+                        for (i = 0; i < strs.length ; i++) {
+                            $("#lnkclass li span").eq(i).text("( " + strs[i] + " )");//赋值
+                        }
+                        var allcount = strs[0];//计算总数
+
+                        //开始执行分页
+                        var nums = 12; //每页出现的数量
+                        allcount = (allcount < nums) ? nums : allcount;
+                        var all = allcount;
+                        var pages = Math.ceil(all / nums); //得到总页数
+
+                        laypage({
+                            cont: $('#page'), //容器。值支持id名、原生dom对象，jquery对象,
+                            pages: pages, //总页数
+                            skip: true, //是否开启跳页
+                            skin: '#F60',
+                            groups: 5, //连续显示分页数
+                            jump: function (obj) {
+                                fnGetList('', '', $("#Claa_S").data("classid"), $("#txtkey").val(), obj.curr, nums);
+                            }
+                        });
+                    }
+
+                }
+            });
+        }
+
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+        });
+
     </script>
 </head>
 <body>
@@ -42,233 +94,19 @@
             </div>
 
             <div class="Top_Class">
-                <ul>
-                    <li class="hover"><a href="#">全部</a><span>(2384)</span></li>
-                    <li><a href="#">国标</a><span>(2243)</span></li>
-                    <li><a href="#">3D素材</a><span>(77)</span></li>
-                    <li><a href="#">3D模型</a><span>(64)</span></li>
+                <ul id="lnkclass">
+                    <li class="hover"><a data-classid="" href="javascript:void(0);">全部</a><span id="spall" data-count="0">(0)</span></li>
+                    <li><a data-classid="1" href="javascript:void(0);">国标</a><span>(0)</span></li>
+                    <li><a data-classid="12" href="javascript:void(0);">3D素材</a><span>(0)</span></li>
+                    <li><a data-classid="13" href="javascript:void(0);">3D模型</a><span>(0)</span></li>
                 </ul>
             </div>
 
             <div class="Index_List Container">
                 <ul>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span>
-                        <p>
-                            <a target="_blank" href="View.aspx" style="padding: 0">
-                                <img src="/images/img.png" alt="" /></a>
-                        </p>
-                        <a target="_blank" href="View.aspx">GBT7246 波形弹簧垫圈</a></li>
-
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span>
-                        <p>
-                            <a target="_blank" href="View.aspx" style="padding: 0">
-                                <img src="/images/img.png" alt="" /></a>
-                        </p>
-                        <a target="_blank" href="View.aspx">GBT7246 波形弹簧垫圈</a></li>
-
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li><span>
-                        <button type="button" data-event="D_Step">IGS</button>
-                        <button type="button" data-event="D_Step">STEP</button>
-                        <button type="button" data-event="D_Step">X_T</button></span><p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
                 </ul>
             </div>
 
-            <!--弹出下载窗口-->
-            <script type="text/ecmascript">
-                $('button[data-event=D_Step]').on('click', function () {
-                    var d = dialog({
-                        fixed: true,
-                        title: 'IGS格式',
-                        content: document.getElementById('D_Step')
-                    })
-                    d.width(960);
-                    d.showModal();
-                });
-            </script>
             <div id="D_Step" style="display: none;">
                 <dl class="Class">
                     <dt>快速定位标签：</dt>
@@ -318,8 +156,9 @@
             </div>
 
             <div class="Clear"></div>
-            <div class="Page">
-                <ul>
+            <div id="page" class="Page">
+
+                <%--   <ul>
                     <li><a href="#">上一页</a></li>
                     <li class="hover"><a href="#">1</a></li>
                     <li><a href="#">2</a></li>
@@ -328,7 +167,7 @@
                     <li>......</li>
                     <li><a href="#">15</a></li>
                     <li><a href="#">下一页</a></li>
-                </ul>
+                </ul>--%>
             </div>
 
             <div class="Index_Foot">

@@ -27,7 +27,8 @@ namespace Part3D
         public static string GetClassify(string paramtype)
         {
             string returnValue = string.Empty;
-            paramtype = paramtype == "" ? "0" : "1";
+            string returnType = string.Empty;
+            paramtype = paramtype == "" ? "0" : paramtype;
             dpClassifyManager mydpClassifyManager = new dpClassifyManager();
             dpClassifyQuery mydpClassifyQuery = new dpClassifyQuery();
             mydpClassifyQuery.ParentID = "0";
@@ -39,11 +40,15 @@ namespace Part3D
                     returnValue += "<li>";
                     if (paramtype == "0")
                     {
-                        returnValue += "<p><a target='_blank' href ='/List.aspx?classifyid=" + myDataSet.Tables[0].Rows[i][dpClassify.ID] + "'>" + myDataSet.Tables[0].Rows[i][dpClassify.Name] + "</a></p>";
+                        returnValue += "<p><a target='_blank' href ='/List.aspx?classid=" + myDataSet.Tables[0].Rows[i][dpClassify.ID] + "'>" + myDataSet.Tables[0].Rows[i][dpClassify.Name] + "</a></p>";
+                    }
+                    else if (paramtype == "1")
+                    {
+                        returnValue += "<p><a href ='javascript:void(0);' onclick='fnChooseme(" + myDataSet.Tables[0].Rows[i][dpClassify.ID] + ",this);'>" + myDataSet.Tables[0].Rows[i][dpClassify.Name] + "</a></p>";
                     }
                     else
                     {
-                        returnValue += "<p><a href ='javascript:void(0);' onclick='fnChooseme(" + myDataSet.Tables[0].Rows[i][dpClassify.ID] + ",this);'>" + myDataSet.Tables[0].Rows[i][dpClassify.Name] + "</a></p>";
+
                     }
 
                     string flag = string.Empty;
@@ -56,17 +61,25 @@ namespace Part3D
                         {
                             if (paramtype == "0")
                             {
-                                flag += "<a target='_blank' href ='/List.aspx?classifyid=" + myDs.Tables[0].Rows[j][dpClassify.ID] + "'>" + myDs.Tables[0].Rows[j][dpClassify.Name] + "</a><span>/</span>";
+                                flag += "<a target='_blank' href ='/List.aspx?classid=" + myDs.Tables[0].Rows[j][dpClassify.ID] + "'>" + myDs.Tables[0].Rows[j][dpClassify.Name] + "</a><span>/</span>";
+                            }
+                            else if (paramtype == "1")
+                            {
+                                flag += "<a href ='javascript:void(0);' onclick='fnChooseme(" + myDs.Tables[0].Rows[j][dpClassify.ID] + ",this);'>" + myDs.Tables[0].Rows[j][dpClassify.Name] + "</a><span>/</span>";
                             }
                             else
                             {
-                                flag += "<a href ='javascript:void(0);' onclick='fnChooseme(" + myDs.Tables[0].Rows[j][dpClassify.ID] + ",this);'>" + myDs.Tables[0].Rows[j][dpClassify.Name] + "</a><span>/</span>";
+                                returnType += "<li><a target='_blank' href='/List.aspx?classid=" + myDs.Tables[0].Rows[j][dpClassify.ID] + "'><i class='Ico" + (Convert.ToInt32(j) + 1) + "'></i>" + myDs.Tables[0].Rows[j][dpClassify.Name] + "</a></li>";
                             }
                         }
                     }
                     returnValue += flag;
                     returnValue += "</li>";
-
+                }
+                if (paramtype == "2")
+                {
+                    returnType += "<li><a target='_blank' href='/List.aspx'><i class='Ico11'></i>更多标准</a></li>";
+                    returnValue = returnType;
                 }
             }
             return returnValue;

@@ -230,7 +230,7 @@ function fnRegister(username, password, nickname, email, mobile) {
 }
 
 function fnChooseme(ClassifyID, obj) {
-    $(obj).parents("ul").data("ClassifyID", ClassifyID);
+    $(obj).parents("ul").data("classid", ClassifyID);
     $("#ulclassify li a").removeClass("hover");
     $(obj).addClass("hover");
     $(".txtClassifyID").val($(obj).text());
@@ -345,8 +345,8 @@ function doUplaod() {
         alert("组件名称不能为空!");
         return;
     }
-    var classifyid = document.getElementById("hidClassifyId").value;
-    if ($.trim(classifyid).length == 0) {
+    var classid = document.getElementById("hidClassifyId").value;
+    if ($.trim(classid).length == 0) {
         alert("请选择分类!");
         return;
     }
@@ -361,11 +361,84 @@ function fnSaveImg(filenames, successcount) {
     var options = {
         url: "/user/jqUploadify/WebUpload.aspx",
         success: function () {
-            alert("上传成功！");
             $("#fm1").resetForm();
             $("#preview").hide();
             $("#addpic").show();
+            alert("上传成功！");
         }
     };
     $("#fm1").ajaxForm(options);
+}
+
+function fnsearch() {
+    var searchkey = $("#txtkey").val();
+    var classid = $("#Claa_S").data("classid");
+    if (window.location.pathname == "/List.aspx") {
+        $("#lnkclass li").removeClass();
+        switch ($.trim(classid)) {
+            case "":
+                $("#lnkclass li:eq(0)").addClass("hover");
+                break;
+            case "1":
+                $("#lnkclass li:eq(1)").addClass("hover");
+                break;
+            case "12":
+                $("#lnkclass li:eq(2)").addClass("hover");
+                break;
+            case "13":
+                $("#lnkclass li:eq(3)").addClass("hover");
+                break;
+            default:
+                break;
+        }
+        fnGetList('', '', classid, searchkey, '1', '12');
+    }
+    else {
+        window.open(encodeURI("/List.aspx?classid=" + classid + "&& sk=" + searchkey));
+    }
+}
+
+function fnmore() {
+    window.open("list.aspx");
+}
+
+function fnGetList(ParentID, UserID, ClassifyID, Name, CurrentIndex, PageSize) {
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/List.aspx/GetPartList",
+        async: true,
+        data: "{ParentID:'" + ParentID + "',UserID:'" + UserID + "',ClassifyID:'" + ClassifyID + "',Name:'" + Name + "',CurrentIndex:'" + CurrentIndex + "',PageSize:'" + PageSize + "'}",
+        dataType: 'json',
+        success: function (result) {
+            //var status = result.d.result;//状态
+            //var errmsg = result.d.errmsg;//错误信息
+            $(".Index_List li").remove();
+            var returnData = result.d.returnData;
+            if (returnData != null) {
+                var strli = "";
+                $.each(returnData, function (i, item) {
+                    strli += "<li><span>";
+                    strli += "<button type='button' data-event='D_Step'>IGS</button>";
+                    strli += "<button type='button' data-event='D_Step'>STEP</button>";
+                    strli += "<button type='button' data-event='D_Step'>X_T</button></span>";
+                    strli += "<p>";
+                    strli += "<a target='_blank' href='/View.aspx?partid=" + item.ID + "' style='padding: 0'><img  src='" + item.PreviewSmall + "' alt='" + item.Name + "' /></a>";
+                    strli += "</p>";
+                    strli += "<a target='_blank' href='/View.aspx?partid=" + item.ID + "'>" + item.Name + "</a></li>";
+                });
+                $(".Index_List li").remove();
+                $(".Index_List ul").append(strli);
+                $('button[data-event=D_Step]').on('click', function () {
+                    var d = dialog({
+                        fixed: true,
+                        title: 'IGS格式',
+                        content: document.getElementById('D_Step')
+                    })
+                    d.width(960);
+                    d.showModal();
+                });
+            }
+        }
+    });
 }

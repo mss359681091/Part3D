@@ -139,7 +139,7 @@ namespace _3DPart.DAL.BULayer
                     {
                         cmd.Parameters.Add(new SqlParameter(dEntry.Key.ToString(), dEntry.Value));
                     }
-                    cmd.Parameters.Add(new SqlParameter("CreateDate", DateTime.Now.ToString("yyyy-MM-dd HH：mm：ss")));//自动添加日期
+                    cmd.Parameters.Add(new SqlParameter("CreateDate", DateTime.Now));//自动添加日期
                 }
 
                 //对应存储过程getAge的输出参数@age  

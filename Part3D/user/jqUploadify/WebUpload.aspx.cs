@@ -91,6 +91,7 @@ namespace Part3D
 
         public void fnSaveImg(string clssifyid, string partname, HttpPostedFile inputfile)
         {
+
             //第一步上传封面
             string uploadPath = HttpContext.Current.Server.MapPath(@"/user/jqUploadify/uploads/f/");
             if (!Directory.Exists(uploadPath))

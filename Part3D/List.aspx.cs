@@ -24,7 +24,7 @@ namespace Part3D
         }
 
 
-        [WebMethod(Description = "获取组件类别", EnableSession = true)]
+        [WebMethod(Description = "获取组件列表", EnableSession = true)]
         public static dynamic GetPartList(string ParentID, string UserID, string ClassifyID, string Name, string CurrentIndex, string PageSize)
         {
             string status = string.Empty;//状态
@@ -47,6 +47,23 @@ namespace Part3D
                 returnData = CommonManager.GetList<dpPartData>(myDataSet.Tables[0]);//转换实体类list
             }
             return new { status = status, errmsg = errmsg, returnData = returnData };
+        }
+
+        [WebMethod(Description = "获取各个分类总数", EnableSession = true)]
+        public static string GetCount()
+        {
+            string reutrnValue = string.Empty;
+            dpPartManager mydpPartManager = new dpPartManager();
+            dpPartQuery mydpPartQuery = new dpPartQuery();
+            DataSet myDataSet = mydpPartManager.SearchCount(mydpPartQuery);
+            if (myDataSet.Tables[0].Rows.Count > 0)
+            {
+                reutrnValue = myDataSet.Tables[0].Rows[0]["countall"].ToString() + ",";
+                reutrnValue += myDataSet.Tables[0].Rows[0]["count1"].ToString() + ",";
+                reutrnValue += myDataSet.Tables[0].Rows[0]["count2"].ToString() + ",";
+                reutrnValue += myDataSet.Tables[0].Rows[0]["count3"].ToString();
+            }
+            return reutrnValue;
         }
 
 

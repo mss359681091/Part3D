@@ -115,7 +115,9 @@ namespace _3DPart.DAL.BULayer
             + dpPart.CreateDate_FULL + ","
             + dpPart.ModifyStaff_FULL + ","
             + dpPart.ModifyDate_FULL
-            + " FROM " + dpPart.TABLENAME + " WHERE 1 = 1 ";
+            + " FROM " + dpPart.TABLENAME
+            + " LEFT JOIN " + dpClassify.TABLENAME + " ON " + dpPart.ClassifyID_FULL + " = " + dpClassify.ID_FULL
+            + " WHERE 1 = 1 ";
 
 
             Hashtable myParam = new Hashtable();
@@ -140,7 +142,7 @@ namespace _3DPart.DAL.BULayer
 
             if (QueryData.ClassifyID.Length > 0)
             {
-                strQuery += " AND " + dpPart.ClassifyID_FULL + " = @ClassifyID ";
+                strQuery += " AND (" + dpPart.ClassifyID_FULL + " = @ClassifyID OR " + dpClassify.ParentID_FULL + " = @ClassifyID )";
                 myParam.Add("@ClassifyID", QueryData.ClassifyID);
             }
 
@@ -156,6 +158,56 @@ namespace _3DPart.DAL.BULayer
             try
             {
 
+                myDs = SQLHelper.GetDataSet(strQuery, myParam);
+            }
+            catch (Exception myEx)
+            {
+
+                throw new Exception(myEx.Message + "\r\n SQL:" + strQuery);
+            }
+            finally
+            {
+
+            }
+            return myDs;
+        }
+
+        public DataSet SearchCount(dpPartQuery QueryData)
+        {
+
+            string strQuery = @"SELECT ";
+            strQuery += " SUM( 1 ) as countall,";
+            strQuery += " sum(case when " + dpClassify.ParentID_FULL + "=1 then 1 else 0 end) as count1, ";
+            strQuery += " sum(case when " + dpClassify.ParentID_FULL + "=12 then 1 else 0 end) as count2, ";
+            strQuery += " sum(case when " + dpClassify.ParentID_FULL + "=13 then 1 else 0 end) as count3 ";
+            strQuery += " FROM " + dpPart.TABLENAME;
+            strQuery += " LEFT JOIN " + dpClassify.TABLENAME + " ON " + dpPart.ClassifyID_FULL + " = " + dpClassify.ID_FULL;
+            strQuery += " WHERE 1 = 1 ";
+
+
+            Hashtable myParam = new Hashtable();
+
+            if (QueryData.ParentID.Length > 0)
+            {
+                strQuery += " AND " + dpPart.ParentID_FULL + " = @ParentID ";
+                myParam.Add("@ParentID", QueryData.ParentID);
+            }
+
+            if (QueryData.UserID.Length > 0)
+            {
+                strQuery += " AND " + dpPart.UserID_FULL + " = @UserID ";
+                myParam.Add("@UserID", QueryData.UserID);
+            }
+
+            if (QueryData.Name.Length > 0)
+            {
+                strQuery += " AND " + dpPart.Name_FULL + " LIKE @Name ";
+                myParam.Add("@Name", "%" + QueryData.Name.Replace(" ", "%") + "%");
+            }
+
+            DataSet myDs = new DataSet();
+            try
+            {
                 myDs = SQLHelper.GetDataSet(strQuery, myParam);
             }
             catch (Exception myEx)

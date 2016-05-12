@@ -153,12 +153,12 @@ namespace _3DPart.DAL.BULayer
             set { _CreateStaff = value; }
         }
 
-        private string _CreateDate = string.Empty;
+        private DateTime _CreateDate = DateTime.Now;
         /// <summary>
         /// 
         /// </summary>
 
-        public string CreateDate
+        public DateTime CreateDate
         {
             get { return _CreateDate; }
             set { _CreateDate = value; }
