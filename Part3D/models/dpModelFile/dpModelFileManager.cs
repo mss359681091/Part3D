@@ -59,6 +59,11 @@ namespace _3DPart.DAL.BULayer
 				strQuery += " AND " +dpModelFile.Name_FULL  + " LIKE @Name ";
 				myParam.Add("@Name", "%" + QueryData.Name.Replace(" ", "%") + "%");
 			}
+            if (QueryData.Format.Length > 0)
+            {
+                strQuery += " AND " + dpModelFile.Format_FULL + " = @Format ";
+                myParam.Add("@Format", QueryData.Format);
+            }
 
 			DataSet myDs = new DataSet();
 			try
@@ -84,6 +89,7 @@ namespace _3DPart.DAL.BULayer
 		public string ID = string.Empty;
 		public string PartID = string.Empty;
 		public string Name = string.Empty;
+        public string Format = string.Empty;
 		
 		public string SortField = " ID ";
 		public string SortDir = " DESC ";

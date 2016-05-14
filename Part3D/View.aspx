@@ -21,6 +21,17 @@
     <script type="text/javascript" src="/scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="/scripts/dialog.js"></script>
     <script type="text/javascript" src="/scripts/common.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var classid = document.getElementById("hidclassid").value;
+            var id = document.getElementById("hidid").value;
+            //加载最新推荐
+            fnRecommend('', classid, id);
+        });
+
+    </script>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -37,22 +48,23 @@
             <div class="View Container">
                 <div class="Tatle">
                     <div class="Left">
-                        <b>GBT7246 波形弹簧垫圈</b>
-                        <span>标签：<a href="#">波形</a><a href="#">弹簧</a></span>
+                        <b id="btitle" runat="server">组件名称</b>
+                        <%--     <span>标签：<a href="#">波形</a><a href="#">弹簧</a></span>--%>
+                        <span>上传人：<a id="ausername" runat="server" href="javascript:void(0);">李赛赛</a>上传日期：<a id="acreate" runat="server" href="javascript:void(0);">2016-05-14</a></span>
                     </div>
                     <div class="Right">
-                        <img src="/images/img.png" alt="" />一泽瑞尔
+                        <%-- <img id="imgPreview" runat="server" src="/images/img.png" alt="" />--%>
                     </div>
                 </div>
                 <div class="V_Img">
-                    <img src="/images/Img.jpg" alt="" style="max-width: 850px;" />
+                    <img id="imgPreview" runat="server" src="/images/Img.jpg" alt="" style="max-width: 850px;" />
                 </div>
                 <h5>
                     <button type="button" data-event="D_Step">下载IGS</button>
                     <button type="button" data-event="D_Step">下载STEP</button>
                     <button type="button" data-event="D_Step">下载X_T</button></h5>
             </div>
-            <!--弹出下载窗口-->
+           <%-- <!--弹出下载窗口-->
             <script type="text/ecmascript">
                 $('button[data-event=D_Step]').on('click', function () {
                     var d = dialog({
@@ -63,101 +75,44 @@
                     d.width(960);
                     d.showModal();
                 });
-            </script>
+            </script>--%>
             <div id="D_Step" style="display: none;">
                 <dl class="Class">
                     <dt>快速定位标签：</dt>
-                    <dd class="hover" title="点击选中，再点取消。">M010</dd>
+                   <%-- <dd class="hover" title="点击选中，再点取消。">M010</dd>
                     <dd title="点击选中，再点取消。">M020</dd>
                     <dd title="点击选中，再点取消。">M030</dd>
                     <dd title="点击选中，再点取消。">M040</dd>
-                    <dd title="点击选中，再点取消。">M050</dd>
+                    <dd title="点击选中，再点取消。">M050</dd>--%>
                 </dl>
                 <ul>
-                    <li class="hover">M010-00101</li>
+                 <%--   <li class="hover">M010-00101</li>
                     <li class="hover">M010-00102</li>
                     <li class="hover">M010-00102</li>
                     <li class="hover">M010-00104</li>
-                    <li class="hover">M010-00105</li>
-                    <li class="hover">M010-00106</li>
-                    <li class="hover">M010-00107</li>
                     <li>M020-00101</li>
                     <li>M020-00102</li>
                     <li>M020-00102</li>
                     <li>M020-00104</li>
-                    <li>M020-00105</li>
-                    <li>M020-00106</li>
-                    <li>M020-00107</li>
-                    <li>M030-00101</li>
-                    <li>M030-00102</li>
-                    <li>M030-00102</li>
-                    <li>M030-00104</li>
-                    <li>M030-00105</li>
-                    <li>M030-00106</li>
-                    <li>M030-00107</li>
-                    <li>M040-00101</li>
-                    <li>M040-00102</li>
-                    <li>M040-00102</li>
-                    <li>M040-00104</li>
-                    <li>M040-00105</li>
-                    <li>M040-00106</li>
-                    <li>M040-00107</li>
-                    <li>M050-00101</li>
-                    <li>M050-00102</li>
-                    <li>M050-00102</li>
-                    <li>M050-00104</li>
-                    <li>M050-00105</li>
-                    <li>M050-00106</li>
-                    <li>M050-00107</li>
+                    <li>M020-00105</li>--%>
+
                 </ul>
             </div>
 
             <div class="Index_Hot Container">
                 <img src="/images/Tatle3.png" alt="" />
             </div>
-
+            <asp:HiddenField ID="hidclassid" runat="server" />
+            <asp:HiddenField ID="hidid" runat="server" />
             <div class="Index_List Container">
                 <ul>
                     <li>
                         <p>
                             <img src="/images/img.png" alt="" />
                         </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
+                        <a href="#">GBT7246 波形弹簧垫圈</a>
+                    </li>
+
                 </ul>
             </div>
 

@@ -82,5 +82,30 @@ namespace Part3D
             return reutrnValue;
         }
 
+        [WebMethod(Description = "获取推荐列表", EnableSession = true)]
+        public static dynamic GetRecommend(string UserID, string ClassifyID, string ID)
+        {
+            string status = string.Empty;//状态
+            string errmsg = string.Empty;//错误信息
+            IList<dpPartData> returnData = null;//返回实体列表
+
+            dpPartManager mydp_Part = new dpPartManager();
+            dpPartQuery mydpPartQuery = new dpPartQuery();
+            mydpPartQuery.UserID = UserID;
+            mydpPartQuery.ClassifyID = ClassifyID;
+            mydpPartQuery.ID = ID;
+
+            DataSet myDataSet = mydp_Part.SearchRecommend(mydpPartQuery);
+
+            if (myDataSet.Tables[0].Rows.Count > 0)
+            {
+                returnData = CommonManager.GetList<dpPartData>(myDataSet.Tables[0]);//转换实体类list
+            }
+            return new { status = status, errmsg = errmsg, returnData = returnData };
+        }
+
+
+
+
     }
 }

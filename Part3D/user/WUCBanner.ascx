@@ -44,8 +44,9 @@
             }
             $("#Claa_S").prev().prev().text(classname);
             $("#txtkey").val(searchkey);
-            getcount();
+   
         }
+        getcount();
         $("#Claa_S li").bind("click", function () {
             var $this = $(this).text();
             $("#Claa_S").prev().prev().text($this);

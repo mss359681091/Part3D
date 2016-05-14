@@ -162,15 +162,15 @@ namespace _3DPart.DAL.BULayer
         #endregion
 
         #region 执行查询返回第一行，第一列---------------------------------
-        public static int ExcuteScalarSQL(string strSQL)
+        public static string ExcuteScalarSQL(string strSQL)
         {
             return ExcuteScalarSQL(strSQL, null);
         }
-        public static int ExcuteScalarSQL(string strSQL, Hashtable pas)
+        public static string ExcuteScalarSQL(string strSQL, Hashtable pas)
         {
             return ExcuteScalarSQL(strSQL, pas, CommandType.Text);
         }
-        public static int ExcuteScalarProc(string strSQL, Hashtable pas)
+        public static string ExcuteScalarProc(string strSQL, Hashtable pas)
         {
             return ExcuteScalarSQL(strSQL, pas, CommandType.StoredProcedure);
         }
@@ -180,9 +180,9 @@ namespace _3DPart.DAL.BULayer
         /// <param name="strSQL">要执行的SQL语句</param>
         /// <param name="pas">参数列表，没有参数填入null</param>
         /// <returns>返回影响行数</returns>
-        public static int ExcuteScalarSQL(string strSQL, Hashtable pas, CommandType cmdType)
+        public static string ExcuteScalarSQL(string strSQL, Hashtable pas, CommandType cmdType)
         {
-            int i = 0;
+            string flag = "";
             using (SqlConnection conn = new SqlConnection(strConn))
             {
                 SqlCommand cmd = new SqlCommand(strSQL, conn);
@@ -195,10 +195,13 @@ namespace _3DPart.DAL.BULayer
                     }
                 }
                 conn.Open();
-                i = Convert.ToInt32(cmd.ExecuteScalar());
+                if (cmd.ExecuteScalar() != null)
+                {
+                    flag = cmd.ExecuteScalar().ToString();
+                }
                 conn.Close();
             }
-            return i;
+            return flag;
 
         }
 

@@ -84,5 +84,54 @@ namespace Part3D
             }
             return returnValue;
         }
+
+
+        /// <summary>
+        /// 获取标准列表
+        /// </summary>
+        /// <param name="partid"></param>
+        /// <returns></returns>
+        [WebMethod(Description = "获取标准列表", EnableSession = true)]
+        public static string GetStandard(string partid, string format)
+        {
+            string returnValue = string.Empty;
+            dpStandardMappingManager mydpStandardMappingManager = new dpStandardMappingManager();
+            dpStandardMappingQuery mydpStandardMappingQuery = new dpStandardMappingQuery();
+            mydpStandardMappingQuery.PartID = partid;
+            DataSet myDataSet = mydpStandardMappingManager.SearchBind(mydpStandardMappingQuery);
+            if (myDataSet.Tables[0].Rows.Count > 0)
+            {
+                for (int i = 0; i < myDataSet.Tables[0].Rows.Count; i++)
+                {
+                    returnValue += "<dd data-id='" + myDataSet.Tables[0].Rows[i][dpStandard.ID] + "' id='dd" + myDataSet.Tables[0].Rows[i][dpStandard.ID] + "' title='标准'>" + myDataSet.Tables[0].Rows[i][dpStandard.Name] + "</dd>";
+                }
+            }
+            return returnValue;
+        }
+
+        /// <summary>
+        /// 获取模型文件列表
+        /// </summary>
+        /// <param name="partid"></param>
+        /// <returns></returns>
+        [WebMethod(Description = "获取模型文件列表", EnableSession = true)]
+        public static string GetModelfile(string partid, string standardname, string format)
+        {
+            string returnValue = string.Empty;
+            dpModelFileManager mydpModelFileManager = new dpModelFileManager();
+            dpModelFileQuery mydpModelFileQuery = new dpModelFileQuery();
+            mydpModelFileQuery.PartID = partid;
+            mydpModelFileQuery.Name = standardname;
+            mydpModelFileQuery.Format = format;
+            DataSet myDataSet = mydpModelFileManager.Search(mydpModelFileQuery);
+            if (myDataSet.Tables[0].Rows.Count > 0)
+            {
+                for (int i = 0; i < myDataSet.Tables[0].Rows.Count; i++)
+                {
+                    returnValue += "<li>" + myDataSet.Tables[0].Rows[i][dpModelFile.Name] + "</li>";
+                }
+            }
+            return returnValue;
+        }
     }
 }

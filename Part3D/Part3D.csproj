@@ -351,6 +351,13 @@
     <Content Include="content\iconfont.woff" />
     <Content Include="user\Web.config" />
     <None Include="Properties\PublishProfiles\3dpart发布包.pubxml" />
+    <Content Include="Web.config" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="user\jqUploadify\uploads\f\" />

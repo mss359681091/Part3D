@@ -419,27 +419,139 @@ function fnGetList(ParentID, UserID, ClassifyID, Name, CurrentIndex, PageSize) {
             if (returnData != null) {
                 var strli = "";
                 $.each(returnData, function (i, item) {
+                    var names = item.Name;
+                    if (names.length > 14) {
+                        names = names.substring(0, 14);
+                    }
+
                     strli += "<li><span>";
-                    strli += "<button type='button' data-event='D_Step'>IGS</button>";
-                    strli += "<button type='button' data-event='D_Step'>STEP</button>";
-                    strli += "<button type='button' data-event='D_Step'>X_T</button></span>";
+                    strli += "<button type='button' data-partid='" + item.ID + "' data-format='.igs' data-event='D_Step'>IGS</button>";
+                    strli += "<button type='button' data-partid='" + item.ID + "' data-format='.step' data-event='D_Step'>STEP</button>";
+                    strli += "<button type='button' data-partid='" + item.ID + "' data-format='.x_t' data-event='D_Step'>X_T</button></span>";
                     strli += "<p>";
                     strli += "<a target='_blank' href='/View.aspx?partid=" + item.ID + "' style='padding: 0'><img  src='" + item.PreviewSmall + "' alt='" + item.Name + "' /></a>";
                     strli += "</p>";
-                    strli += "<a target='_blank' href='/View.aspx?partid=" + item.ID + "'>" + item.Name + "</a></li>";
+                    strli += "<a title='" + item.Name + "' target='_blank' href='/View.aspx?partid=" + item.ID + "'>" + names + "</a></li>";
                 });
                 $(".Index_List li").remove();
                 $(".Index_List ul").append(strli);
                 $('button[data-event=D_Step]').on('click', function () {
+                    var partid = $(this).data("partid");
+                    var format = $(this).data("format");
+                    getStandard(partid, format);//获取该组件标准列表
+                    var title = $(this).text();
                     var d = dialog({
                         fixed: true,
-                        title: 'IGS格式',
+                        title: title + ' 格式',
                         content: document.getElementById('D_Step')
                     })
                     d.width(960);
                     d.showModal();
                 });
             }
+        }
+    });
+}
+
+function fnRecommend(UserID, ClassifyID, ID) {
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/List.aspx/GetRecommend",
+        async: true,
+        data: "{UserID:'" + UserID + "',ClassifyID:'" + ClassifyID + "',ID:'" + ID + "'}",
+        dataType: 'json',
+        success: function (result) {
+            //var status = result.d.result;//状态
+            //var errmsg = result.d.errmsg;//错误信息
+            $(".Index_List li").remove();
+            var returnData = result.d.returnData;
+            if (returnData != null) {
+                var strli = "";
+                $.each(returnData, function (i, item) {
+                    var names = item.Name;
+                    if (names.length > 14) {
+                        names = names.substring(0, 14);
+                    }
+
+                    strli += "<li><span>";
+                    strli += "<button type='button' data-partid='" + item.ID + "' data-format='.igs' data-event='D_Step'>IGS</button>";
+                    strli += "<button type='button' data-partid='" + item.ID + "' data-format='.step' data-event='D_Step'>STEP</button>";
+                    strli += "<button type='button' data-partid='" + item.ID + "' data-format='.x_t' data-event='D_Step'>X_T</button></span>";
+                    strli += "<p>";
+                    strli += "<a target='_blank' href='/View.aspx?partid=" + item.ID + "' style='padding: 0'><img  src='" + item.PreviewSmall + "' alt='" + item.Name + "' /></a>";
+                    strli += "</p>";
+                    strli += "<a title='" + item.Name + "' target='_blank' href='/View.aspx?partid=" + item.ID + "'>" + names + "</a></li>";
+                });
+                $(".Index_List li").remove();
+                $(".Index_List ul").append(strli);
+                $('button[data-event=D_Step]').on('click', function () {
+                    var partid = $(this).data("partid");
+                    var format = $(this).data("format");
+                    getStandard(partid, format);//获取该组件标准列表
+                    var title = $(this).text();
+                    var d = dialog({
+                        fixed: true,
+                        title: title + ' 格式',
+                        content: document.getElementById('D_Step')
+                    })
+                    d.width(960);
+                    d.showModal();
+                });
+            }
+        }
+    });
+}
+
+
+//获取标准列表
+function getStandard(partid, format) {
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/Index.aspx/GetStandard",
+        data: "{partid:'" + partid + "',format:'" + format + "'}",
+        async: false,
+        dataType: 'json',
+        success: function (result) {
+            $("#D_Step .Class dd").remove();
+            $("#D_Step .Class ").append(result.d);
+            $("#D_Step .Class dd").eq(0).addClass("hover");
+
+            $("#D_Step .Class dd").bind("click", function () {
+                getModelfile(partid, $(this).text(), format, $(this).data("id"));
+            });
+
+            getModelfile(partid, $("#D_Step .Class dd").eq(0).text(), format, '');
+        }
+    });
+}
+
+//获取模型文件
+function getModelfile(partid, standardname, format, StandardID) {
+
+
+    $("#D_Step .Class dd").removeClass("hover");
+
+    if (StandardID == "") {
+        $("#D_Step .Class dd").eq(0).addClass("hover");
+    }
+    else {
+
+        $("#dd" + StandardID).addClass("hover");
+    }
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/Index.aspx/GetModelfile",
+        data: "{partid:'" + partid + "',standardname:'" + standardname + "',format:'" + format + "'}",
+        async: false,
+        dataType: 'json',
+        success: function (result) {
+            $("#D_Step ul li").remove();
+            $("#D_Step ul").append(result.d);
+
         }
     });
 }

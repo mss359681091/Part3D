@@ -140,18 +140,54 @@ namespace Part3D
                         if (str.Length > 0)
                         {
                             Hashtable ht = new Hashtable();
-                            ht.Add(dpModelFile.PartID, partid);//组件id
-                            ht.Add(dpModelFile.Name, str[0]);//组件名称
-                            ht.Add(dpModelFile.Format, str[1]);//组件格式
+                            ht.Add(dpModelFile.PartID, partid);//文件id
+                            ht.Add(dpModelFile.Name, str[0]);//文件名称
+                            ht.Add(dpModelFile.Format, str[1]);//文件格式
                             ht.Add(dpModelFile.Location, str[2]);//文件路径
                             ht.Add(dpModelFile.Size, str[3]);//文件大小
-                            SQLHelper.ExcuteProc("sp_AddModelFile", ht);//执行存储过程注册
+                            SQLHelper.ExcuteProc("sp_AddModelFile", ht);//执行存储过程
 
+                            if (str[0].Contains(' '))
+                            {
+                                string standard = str[0].Split(' ')[0];
+                                savestandard(standard, partid);//保存标准
+                            }
                         }
                     }
                 }
                 Session.Remove("modefile");//移除
             }
+        }
+
+        private void savestandard(string standard, int partid)
+        {
+
+            //检测并添加或获取标准id
+            dpStandardManager mydpStandardManager = new dpStandardManager();
+            dpStandardQuery mydpStandardQuery = new dpStandardQuery();
+            mydpStandardQuery.Name = standard.ToLower();//转小写
+            string standardid = mydpStandardManager.CheckISNull(mydpStandardQuery);//返回id
+            if (standardid.Trim().Length == 0)
+            {
+                Hashtable ht = new Hashtable();
+                ht.Add(dpStandard.Name, standard.ToLower());
+                ht.Add(dpStandard.Content, "");
+                standardid = SQLHelper.ExcuteProc("sp_Adddp_Standard", ht).ToString();//执行存储过程
+            }
+            //匹配组件和标准关联
+            dpStandardMappingManager mydpStandardMappingManager = new dpStandardMappingManager();
+            dpStandardMappingQuery mydpStandardMappingQuery = new dpStandardMappingQuery();
+            mydpStandardMappingQuery.PartID = partid.ToString();
+            mydpStandardMappingQuery.StandardID = standardid;
+            string dpStandardMappingid = mydpStandardMappingManager.CheckISNull(mydpStandardMappingQuery);
+            if (dpStandardMappingid.Trim().Length == 0)
+            {
+                Hashtable ht = new Hashtable();
+                ht.Add(dpStandardMapping.StandardID, Convert.ToInt32(standardid));//标准ID
+                ht.Add(dpStandardMapping.PartID, partid);//组件ID
+                SQLHelper.ExcuteProc("sp_Adddp_StandardMapping", ht).ToString();//执行存储过程
+            }
+
         }
     }
 }

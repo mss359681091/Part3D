@@ -37,6 +37,7 @@
 
             //加载最新推荐
             fnGetList('', '', '', '', '1', '12');
+            getStandard('', '');
         });
 
     </script>
@@ -143,14 +144,14 @@
             <div id="D_Step" style="display: none;">
                 <dl class="Class">
                     <dt>快速定位标签：</dt>
-                    <dd class="hover" title="点击选中，再点取消。">M010</dd>
+                    <%--                <dd class="hover" title="点击选中，再点取消。">M010</dd>
                     <dd title="点击选中，再点取消。">M020</dd>
                     <dd title="点击选中，再点取消。">M030</dd>
                     <dd title="点击选中，再点取消。">M040</dd>
-                    <dd title="点击选中，再点取消。">M050</dd>
+                    <dd title="点击选中，再点取消。">M050</dd>--%>
                 </dl>
                 <ul>
-                    <li class="hover">M010-00101</li>
+                    <%--<li class="hover">M010-00101</li>
                     <li class="hover">M010-00102</li>
                     <li class="hover">M010-00102</li>
                     <li class="hover">M010-00104</li>
@@ -161,30 +162,7 @@
                     <li>M020-00102</li>
                     <li>M020-00102</li>
                     <li>M020-00104</li>
-                    <li>M020-00105</li>
-                    <li>M020-00106</li>
-                    <li>M020-00107</li>
-                    <li>M030-00101</li>
-                    <li>M030-00102</li>
-                    <li>M030-00102</li>
-                    <li>M030-00104</li>
-                    <li>M030-00105</li>
-                    <li>M030-00106</li>
-                    <li>M030-00107</li>
-                    <li>M040-00101</li>
-                    <li>M040-00102</li>
-                    <li>M040-00102</li>
-                    <li>M040-00104</li>
-                    <li>M040-00105</li>
-                    <li>M040-00106</li>
-                    <li>M040-00107</li>
-                    <li>M050-00101</li>
-                    <li>M050-00102</li>
-                    <li>M050-00102</li>
-                    <li>M050-00104</li>
-                    <li>M050-00105</li>
-                    <li>M050-00106</li>
-                    <li>M050-00107</li>
+                    <li>M020-00105</li>--%>
                 </ul>
             </div>
 
@@ -204,6 +182,7 @@
         </div>
 
         <script type="text/javascript">
+
             $(document).ready(function () {
                 $("#Claa_S li").bind("click", function () {
                     var $this = $(this).text();
