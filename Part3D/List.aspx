@@ -29,8 +29,8 @@
                 $(this).addClass("hover").siblings().removeClass("hover");
                 var classid = $(this).children().data("classid");
                 $("#Claa_S").data("classid", classid)
-                //fnGetList('', '', classid, '', '1', '12');
-                binddate($(this).data("count"));
+                binddate();
+
             });
         });
 
@@ -51,39 +51,44 @@
                             $("#lnkclass li span").eq(i).text("( " + strs[i] + " )");//赋值
                             $("#lnkclass li ").eq(i).data("count", strs[i]);//赋值
                         }
-                        binddate($("#lnkclass li").eq(0).data("count"));
+                        binddate();
                     }
 
                 }
             });
         }
-        function binddate(allcount) {
-            //开始执行分页
-            var nums = 2; //每页出现的数量
-            allcount = (allcount < nums) ? nums : allcount;
-            var all = allcount;
-            var pages = Math.ceil(all / nums); //得到总页数
+        function binddate() {
 
-            laypage({
-                cont: $('#page'), //容器。值支持id名、原生dom对象，jquery对象,
-                pages: pages, //总页数
-                skip: true, //是否开启跳页
-                skin: '#F60',
-                groups: 5, //连续显示分页数
-                jump: function (obj) {
-                    fnGetList('', '', $("#Claa_S").data("classid"), $("#txtkey").val(), obj.curr, nums);
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/List.aspx/GetAllCount",
+                data: "{classid:'" + $("#Claa_S").data("classid") + "',partname:'" + $("#txtkey").val() + "'}",
+                async: false,
+                dataType: 'json',
+                success: function (result) {
+                    if (result.d.length > 0) {
+
+                        //开始执行分页
+                        var nums = 12; //每页出现的数量
+                        //allcount = (allcount < nums) ? nums : allcount;
+                        var all = result.d;
+                        var pages = Math.ceil(all / nums); //得到总页数
+
+                        laypage({
+                            cont: $('#page'), //容器。值支持id名、原生dom对象，jquery对象,
+                            pages: pages, //总页数
+                            skip: true, //是否开启跳页
+                            skin: '#F60',
+                            groups: 5, //连续显示分页数
+                            jump: function (obj) {
+                                fnGetList('', '', $("#Claa_S").data("classid"), $("#txtkey").val(), obj.curr, nums);
+                            }
+                        });
+                    }
                 }
             });
         }
-    </script>
-
-
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-
-        });
-
     </script>
 </head>
 <body>

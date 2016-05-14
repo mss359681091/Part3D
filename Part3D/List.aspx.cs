@@ -66,6 +66,21 @@ namespace Part3D
             return reutrnValue;
         }
 
+        [WebMethod(Description = "获取总数", EnableSession = true)]
+        public static string GetAllCount(string classid, string partname)
+        {
+            string reutrnValue = string.Empty;
+            dpPartManager mydpPartManager = new dpPartManager();
+            dpPartQuery mydpPartQuery = new dpPartQuery();
+            mydpPartQuery.ClassifyID = classid;
+            mydpPartQuery.Name = partname;
+            DataSet myDataSet = mydpPartManager.SearchAllCount(mydpPartQuery);
+            if (myDataSet.Tables[0].Rows.Count > 0)
+            {
+                reutrnValue = myDataSet.Tables[0].Rows[0]["countall"].ToString();
+            }
+            return reutrnValue;
+        }
 
     }
 }

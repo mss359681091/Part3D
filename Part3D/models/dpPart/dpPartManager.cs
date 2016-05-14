@@ -98,7 +98,7 @@ namespace _3DPart.DAL.BULayer
         {
 
             string strQuery = @" SELECT TOP " + QueryData.PageSize + " * FROM ( "
-            + " SELECT ROW_NUMBER() OVER ( ORDER BY " + dpPart.ID_FULL + ") AS RowNumber , "
+            + " SELECT ROW_NUMBER() OVER ( ORDER BY " + dpPart.ID_FULL + " DESC ) AS RowNumber , "
             + dpPart.ID_FULL + ","
             + dpPart.ParentID_FULL + ","
             + dpPart.UserID_FULL + ","
@@ -191,6 +191,53 @@ namespace _3DPart.DAL.BULayer
             {
                 strQuery += " AND " + dpPart.ParentID_FULL + " = @ParentID ";
                 myParam.Add("@ParentID", QueryData.ParentID);
+            }
+
+            if (QueryData.UserID.Length > 0)
+            {
+                strQuery += " AND " + dpPart.UserID_FULL + " = @UserID ";
+                myParam.Add("@UserID", QueryData.UserID);
+            }
+
+            if (QueryData.Name.Length > 0)
+            {
+                strQuery += " AND " + dpPart.Name_FULL + " LIKE @Name ";
+                myParam.Add("@Name", "%" + QueryData.Name.Replace(" ", "%") + "%");
+            }
+
+            DataSet myDs = new DataSet();
+            try
+            {
+                myDs = SQLHelper.GetDataSet(strQuery, myParam);
+            }
+            catch (Exception myEx)
+            {
+
+                throw new Exception(myEx.Message + "\r\n SQL:" + strQuery);
+            }
+            finally
+            {
+
+            }
+            return myDs;
+        }
+
+        public DataSet SearchAllCount(dpPartQuery QueryData)
+        {
+
+            string strQuery = @"SELECT ";
+            strQuery += " SUM( 1 ) as countall ";
+            strQuery += " FROM " + dpPart.TABLENAME;
+            strQuery += " LEFT JOIN " + dpClassify.TABLENAME + " ON " + dpPart.ClassifyID_FULL + " = " + dpClassify.ID_FULL;
+            strQuery += " WHERE 1 = 1 ";
+
+
+            Hashtable myParam = new Hashtable();
+
+            if (QueryData.ClassifyID.Length > 0)
+            {
+                strQuery += " AND (" + dpClassify.ID_FULL + " = @ClassifyID OR " + dpClassify.ParentID_FULL + " = " + QueryData.ClassifyID + " ) ";
+                myParam.Add("@ClassifyID", QueryData.ClassifyID);
             }
 
             if (QueryData.UserID.Length > 0)

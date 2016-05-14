@@ -20,32 +20,32 @@
         if ((searchkey.length > 0 && searchkey != null) || classid.length > 0) {
 
             $("#lnkclass li").removeClass();
+            $("#Claa_S").data("classid", classid)
             switch (classid) {
                 case "1":
                     classname = "国标";
                     $("#lnkclass li:eq(1)").addClass("hover");
-                    $("#Claa_S").data("classid", classid)
+
                     break;
                 case "12":
                     classname = "3D素材";
                     $("#lnkclass li:eq(2)").addClass("hover");
-                    $("#Claa_S").data("classid", classid)
+
                     break;
                 case "13":
                     classname = "3D模型";
                     $("#lnkclass li:eq(3)").addClass("hover");
-                    $("#Claa_S").data("classid", classid)
+
                     break;
                 default:
                     classname = "全部";
                     $("#lnkclass li:eq(0)").addClass("hover");
-                    $("#Claa_S").data("classid", "")
                     break;
             }
             $("#Claa_S").prev().prev().text(classname);
             $("#txtkey").val(searchkey);
+            getcount();
         }
-        getcount();
         $("#Claa_S li").bind("click", function () {
             var $this = $(this).text();
             $("#Claa_S").prev().prev().text($this);

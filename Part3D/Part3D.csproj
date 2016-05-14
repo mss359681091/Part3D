@@ -198,7 +198,6 @@
     <Content Include="user\WUCPersonalBanner.ascx" />
     <Content Include="user\WUCTop.ascx" />
     <Content Include="View.aspx" />
-    <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Global.asax.cs">
@@ -352,12 +351,6 @@
     <Content Include="content\iconfont.woff" />
     <Content Include="user\Web.config" />
     <None Include="Properties\PublishProfiles\3dpart发布包.pubxml" />
-    <None Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="user\jqUploadify\uploads\f\" />
