@@ -109,7 +109,23 @@ namespace _3DPart.DAL.BULayer.Schema {
         /// 尺寸
         /// </summary>
         public static string Size_TABLE_FULL = "dp_ModelFileSize";
-        
+
+        /// <summary>
+        /// 型号
+        /// </summary>
+        public static string Models = "Models";
+
+        /// <summary>
+        /// 型号
+        /// </summary>
+        public static string Models_FULL = "dp_ModelFile.Models";
+
+        /// <summary>
+        /// 型号
+        /// </summary>
+        public static string Models_TABLE_FULL = "dp_ModelFileModels";
+
+
         /// <summary>
         /// 
         /// </summary>

@@ -24,6 +24,7 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
+
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
@@ -40,10 +41,15 @@
             getStandard('', '');
         });
 
+
+        function fndw(strid) {
+            $("#hidfileid").val(strid);
+            document.getElementById('<%=LinkButton1.ClientID %>').click();
+        }
     </script>
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="fm1" runat="server" method="post">
         <div>
             <header>
                 <div class="navbar fixed-top ZindexT">
@@ -141,9 +147,11 @@
             <%--            <script type="text/ecmascript">
                
             </script>--%>
+            <input id="hidfileid" type="hidden" value="" runat="server" />
+            <asp:LinkButton ID="LinkButton1" class="lnkdown" Style="display: none" runat="server" OnClick="LinkButton1_Click"></asp:LinkButton>
             <div id="D_Step" style="display: none;">
                 <dl class="Class">
-                    <dt>快速定位标签：</dt>
+                    <dt>快速定位型号：</dt>
                     <%--                <dd class="hover" title="点击选中，再点取消。">M010</dd>
                     <dd title="点击选中，再点取消。">M020</dd>
                     <dd title="点击选中，再点取消。">M030</dd>

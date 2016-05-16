@@ -104,8 +104,49 @@ namespace Part3D
             return new { status = status, errmsg = errmsg, returnData = returnData };
         }
 
+        private void DowmLoad(string strid)
+        {
+
+            try
+            {
+                dpModelFileManager mydpModelFileManager = new dpModelFileManager();
+                dpModelFileQuery mydpModelFileQuery = new dpModelFileQuery();
+                mydpModelFileQuery.ID = strid;
+                DataSet myDataSet = mydpModelFileManager.Search(mydpModelFileQuery);
+                if (myDataSet.Tables[0].Rows.Count > 0)
+                {
+                    string fullPathUrl = Server.MapPath(myDataSet.Tables[0].Rows[0][dpModelFile.Location].ToString());//获取下载文件的路劲
+                    System.IO.FileInfo file = new System.IO.FileInfo(fullPathUrl);
+
+                    if (file.Exists)//判断文件是否存在
+                    {
+                        Response.Clear();
+                        Response.ClearHeaders();
+                        Response.Buffer = false;
+                        Response.AddHeader("content-disposition", "attachment;filename=" + file.Name);
+                        Response.AddHeader("cintent_length", "attachment;filename=" + HttpUtility.UrlDecode(file.Name));
+                        Response.AddHeader("cintent_length", file.Length.ToString());
+                        Response.ContentType = "application/octet-stream";
+                        Response.WriteFile(file.FullName);//通过response对象，执行下载操作
+                        Response.Flush();
+                        Response.End();
+
+                    }
+                }
 
 
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.ToString());
+            }
+        }
+
+        protected void LinkButton1_Click(object sender, EventArgs e)
+        {
+            string id = this.hidfileid.Value;
+            DowmLoad(id);
+        }
 
     }
 }

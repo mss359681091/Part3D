@@ -3,6 +3,7 @@ using _3DPart.DAL.BULayer.Schema;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
@@ -109,29 +110,96 @@ namespace Part3D
             return returnValue;
         }
 
+        [WebMethod(Description = "获取型号列表", EnableSession = true)]
+        public static string GetModels(string partid, string format)
+        {
+            string returnValue = string.Empty;
+            dpModelFileManager mydpModelFileManager = new dpModelFileManager();
+            dpModelFileQuery mydpModelFileQuery = new dpModelFileQuery();
+            mydpModelFileQuery.PartID = partid;
+            mydpModelFileQuery.Format = format;
+            DataSet myDataSet = mydpModelFileManager.SearchModels(mydpModelFileQuery);
+            if (myDataSet.Tables[0].Rows.Count > 0)
+            {
+                returnValue += "<dd id='ddall' title='型号'>全部</dd>";
+                for (int i = 0; i < myDataSet.Tables[0].Rows.Count; i++)
+                {
+                    returnValue += "<dd id='dd" + myDataSet.Tables[0].Rows[i][dpModelFile.Models] + "' title='型号'>" + myDataSet.Tables[0].Rows[i][dpModelFile.Models] + "</dd>";
+                }
+            }
+            return returnValue;
+        }
+
         /// <summary>
         /// 获取模型文件列表
         /// </summary>
         /// <param name="partid"></param>
         /// <returns></returns>
         [WebMethod(Description = "获取模型文件列表", EnableSession = true)]
-        public static string GetModelfile(string partid, string standardname, string format)
+        public static string GetModelfile(string partid, string modelsname, string format, string models)
         {
             string returnValue = string.Empty;
             dpModelFileManager mydpModelFileManager = new dpModelFileManager();
             dpModelFileQuery mydpModelFileQuery = new dpModelFileQuery();
             mydpModelFileQuery.PartID = partid;
-            mydpModelFileQuery.Name = standardname;
+            mydpModelFileQuery.Name = modelsname;
             mydpModelFileQuery.Format = format;
+            mydpModelFileQuery.Models = models;
             DataSet myDataSet = mydpModelFileManager.Search(mydpModelFileQuery);
             if (myDataSet.Tables[0].Rows.Count > 0)
             {
                 for (int i = 0; i < myDataSet.Tables[0].Rows.Count; i++)
                 {
-                    returnValue += "<li>" + myDataSet.Tables[0].Rows[i][dpModelFile.Name] + "</li>";
+                    string showname = myDataSet.Tables[0].Rows[i][dpModelFile.Name].ToString();
+                    showname = showname.Split(' ')[1].ToString();
+                    returnValue += "<li onclick='fndw(" + myDataSet.Tables[0].Rows[i][dpModelFile.ID].ToString() + ")' >" + showname + "</li>";
                 }
             }
             return returnValue;
+        }
+
+        private void DowmLoad(string strid)
+        {
+
+            try
+            {
+                dpModelFileManager mydpModelFileManager = new dpModelFileManager();
+                dpModelFileQuery mydpModelFileQuery = new dpModelFileQuery();
+                mydpModelFileQuery.ID = strid;
+                DataSet myDataSet = mydpModelFileManager.Search(mydpModelFileQuery);
+                if (myDataSet.Tables[0].Rows.Count > 0)
+                {
+                    string fullPathUrl = Server.MapPath(myDataSet.Tables[0].Rows[0][dpModelFile.Location].ToString());//获取下载文件的路劲
+                    System.IO.FileInfo file = new System.IO.FileInfo(fullPathUrl);
+
+                    if (file.Exists)//判断文件是否存在
+                    {
+                        Response.Clear();
+                        Response.ClearHeaders();
+                        Response.Buffer = false;
+                        Response.AddHeader("content-disposition", "attachment;filename=" + file.Name);
+                        Response.AddHeader("cintent_length", "attachment;filename=" + HttpUtility.UrlDecode(file.Name));
+                        Response.AddHeader("cintent_length", file.Length.ToString());
+                        Response.ContentType = "application/octet-stream";
+                        Response.WriteFile(file.FullName);//通过response对象，执行下载操作
+                        Response.Flush();
+                        Response.End();
+
+                    }
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.ToString());
+            }
+        }
+
+        protected void LinkButton1_Click(object sender, EventArgs e)
+        {
+            string id = this.hidfileid.Value;
+            DowmLoad(id);
         }
     }
 }

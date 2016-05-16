@@ -13,6 +13,29 @@
 
 });
 
+//截取字符串 包含中文处理 
+function subString(str, len) {
+    if (str == "") { return "&nbsp;" }
+    var newLength = 0;
+    var newStr = "";
+    var chineseRegex = /[^\x00-\xff]/g;
+    var singleChar = "";
+    var strLength = str.replace(chineseRegex, "**").length;
+    for (var i = 0; i < strLength; i++) {
+        singleChar = str.charAt(i).toString();
+        if (singleChar.match(chineseRegex) != null) {
+            newLength += 2;
+        }
+        else {
+            newLength++;
+        }
+        if (newLength > len) {
+            break;
+        }
+        newStr += singleChar;
+    }
+    return newStr;
+}
 
 function MM_showHideLayers() { //v9.0
     var i, p, v, obj, args = MM_showHideLayers.arguments;
@@ -419,11 +442,7 @@ function fnGetList(ParentID, UserID, ClassifyID, Name, CurrentIndex, PageSize) {
             if (returnData != null) {
                 var strli = "";
                 $.each(returnData, function (i, item) {
-                    var names = item.Name;
-                    if (names.length > 14) {
-                        names = names.substring(0, 14);
-                    }
-
+                    var names = subString(item.Name, 28);
                     strli += "<li><span>";
                     strli += "<button type='button' data-partid='" + item.ID + "' data-format='.igs' data-event='D_Step'>IGS</button>";
                     strli += "<button type='button' data-partid='" + item.ID + "' data-format='.step' data-event='D_Step'>STEP</button>";
@@ -438,7 +457,8 @@ function fnGetList(ParentID, UserID, ClassifyID, Name, CurrentIndex, PageSize) {
                 $('button[data-event=D_Step]').on('click', function () {
                     var partid = $(this).data("partid");
                     var format = $(this).data("format");
-                    getStandard(partid, format);//获取该组件标准列表
+                    //getStandard(partid, format);//获取该组件标准列表
+                    getModels(partid, format);//获取该组件下所有型号
                     var title = $(this).text();
                     var d = dialog({
                         fixed: true,
@@ -488,7 +508,8 @@ function fnRecommend(UserID, ClassifyID, ID) {
                 $('button[data-event=D_Step]').on('click', function () {
                     var partid = $(this).data("partid");
                     var format = $(this).data("format");
-                    getStandard(partid, format);//获取该组件标准列表
+                    //getStandard(partid, format);//获取该组件标准列表
+                    getModels(partid, format);//获取该组件下所有型号
                     var title = $(this).text();
                     var d = dialog({
                         fixed: true,
@@ -503,49 +524,66 @@ function fnRecommend(UserID, ClassifyID, ID) {
     });
 }
 
-
-//获取标准列表
-function getStandard(partid, format) {
+//获取型号列表
+function getModels(partid, format) {
     $.ajax({
         type: "POST",
         contentType: "application/json",
-        url: "/Index.aspx/GetStandard",
+        url: "/Index.aspx/GetModels",
         data: "{partid:'" + partid + "',format:'" + format + "'}",
         async: false,
         dataType: 'json',
         success: function (result) {
             $("#D_Step .Class dd").remove();
             $("#D_Step .Class ").append(result.d);
-            $("#D_Step .Class dd").eq(0).addClass("hover");
+            //$("#D_Step .Class dd").eq(0).addClass("hover");
 
             $("#D_Step .Class dd").bind("click", function () {
-                getModelfile(partid, $(this).text(), format, $(this).data("id"));
+                getModelfile(partid, $(this).text(), format, $(this).text(), $(this).attr("id"));
             });
 
-            getModelfile(partid, $("#D_Step .Class dd").eq(0).text(), format, '');
+            getModelfile(partid, "全部", format, '', 'ddall');
         }
     });
 }
 
+////获取标准列表
+//function getStandard(partid, format) {
+//    $.ajax({
+//        type: "POST",
+//        contentType: "application/json",
+//        url: "/Index.aspx/GetStandard",
+//        data: "{partid:'" + partid + "',format:'" + format + "'}",
+//        async: false,
+//        dataType: 'json',
+//        success: function (result) {
+//            $("#D_Step .Class dd").remove();
+//            $("#D_Step .Class ").append(result.d);
+//            $("#D_Step .Class dd").eq(0).addClass("hover");
+
+//            $("#D_Step .Class dd").bind("click", function () {
+//                getModelfile(partid, $(this).text(), format, $(this).data("id"));
+//            });
+
+//            getModelfile(partid, $("#D_Step .Class dd").eq(0).text(), format, '');
+//        }
+//    });
+//}
+
 //获取模型文件
-function getModelfile(partid, standardname, format, StandardID) {
-
-
+function getModelfile(partid, modelsname, format, models, id) {
+    models = models == "全部" ? "" : models;
+    modelsname = modelsname == "全部" ? "" : modelsname;
     $("#D_Step .Class dd").removeClass("hover");
-
-    if (StandardID == "") {
-        $("#D_Step .Class dd").eq(0).addClass("hover");
-    }
-    else {
-
-        $("#dd" + StandardID).addClass("hover");
+    if (id.length > 0) {
+        $("#" + id).addClass("hover");
     }
 
     $.ajax({
         type: "POST",
         contentType: "application/json",
         url: "/Index.aspx/GetModelfile",
-        data: "{partid:'" + partid + "',standardname:'" + standardname + "',format:'" + format + "'}",
+        data: "{partid:'" + partid + "',modelsname:'" + modelsname + "',format:'" + format + "',models:'" + models + "'}",
         async: false,
         dataType: 'json',
         success: function (result) {
@@ -555,3 +593,71 @@ function getModelfile(partid, standardname, format, StandardID) {
         }
     });
 }
+
+//获取各个类别组件总数
+function getcount() {
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/List.aspx/GetCount",
+        async: false,
+        dataType: 'json',
+        success: function (result) {
+            if (result.d.length > 0) {
+                var strs = new Array(); //定义一数组 
+                strs = result.d.split(","); //字符分割 
+                for (i = 0; i < strs.length ; i++) {
+                    $("#lnkclass li span").eq(i).text("( " + strs[i] + " )");//赋值
+                    $("#lnkclass li ").eq(i).data("count", strs[i]);//赋值
+                }
+
+                $("#lnkclass li").bind("click", function () {
+                    $(this).addClass("hover").siblings().removeClass("hover");
+                    var classid = $(this).children().data("classid");
+                    $("#Claa_S").data("classid", classid)
+                    binddate();
+
+                });
+
+                binddate();
+            }
+
+        }
+    });
+}
+
+function binddate() {
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/List.aspx/GetAllCount",
+        data: "{classid:'" + $("#Claa_S").data("classid") + "',partname:'" + $("#txtkey").val() + "'}",
+        async: false,
+        dataType: 'json',
+        success: function (result) {
+            $(".Index_List li").remove();
+            if (result.d.length > 0) {
+
+                //开始执行分页
+                var nums = 12; //每页出现的数量
+                //allcount = (allcount < nums) ? nums : allcount;
+                var all = result.d;
+                var pages = Math.ceil(all / nums); //得到总页数
+
+                laypage({
+                    cont: $('#page'), //容器。值支持id名、原生dom对象，jquery对象,
+                    pages: pages, //总页数
+                    skip: true, //是否开启跳页
+                    skin: '#F60',
+                    groups: 5, //连续显示分页数
+                    jump: function (obj) {
+                        fnGetList('', '', $("#Claa_S").data("classid"), $("#txtkey").val(), obj.curr, nums);
+                    }
+                });
+            }
+        }
+    });
+}
+

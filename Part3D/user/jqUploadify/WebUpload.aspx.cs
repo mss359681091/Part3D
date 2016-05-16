@@ -4,6 +4,7 @@ using Part3D.models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -139,19 +140,28 @@ namespace Part3D
                         string[] str = strmodesfiles[i].Split(';');
                         if (str.Length > 0)
                         {
+                            string strmodels = string.Empty;
+                            if (str[0].Contains(' '))
+                            {
+                                string standard = str[0].Split(' ')[0];
+
+                                if (str[0].Contains("x"))
+                                {
+                                    strmodels = str[0].Split(' ')[1].Split('x')[0];
+                                }
+                                savestandard(standard, partid);//保存标准
+                            }
+
                             Hashtable ht = new Hashtable();
                             ht.Add(dpModelFile.PartID, partid);//文件id
                             ht.Add(dpModelFile.Name, str[0]);//文件名称
                             ht.Add(dpModelFile.Format, str[1]);//文件格式
                             ht.Add(dpModelFile.Location, str[2]);//文件路径
                             ht.Add(dpModelFile.Size, str[3]);//文件大小
+                            ht.Add(dpModelFile.Models, strmodels);//型号
                             SQLHelper.ExcuteProc("sp_AddModelFile", ht);//执行存储过程
 
-                            if (str[0].Contains(' '))
-                            {
-                                string standard = str[0].Split(' ')[0];
-                                savestandard(standard, partid);//保存标准
-                            }
+                         
                         }
                     }
                 }
@@ -188,6 +198,50 @@ namespace Part3D
                 SQLHelper.ExcuteProc("sp_Adddp_StandardMapping", ht).ToString();//执行存储过程
             }
 
+        }
+
+        private void DowmLoad(string strid)
+        {
+
+            try
+            {
+                dpModelFileManager mydpModelFileManager = new dpModelFileManager();
+                dpModelFileQuery mydpModelFileQuery = new dpModelFileQuery();
+                mydpModelFileQuery.ID = strid;
+                DataSet myDataSet = mydpModelFileManager.Search(mydpModelFileQuery);
+                if (myDataSet.Tables[0].Rows.Count > 0)
+                {
+                    string fullPathUrl = Server.MapPath(myDataSet.Tables[0].Rows[0][dpModelFile.Location].ToString());//获取下载文件的路劲
+                    System.IO.FileInfo file = new System.IO.FileInfo(fullPathUrl);
+
+                    if (file.Exists)//判断文件是否存在
+                    {
+                        Response.Clear();
+                        Response.ClearHeaders();
+                        Response.Buffer = false;
+                        Response.AddHeader("content-disposition", "attachment;filename=" + file.Name);
+                        Response.AddHeader("cintent_length", "attachment;filename=" + HttpUtility.UrlDecode(file.Name));
+                        Response.AddHeader("cintent_length", file.Length.ToString());
+                        Response.ContentType = "application/octet-stream";
+                        Response.WriteFile(file.FullName);//通过response对象，执行下载操作
+                        Response.Flush();
+                        Response.End();
+
+                    }
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.ToString());
+            }
+        }
+
+        protected void LinkButton1_Click(object sender, EventArgs e)
+        {
+            string id = this.hidfileid.Value;
+            DowmLoad(id);
         }
     }
 }

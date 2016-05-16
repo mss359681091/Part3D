@@ -27,15 +27,24 @@
         $(document).ready(function () {
             var classid = document.getElementById("hidclassid").value;
             var id = document.getElementById("hidid").value;
+            $("#btn button").eq(0).data("partid", id);
+            $("#btn button").eq(1).data("partid", id);
+            $("#btn button").eq(2).data("partid", id);
             //加载最新推荐
             fnRecommend('', classid, id);
         });
 
+        function fndw(strid) {
+            $("#hidfileid").val(strid);
+            document.getElementById('<%=LinkButton1.ClientID %>').click();
+        }
     </script>
 </head>
 <body>
     <form id="form1" runat="server">
         <div>
+            <input id="hidfileid" type="hidden" value="" runat="server" />
+            <asp:LinkButton ID="LinkButton1" class="lnkdown" Style="display: none" runat="server" OnClick="LinkButton1_Click"></asp:LinkButton>
             <div class="navbarM">
                 <uc2:WUCTop ID="WUCTop1" runat="server" />
             </div>
@@ -59,43 +68,18 @@
                 <div class="V_Img">
                     <img id="imgPreview" runat="server" src="/images/Img.jpg" alt="" style="max-width: 850px;" />
                 </div>
-                <h5>
-                    <button type="button" data-event="D_Step">下载IGS</button>
-                    <button type="button" data-event="D_Step">下载STEP</button>
-                    <button type="button" data-event="D_Step">下载X_T</button></h5>
+                <h5 id="btn">
+                    <button type="button" data-format=".igs" data-event="D_Step">下载IGS</button>
+                    <button type="button" data-format=".step" data-event="D_Step">下载STEP</button>
+                    <button type="button" data-format=".x_t" data-event="D_Step">下载X_T</button></h5>
             </div>
-           <%-- <!--弹出下载窗口-->
-            <script type="text/ecmascript">
-                $('button[data-event=D_Step]').on('click', function () {
-                    var d = dialog({
-                        fixed: true,
-                        title: 'IGS格式',
-                        content: document.getElementById('D_Step')
-                    })
-                    d.width(960);
-                    d.showModal();
-                });
-            </script>--%>
+
             <div id="D_Step" style="display: none;">
                 <dl class="Class">
-                    <dt>快速定位标签：</dt>
-                   <%-- <dd class="hover" title="点击选中，再点取消。">M010</dd>
-                    <dd title="点击选中，再点取消。">M020</dd>
-                    <dd title="点击选中，再点取消。">M030</dd>
-                    <dd title="点击选中，再点取消。">M040</dd>
-                    <dd title="点击选中，再点取消。">M050</dd>--%>
+                    <dt>快速定位型号：</dt>
+
                 </dl>
                 <ul>
-                 <%--   <li class="hover">M010-00101</li>
-                    <li class="hover">M010-00102</li>
-                    <li class="hover">M010-00102</li>
-                    <li class="hover">M010-00104</li>
-                    <li>M020-00101</li>
-                    <li>M020-00102</li>
-                    <li>M020-00102</li>
-                    <li>M020-00104</li>
-                    <li>M020-00105</li>--%>
-
                 </ul>
             </div>
 
