@@ -19,19 +19,20 @@
     <link rel="stylesheet" type="text/css" href="/content/Style.css" />
     <link rel="stylesheet" href="/content/iconfont.css" />
     <link rel="stylesheet" href="/content/ui-dialog.css" />
-
+    <script type="text/javascript" src="/scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="/scripts/common.js"></script>
+    <script type="text/javascript" src="/scripts/dialog.js"></script>
+    <script type="text/javascript" src="/scripts/scriptC.js"></script>
     <!-- Bootstrap -->
-    <%--    <link rel="stylesheet" media="screen" href="/content/bootstrap.min.css">--%>
+    <link rel="stylesheet" media="screen" href="/content/bootstrap.min.css">
+    <script src="/scripts/bootstrap.min.js"></script>
 
     <!-- jQuery ui -->
     <link href="/content/jquery-ui-1.10.4.min.css" rel="stylesheet" media="screen">
-
+    <script src="/scripts/jquery-ui-1.10.4.min.js"></script>
     <!-- SliderLock -->
     <link href="/content/sliderlock.css" rel="stylesheet" media="screen">
-    <script type="text/javascript" src="/scripts/jquery-1.10.2.min.js"></script>
-    <script type="text/javascript" src="/scripts/common.js"></script>
-
-
+    <script type="text/javascript" src="/scripts/sliderlock.js"></script>
     <script type="text/javascript">
         document.onkeydown = function (event) {
             var e = event || window.event || arguments.callee.caller.arguments[0];
@@ -147,10 +148,7 @@
 
         </div>
 
-        <script type="text/javascript" src="/scripts/dialog.js"></script>
-        <script src="/scripts/sliderlock.js"></script>
-        <%-- <script src="/scripts/bootstrap.min.js"></script>--%>
-        <script src="/scripts/jquery-ui-1.10.4.min.js"></script>
+
 
     </form>
 </body>

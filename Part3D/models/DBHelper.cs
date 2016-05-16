@@ -133,6 +133,10 @@ namespace _3DPart.DAL.BULayer
             {
                 SqlCommand cmd = new SqlCommand(strSQL, conn);
                 cmd.CommandType = cmdType;
+
+                //对应存储过程getAge的输出参数@age  
+                SqlParameter parID = new SqlParameter("@RETURN_VALUE", "");
+                parID.Direction = ParameterDirection.ReturnValue;
                 if (pas != null)
                 {
                     foreach (DictionaryEntry dEntry in pas)
@@ -140,18 +144,14 @@ namespace _3DPart.DAL.BULayer
                         cmd.Parameters.Add(new SqlParameter(dEntry.Key.ToString(), dEntry.Value));
                     }
                     cmd.Parameters.Add(new SqlParameter("CreateDate", DateTime.Now));//自动添加日期
+                    cmd.Parameters.Add(parID);
                 }
-
-                //对应存储过程getAge的输出参数@age  
-                SqlParameter parID = new SqlParameter("@RETURN_VALUE", "");
-                parID.Direction = ParameterDirection.ReturnValue;
-                cmd.Parameters.Add(parID);
-
-
-
                 conn.Open();
-                cmd.ExecuteNonQuery();
-                i = int.Parse(parID.Value.ToString());//返回ID
+                i = cmd.ExecuteNonQuery();
+                if (pas != null)
+                {
+                    i = int.Parse(parID.Value.ToString());//返回ID
+                }
                 conn.Close();
             }
             return i;

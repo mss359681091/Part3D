@@ -38,7 +38,7 @@
 
             //加载最新推荐
             fnGetList('', '', '', '', '1', '12');
-            getStandard('', '');
+            //getStandard('', '');
         });
 
 

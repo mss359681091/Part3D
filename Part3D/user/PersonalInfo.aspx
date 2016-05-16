@@ -15,11 +15,130 @@
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
     <title>个人中心-个人信息</title>
     <link rel="stylesheet" type="text/css" href="/content/Style.css" />
-    <link rel="stylesheet" href="/contenticonfont/iconfont.css" />
+    <link rel="stylesheet" href="/content/iconfont.css" />
     <link rel="stylesheet" href="/content/ui-dialog.css" />
     <script type="text/javascript" src="/scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="/scripts/dialog.js"></script>
     <script type="text/javascript" src="/scripts/common.js"></script>
+    <script type="text/javascript">
+        //修改密码
+        function fnSetPassword() {
+            var oldpassword = $("#txt_oldpassword").val();
+            var newpassword = $("#txt_newpassword").val();
+            var chkpassword = $("#txt_chkpassword").val();
+            if (newpassword.trim().length < 6) {
+                $("#txt_newpassword").focus();
+                alert("密码过短，密码长度6-20！");
+                return;
+            }
+            if (chkpassword != newpassword) {
+                $("#txt_chkpassword").focus();
+                alert("两次输入密码不一致！");
+                return;
+            }
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/user/PersonalInfo.aspx/SetPassword",
+                data: "{oldpassword:'" + oldpassword + "',newpassword:'" + newpassword + "'}",
+                dataType: 'json',
+                success: function (result) {
+                    if (result.d == "1") {
+                        $("#txt_newpassword").val("");
+                        $("#txt_chkpassword").val("");
+                        alert("修改成功！");
+
+                    }
+                    else {
+                        alert("原密码不正确！");
+                        return;
+                    }
+                }
+            });
+
+        }
+        //修改昵称
+        function fnSetNickname() {
+            var nickname = $("#txt_nickname").val();
+            if (nickname.trim().length == 0) {
+                $("#txt_nickname").focus();
+                alert("昵称不能为空");
+                return;
+            }
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/user/PersonalInfo.aspx/SetNickname",
+                data: "{nickname:'" + nickname + "'}",
+                dataType: 'json',
+                success: function (result) {
+                    if (result.d == "1") {
+                        $(".spNickname").text(nickname);
+                        $(".sp_nickname").text("昵称：" + nickname);
+                        $("#txt_nickname").val("");
+                        $(".lnkLogined").html("<i class='iconfont'>&#xe606;</i>" + nickname);
+                        alert("修改成功！");
+
+                    }
+                }
+            });
+        }
+        //修改邮箱
+        function fnSetEmail() {
+
+            var email = $("#txt_email").val();
+            var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+            if (!myreg.test(email)) {
+                $("#txt_email").focus();
+                alert("邮箱格式不正确");
+                return false;
+            }
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/user/PersonalInfo.aspx/SetEmail",
+                data: "{email:'" + email + "'}",
+                dataType: 'json',
+                success: function (result) {
+                    if (result.d == "1") {
+                        $(".spEmail").text(email);
+                        $(".sp_email").text("邮箱：" + email);
+                        $("#txt_email").val("");
+                        alert("修改成功！");
+                    }
+                }
+            });
+        }
+
+        //修改手机号
+        function fnSetMobile() {
+
+            var mobile = $("#txt_mobile").val();
+            var partten = /^1[3,5,8]\d{9}$/;
+            if (!partten.test(mobile)) {
+                $("#txt_mobile").focus();
+                alert("手机格式不正确！");
+                return false;
+            }
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/user/PersonalInfo.aspx/SetMobile",
+                data: "{mobile:'" + mobile + "'}",
+                dataType: 'json',
+                success: function (result) {
+                    if (result.d == "1") {
+                        $(".spMobile,.sp_mobile").text(mobile);
+                        $(".sp_mobile").text("手机号：" + mobile);
+                        $("#txt_mobile").val("");
+                        alert("修改成功！");
+
+                    }
+                }
+            });
+
+        }
+    </script>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -35,12 +154,12 @@
             <div class="User_My Container">
                 <h1>账户绑定</h1>
                 <ul>
-                    <li>登陆账户： kenboy@liknet.cn</li>
-                    <li>绑定手机： 15909449087
+                    <li>登陆账户：<span id="spUsername" class="spUsername" runat="server"></span></li>
+                    <li>绑定手机： <span id="spMobile" class="spMobile" runat="server"></span>
                         <button type="button" data-event="Phone">更换</button></li>
-                    <li>保密邮箱： 未绑定
+                    <li>保密邮箱： <span id="spEmail" class="spEmail" runat="server"></span>
                         <button type="button" data-event="Mail">绑定</button></li>
-                    <li>昵称：一泽瑞尔
+                    <li>昵称：<span id="spNickname" class="spNickname" runat="server"></span>
                         <button type="button" data-event="User">更换</button></li>
                 </ul>
                 <h1>密码安全</h1>
@@ -58,7 +177,8 @@
                         content: document.getElementById('Password'),
                         okValue: '确定',
                         ok: function () {
-                            this.title('提交中…');
+                            //this.title('提交中…');
+                            fnSetPassword();
                             return false;
                         },
                         cancelValue: '取消',
@@ -69,9 +189,9 @@
             </script>
             <div id="Password" style="display: none;" class="User_Windows">
                 <ul>
-                    <li><span>旧密码验证：</span><input type="text" placeholder="请输入旧密码..."></li>
-                    <li><span>新密码：</span><input type="text" placeholder="请输入6-20位密码..."></li>
-                    <li><span>再次确认密码：</span><input type="text" placeholder="请输入6-20位密码..."></li>
+                    <li><span>旧密码验证：</span><input maxlength="20" id="txt_oldpassword" type="password" placeholder="请输入旧密码..."></li>
+                    <li><span>新密码：</span><input maxlength="20" id="txt_newpassword" type="password" placeholder="请输入6-20位密码..."></li>
+                    <li><span>再次确认密码：</span><input maxlength="20" id="txt_chkpassword" type="password" placeholder="请输入6-20位密码..."></li>
                 </ul>
             </div>
 
@@ -83,7 +203,7 @@
                         content: document.getElementById('Phone'),
                         okValue: '确定',
                         ok: function () {
-                            this.title('提交中…');
+                            fnSetMobile();
                             return false;
                         },
                         cancelValue: '取消',
@@ -95,10 +215,10 @@
             <div id="Phone" style="display: none;" class="User_Windows">
                 <ul>
                     <!--<li><span>手机号码：</span><input type="text"></li>-->
-                    <li><span>手机号码：15909449087</span></li>
-                    <li><span>验证码：</span><input type="text" class="Inp" placeholder="请输入验证码...">
-                        <button type="button">获取验证码</button></li>
-                    <li><span>新的手机号码：</span><input type="text" placeholder="请输入新的手机号码..."></li>
+                    <li><span id="sp_mobile" class="sp_mobile" runat="server">手机号码：</span></li>
+                    <%-- <li><span>验证码：</span><input type="text" class="Inp" placeholder="请输入验证码...">
+                        <button type="button">获取验证码</button></li>--%>
+                    <li><span>新的手机号码：</span><input id="txt_mobile" type="text" maxlength="11" placeholder="请输入新的手机号码..."></li>
                 </ul>
             </div>
 
@@ -110,7 +230,7 @@
                         content: document.getElementById('Mail'),
                         okValue: '确定',
                         ok: function () {
-                            this.title('提交中…');
+                            fnSetEmail();
                             return false;
                         },
                         cancelValue: '取消',
@@ -121,7 +241,8 @@
             </script>
             <div id="Mail" style="display: none;" class="User_Windows">
                 <ul>
-                    <li><span>邮箱：</span><input type="text" placeholder="请输入新的邮箱地址..."></li>
+                    <li><span id="sp_email" class="sp_email" runat="server">邮箱：</span></li>
+                    <li><span>新邮箱：</span><input maxlength="50" id="txt_email" type="text" placeholder="请输入新的邮箱地址..."></li>
                 </ul>
             </div>
 
@@ -133,7 +254,7 @@
                         content: document.getElementById('User'),
                         okValue: '确定',
                         ok: function () {
-                            this.title('提交中…');
+                            fnSetNickname();
                             return false;
                         },
                         cancelValue: '取消',
@@ -144,8 +265,8 @@
             </script>
             <div id="User" style="display: none;" class="User_Windows">
                 <ul>
-                    <li><span>昵称：一泽瑞尔</span></li>
-                    <li><span>新昵称：</span><input type="text" placeholder="请输入新的昵称..."></li>
+                    <li><span id="sp_nickname" class="sp_nickname" runat="server">昵称：</span></li>
+                    <li><span>新昵称：</span><input maxlength="50" id="txt_nickname" type="text" placeholder="请输入新的昵称..."></li>
                 </ul>
             </div>
 

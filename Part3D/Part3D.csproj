@@ -119,6 +119,8 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="404\400.html" />
+    <Content Include="404\body.png" />
     <Content Include="bin\ICSharpCode.SharpZipLib.dll" />
     <Content Include="content\bootstrap.min.css" />
     <Content Include="content\iconfont.css" />

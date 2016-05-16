@@ -460,13 +460,9 @@ function fnGetList(ParentID, UserID, ClassifyID, Name, CurrentIndex, PageSize) {
                     //getStandard(partid, format);//获取该组件标准列表
                     getModels(partid, format);//获取该组件下所有型号
                     var title = $(this).text();
-                    var d = dialog({
-                        fixed: true,
-                        title: title + ' 格式',
-                        content: document.getElementById('D_Step')
-                    })
-                    d.width(960);
-                    d.showModal();
+
+                    getStandard(partid, title);
+
                 });
             }
         }
@@ -511,13 +507,14 @@ function fnRecommend(UserID, ClassifyID, ID) {
                     //getStandard(partid, format);//获取该组件标准列表
                     getModels(partid, format);//获取该组件下所有型号
                     var title = $(this).text();
-                    var d = dialog({
-                        fixed: true,
-                        title: title + ' 格式',
-                        content: document.getElementById('D_Step')
-                    })
-                    d.width(960);
-                    d.showModal();
+                    //var d = dialog({
+                    //    fixed: true,
+                    //    title: title + ' 格式',
+                    //    content: document.getElementById('D_Step')
+                    //})
+                    //d.width(960);
+                    //d.showModal();
+                    getStandard(partid, title);
                 });
             }
         }
@@ -547,28 +544,26 @@ function getModels(partid, format) {
     });
 }
 
-////获取标准列表
-//function getStandard(partid, format) {
-//    $.ajax({
-//        type: "POST",
-//        contentType: "application/json",
-//        url: "/Index.aspx/GetStandard",
-//        data: "{partid:'" + partid + "',format:'" + format + "'}",
-//        async: false,
-//        dataType: 'json',
-//        success: function (result) {
-//            $("#D_Step .Class dd").remove();
-//            $("#D_Step .Class ").append(result.d);
-//            $("#D_Step .Class dd").eq(0).addClass("hover");
-
-//            $("#D_Step .Class dd").bind("click", function () {
-//                getModelfile(partid, $(this).text(), format, $(this).data("id"));
-//            });
-
-//            getModelfile(partid, $("#D_Step .Class dd").eq(0).text(), format, '');
-//        }
-//    });
-//}
+//获取标准列表
+function getStandard(partid, title) {
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/Index.aspx/GetStandard",
+        data: "{partid:'" + partid + "'}",
+        async: false,
+        dataType: 'json',
+        success: function (result) {
+            var d = dialog({
+                fixed: true,
+                title: '标准：' + result.d + ' ' + "格式：" + title,
+                content: document.getElementById('D_Step')
+            })
+            d.width(960);
+            d.showModal();
+        }
+    });
+}
 
 //获取模型文件
 function getModelfile(partid, modelsname, format, models, id) {

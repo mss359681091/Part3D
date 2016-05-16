@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _3DPart.DAL.BULayer.Schema;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,7 +12,14 @@ namespace Part3D
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!IsPostBack)
+            {
+                if (Session[sysUser.Nickname] != null)
+                {
+                    this.spnickname.InnerText = Session[sysUser.Nickname].ToString();
+                    this.imgphoto.Src = Session[sysUser.Photo].ToString();
+                }
+            }
         }
     }
 }

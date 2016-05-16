@@ -78,6 +78,11 @@ namespace _3DPart.DAL.BULayer
             return myDs;
         }
 
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="QueryData"></param>
+        /// <returns></returns>
         public DataSet DSLogin(sysUserQuery QueryData)
         {
             string strQuery = @"SELECT "
@@ -126,6 +131,12 @@ namespace _3DPart.DAL.BULayer
             return myDs;
         }
 
+        /// <summary>
+        /// 验证是否存在
+        /// </summary>
+        /// <param name="QueryData"></param>
+        /// <param name="strParam"></param>
+        /// <returns></returns>
         public string GetParams(sysUserQuery QueryData, string strParam)
         {
             string returnValue = string.Empty;
@@ -176,6 +187,38 @@ namespace _3DPart.DAL.BULayer
             }
             return returnValue;
         }
+
+
+        /// <summary>
+        /// 修改个人信息
+        /// </summary>
+        /// <param name="strParam">修改字段</param>
+        /// <param name="strValue">字段值</param>
+        /// <param name="strUserID">用户ID</param>
+        /// <returns></returns>
+        public string UpdateParams(string strParam, string strValue, string strUserID)
+        {
+            string returnValue = string.Empty;
+            string strQuery = @"Update " + sysUser.TABLENAME + " Set " + strParam + " = '" + strValue + "' WHERE 1 = 1 ";
+            strQuery += " AND " + sysUser.Enabled_FULL + " =1 ";
+            strQuery += " AND " + sysUser.ID_FULL + " = " + strUserID;
+            Hashtable myParam = new Hashtable();
+            try
+            {
+                returnValue = SQLHelper.ExcuteSQL(strQuery).ToString();
+            }
+            catch (Exception myEx)
+            {
+
+                throw new Exception(myEx.Message + "\r\n SQL:" + strQuery);
+            }
+            finally
+            {
+
+            }
+            return returnValue;
+        }
+
     }
 
     [Serializable()]

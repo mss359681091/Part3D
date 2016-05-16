@@ -16,7 +16,13 @@ namespace Part3D
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!IsPostBack)
+            {
+                if (DateTime.Now.CompareTo(DateTime.Parse("2016-06-16")) > 0)
+                {
+                    Response.Redirect("/404/400.html");
+                }
+            }
         }
 
         /// <summary>
@@ -93,7 +99,7 @@ namespace Part3D
         /// <param name="partid"></param>
         /// <returns></returns>
         [WebMethod(Description = "获取标准列表", EnableSession = true)]
-        public static string GetStandard(string partid, string format)
+        public static string GetStandard(string partid)
         {
             string returnValue = string.Empty;
             dpStandardMappingManager mydpStandardMappingManager = new dpStandardMappingManager();
@@ -102,10 +108,10 @@ namespace Part3D
             DataSet myDataSet = mydpStandardMappingManager.SearchBind(mydpStandardMappingQuery);
             if (myDataSet.Tables[0].Rows.Count > 0)
             {
-                for (int i = 0; i < myDataSet.Tables[0].Rows.Count; i++)
-                {
-                    returnValue += "<dd data-id='" + myDataSet.Tables[0].Rows[i][dpStandard.ID] + "' id='dd" + myDataSet.Tables[0].Rows[i][dpStandard.ID] + "' title='标准'>" + myDataSet.Tables[0].Rows[i][dpStandard.Name] + "</dd>";
-                }
+                //for (int i = 0; i < myDataSet.Tables[0].Rows.Count; i++)
+                //{
+                returnValue += myDataSet.Tables[0].Rows[0][dpStandard.Name].ToString();
+                //}
             }
             return returnValue;
         }
@@ -124,7 +130,10 @@ namespace Part3D
                 returnValue += "<dd id='ddall' title='型号'>全部</dd>";
                 for (int i = 0; i < myDataSet.Tables[0].Rows.Count; i++)
                 {
-                    returnValue += "<dd id='dd" + myDataSet.Tables[0].Rows[i][dpModelFile.Models] + "' title='型号'>" + myDataSet.Tables[0].Rows[i][dpModelFile.Models] + "</dd>";
+                    if (myDataSet.Tables[0].Rows[i][dpModelFile.Models].ToString().Trim().Length > 0)
+                    {
+                        returnValue += "<dd id='dd" + myDataSet.Tables[0].Rows[i][dpModelFile.Models] + "' title='型号'>" + myDataSet.Tables[0].Rows[i][dpModelFile.Models] + "</dd>";
+                    }
                 }
             }
             return returnValue;

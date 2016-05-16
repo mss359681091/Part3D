@@ -1386,42 +1386,25 @@ header .navbar a:hover {
                 float: left;
             }
 
-#Claa_Su {
-    visibility: hidden;
-    margin: 39px 0 0 -8px;
-    *margin: 48px 0 0 -40px;
-    position: absolute;
-    z-index: 990;
-    background: #f1f1f1;
-    width: 80px;
-    *width: 73px;
-}
 
-    #Claa_Su ul li {
-        padding-left: 10px;
-    }
 
-        #Claa_Su ul li:hover {
-            background: #f9f9f9;
-        }
-
-.User_TM .User_img {
-    float: left;
-    line-height: 72px;
-    font-size: 32px;
-    margin-top: 45px;
-    position: absolute;
-}
-
-    .User_TM .User_img img {
-        width: 100px;
-        height: 100px;
-        border-radius: 100px;
-        border: 6px #FFF solid;
-        box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    .User_TM .User_img {
         float: left;
-        margin-right: 15px;
+        line-height: 72px;
+        font-size: 32px;
+        margin-top: 45px;
+        position: absolute;
     }
+
+        .User_TM .User_img img {
+            width: 100px;
+            height: 100px;
+            border-radius: 100px;
+            border: 6px #FFF solid;
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+            float: left;
+            margin-right: 15px;
+        }
 
 .User_Maun {
     background: #f4f4f4;
@@ -1647,4 +1630,23 @@ header .navbar a:hover {
 
         .User_Windows ul li button:hover {
             background: #F30;
+        }
+
+.Claa_Su {
+    visibility: hidden;
+    margin: 39px 0 0 -8px;
+    *margin: 48px 0 0 -40px;
+    position: absolute;
+    z-index: 990;
+    background: #f1f1f1;
+    width: 80px;
+    *width: 73px;
+}
+
+    .Claa_Su ul li {
+        padding-left: 10px;
+    }
+
+        .Claa_Su ul li:hover {
+            background: #f9f9f9;
         }
