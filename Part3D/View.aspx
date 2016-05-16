@@ -32,12 +32,22 @@
             $("#btn button").eq(2).data("partid", id);
             //加载最新推荐
             fnRecommend('', classid, id);
+
+            //$('button[data-event=D_Step]').on('click', function () {
+            //    var partid = $(this).data("partid");
+            //    var format = $(this).data("format");
+
+            //    getModels(partid, format);//获取该组件下所有型号
+            //    var title = $(this).text();
+            //    getStandard(partid, title);
+            //});
         });
 
         function fndw(strid) {
             $("#hidfileid").val(strid);
             document.getElementById('<%=LinkButton1.ClientID %>').click();
         }
+
     </script>
 </head>
 <body>

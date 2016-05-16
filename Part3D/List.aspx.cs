@@ -101,6 +101,7 @@ namespace Part3D
             {
                 returnData = CommonManager.GetList<dpPartData>(myDataSet.Tables[0]);//转换实体类list
             }
+
             return new { status = status, errmsg = errmsg, returnData = returnData };
         }
 

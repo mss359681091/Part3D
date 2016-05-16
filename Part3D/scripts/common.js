@@ -501,22 +501,25 @@ function fnRecommend(UserID, ClassifyID, ID) {
                 });
                 $(".Index_List li").remove();
                 $(".Index_List ul").append(strli);
+
                 $('button[data-event=D_Step]').on('click', function () {
                     var partid = $(this).data("partid");
                     var format = $(this).data("format");
-                    //getStandard(partid, format);//获取该组件标准列表
                     getModels(partid, format);//获取该组件下所有型号
                     var title = $(this).text();
-                    //var d = dialog({
-                    //    fixed: true,
-                    //    title: title + ' 格式',
-                    //    content: document.getElementById('D_Step')
-                    //})
-                    //d.width(960);
-                    //d.showModal();
                     getStandard(partid, title);
                 });
             }
+            else {
+                $('button[data-event=D_Step]').on('click', function () {
+                    var partid = $(this).data("partid");
+                    var format = $(this).data("format");
+                    getModels(partid, format);//获取该组件下所有型号
+                    var title = $(this).text();
+                    getStandard(partid, title);
+                });
+            }
+
         }
     });
 }
