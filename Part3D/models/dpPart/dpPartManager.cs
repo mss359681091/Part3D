@@ -20,6 +20,11 @@ namespace _3DPart.DAL.BULayer
     [Serializable()]
     public class dpPartManager
     {
+        /// <summary>
+        /// 默认查询，无关联表
+        /// </summary>
+        /// <param name="QueryData"></param>
+        /// <returns></returns>
         public DataSet Search(dpPartQuery QueryData)
         {
             string strQuery = @"SELECT "
@@ -93,6 +98,11 @@ namespace _3DPart.DAL.BULayer
             return myDs;
         }
 
+        /// <summary>
+        /// 查询单条组件信息
+        /// </summary>
+        /// <param name="QueryData"></param>
+        /// <returns></returns>
         public DataSet SearchSingle(dpPartQuery QueryData)
         {
             string strQuery = @"SELECT "
@@ -164,6 +174,11 @@ namespace _3DPart.DAL.BULayer
             return myDs;
         }
 
+        /// <summary>
+        /// 带分页的组件列表
+        /// </summary>
+        /// <param name="QueryData"></param>
+        /// <returns></returns>
         public DataSet SearchPaging(dpPartQuery QueryData)
         {
 
@@ -243,6 +258,11 @@ namespace _3DPart.DAL.BULayer
             return myDs;
         }
 
+        /// <summary>
+        /// 根据分类显示数量
+        /// </summary>
+        /// <param name="QueryData"></param>
+        /// <returns></returns>
         public DataSet SearchCount(dpPartQuery QueryData)
         {
 
@@ -293,6 +313,11 @@ namespace _3DPart.DAL.BULayer
             return myDs;
         }
 
+        /// <summary>
+        /// 加载所有组件数量
+        /// </summary>
+        /// <param name="QueryData"></param>
+        /// <returns></returns>
         public DataSet SearchAllCount(dpPartQuery QueryData)
         {
 
@@ -340,6 +365,11 @@ namespace _3DPart.DAL.BULayer
             return myDs;
         }
 
+        /// <summary>
+        /// 加载推荐列表
+        /// </summary>
+        /// <param name="QueryData"></param>
+        /// <returns></returns>
         public DataSet SearchRecommend(dpPartQuery QueryData)
         {
             string strQuery = @"SELECT "
@@ -428,6 +458,76 @@ namespace _3DPart.DAL.BULayer
 
             }
             return returnValue;
+        }
+
+        /// <summary>
+        /// 检索我的资源，带分页
+        /// </summary>
+        /// <param name="QueryData"></param>
+        /// <returns></returns>
+        public DataSet SearchMyPart(dpPartQuery QueryData)
+        {
+            string strQuery = @" SELECT TOP " + QueryData.PageSize + " * FROM ( "
+            + " SELECT ROW_NUMBER() OVER ( ORDER BY " + dpPart.ID_FULL + " DESC ) AS RowNumber , "
+            + dpPart.ID_FULL + ","
+            + dpPart.PreviewSmall_FULL + ","
+            + dpPart.Name_FULL + ","
+            + dpPart.Accesslog_FULL + ","
+            + " (select count(*) from  " + dpDownRecord.TABLENAME
+            + " left join " + dpPart.TABLENAME + " as dp1 on " + dpDownRecord.PartID_FULL + " = dp1.id "
+            + " where 1=1 "
+            + " and dp1.userid = " + dpPart.UserID_FULL
+            + " and dp1.id= " + dpPart.ID_FULL
+            + " ) as mycount , "
+            + "CONVERT(varchar(100)," + dpPart.CreateDate_FULL + ", 120) as CreateDate "
+            + " FROM " + dpPart.TABLENAME
+            + " WHERE 1 = 1 ";
+
+
+            Hashtable myParam = new Hashtable();
+
+            if (QueryData.ID.Length > 0)
+            {
+                strQuery += " AND " + dpPart.ID_FULL + " = @ID ";
+                myParam.Add("@ID", QueryData.ID);
+            }
+
+            if (QueryData.UserID.Length > 0)
+            {
+                strQuery += " AND " + dpPart.UserID_FULL + " = @UserID ";
+                myParam.Add("@UserID", QueryData.UserID);
+            }
+
+            if (QueryData.ClassifyID.Length > 0)
+            {
+                strQuery += " AND (" + dpPart.ClassifyID_FULL + " = @ClassifyID OR " + dpClassify.ParentID_FULL + " = @ClassifyID )";
+                myParam.Add("@ClassifyID", QueryData.ClassifyID);
+            }
+
+            if (QueryData.Name.Length > 0)
+            {
+                strQuery += " AND " + dpPart.Name_FULL + " LIKE @Name ";
+                myParam.Add("@Name", "%" + QueryData.Name.Replace(" ", "%") + "%");
+            }
+            strQuery += " ) A ";
+            strQuery += " WHERE RowNumber > " + QueryData.PageSize * (QueryData.CurrentIndex - 1);
+
+            DataSet myDs = new DataSet();
+            try
+            {
+
+                myDs = SQLHelper.GetDataSet(strQuery, myParam);
+            }
+            catch (Exception myEx)
+            {
+
+                throw new Exception(myEx.Message + "\r\n SQL:" + strQuery);
+            }
+            finally
+            {
+
+            }
+            return myDs;
         }
     }
 
