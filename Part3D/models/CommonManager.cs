@@ -306,7 +306,60 @@ namespace Part3D.models
         }
         #endregion
 
+        #region public string GetClientIPv4Address() 取得客户端IPv4地址方法
+        protected static string ClientIP
+        {
+            get
+            {
+                string ip = HttpContext.Current.Request.ServerVariables["HTTP_VIA"];
+                if (ip == null || ip.Length == 0)
+                {
+                    ip = HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+                }
+                if (ip == null || ip.Length == 0)
+                {
+                    ip = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
+                }
+                if (ip == null || ip.Length == 0)
+                {
+                    ip = HttpContext.Current.Request.UserHostAddress;
+                }
+                return ip;
+            }
+        }
+        //win7以后的系统包含了ipv6,筛选以取得ipv4地址
+        public static string GetClientIPv4Address()
+        {
+            string ipv4 = String.Empty;
 
-    
+            foreach (System.Net.IPAddress ip in System.Net.Dns.GetHostAddresses(ClientIP))
+            {
+                if (ip.AddressFamily.ToString() == "InterNetwork")
+                {
+                    ipv4 = ip.ToString();
+                    break;
+                }
+            }
+
+            if (ipv4 != String.Empty)
+            {
+                return ipv4;
+            }
+
+            // 利用 Dns.GetHostEntry 方法，由获取的 IPv6 位址反查 DNS 纪录，
+            // 再逐一判断何者为 IPv4 协议，即可转为 IPv4 位址。
+            foreach (System.Net.IPAddress ip in System.Net.Dns.GetHostEntry(ClientIP).AddressList)
+            {
+                if (ip.AddressFamily.ToString() == "InterNetwork")
+                {
+                    ipv4 = ip.ToString();
+                    break;
+                }
+            }
+
+            return ipv4;
+        }
+        #endregion
+
     }
 }

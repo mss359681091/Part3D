@@ -33,6 +33,7 @@ namespace _3DPart.DAL.BULayer
             + dpPart.Description_FULL + ","
             + dpPart.Limits_FULL + ","
             + dpPart.Keyword_FULL + ","
+            + dpPart.Accesslog_FULL + ","
             + dpPart.Remark_FULL + ","
             + dpPart.Enabled_FULL + ","
             + dpPart.CreateStaff_FULL + ","
@@ -105,6 +106,7 @@ namespace _3DPart.DAL.BULayer
             + dpPart.Description_FULL + ","
             + dpPart.Limits_FULL + ","
             + dpPart.Keyword_FULL + ","
+            + dpPart.Accesslog_FULL + ","
             + dpPart.Remark_FULL + ","
             + " CONVERT(varchar(100), " + dpPart.CreateDate_FULL + ", 23) as CreateDate "
             + " FROM " + dpPart.TABLENAME
@@ -177,6 +179,7 @@ namespace _3DPart.DAL.BULayer
             + dpPart.Description_FULL + ","
             + dpPart.Limits_FULL + ","
             + dpPart.Keyword_FULL + ","
+            + dpPart.Accesslog_FULL + ","
             + dpPart.Remark_FULL + ","
             + dpPart.Enabled_FULL + ","
             + dpPart.CreateStaff_FULL + ","
@@ -350,6 +353,7 @@ namespace _3DPart.DAL.BULayer
             + dpPart.Description_FULL + ","
             + dpPart.Limits_FULL + ","
             + dpPart.Keyword_FULL + ","
+            + dpPart.Accesslog_FULL + ","
             + dpPart.Remark_FULL + ","
             + dpPart.Enabled_FULL + ","
             + dpPart.CreateStaff_FULL + ","
@@ -394,6 +398,36 @@ namespace _3DPart.DAL.BULayer
 
             }
             return myDs;
+        }
+
+        /// <summary>
+        /// 修改组件信息
+        /// </summary>
+        /// <param name="strParam">修改字段</param>
+        /// <param name="strValue">字段值</param>
+        /// <param name="strPartID">组件ID</param>
+        /// <returns></returns>
+        public string UpdateParams(string strParam, string strValue, string strPartID)
+        {
+            string returnValue = string.Empty;
+            string strQuery = @"Update " + dpPart.TABLENAME + " Set " + strParam + " = '" + strValue + "' WHERE 1 = 1 ";
+            strQuery += " AND " + dpPart.Enabled_FULL + " =1 ";
+            strQuery += " AND " + dpPart.ID_FULL + " = " + strPartID;
+            Hashtable myParam = new Hashtable();
+            try
+            {
+                returnValue = SQLHelper.ExcuteSQL(strQuery).ToString();
+            }
+            catch (Exception myEx)
+            {
+
+                throw new Exception(myEx.Message + "\r\n SQL:" + strQuery);
+            }
+            finally
+            {
+
+            }
+            return returnValue;
         }
     }
 

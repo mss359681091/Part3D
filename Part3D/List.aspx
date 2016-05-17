@@ -71,6 +71,7 @@
 
             <input id="hidfileid" type="hidden" value="" runat="server" />
             <asp:LinkButton ID="LinkButton1" runat="server" Style="display: none" OnClick="LinkButton1_Click"></asp:LinkButton>
+
             <div class="Index_Foot">
                 <uc3:WUCLink ID="WUCLink1" runat="server" />
             </div>

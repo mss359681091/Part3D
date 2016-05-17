@@ -1,6 +1,8 @@
 ﻿using _3DPart.DAL.BULayer;
 using _3DPart.DAL.BULayer.Schema;
+using Part3D.models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -92,7 +94,6 @@ namespace Part3D
             return returnValue;
         }
 
-
         /// <summary>
         /// 获取标准列表
         /// </summary>
@@ -169,7 +170,6 @@ namespace Part3D
 
         private void DowmLoad(string strid)
         {
-
             try
             {
                 dpModelFileManager mydpModelFileManager = new dpModelFileManager();
@@ -183,6 +183,13 @@ namespace Part3D
 
                     if (file.Exists)//判断文件是否存在
                     {
+                        //添加下载记录
+                        Hashtable myHashtable = new Hashtable();
+                        myHashtable.Add(dpDownRecord.UserID, Session[sysUser.ID]);
+                        myHashtable.Add(dpDownRecord.PartID, myDataSet.Tables[0].Rows[0][dpModelFile.PartID].ToString());
+                        myHashtable.Add(dpDownRecord.IPAddress, CommonManager.GetClientIPv4Address());
+                        SQLHelper.ExcuteProc("sp_DownRecord", myHashtable);//执行存储过程注册
+                        //执行下载
                         Response.Clear();
                         Response.ClearHeaders();
                         Response.Buffer = false;

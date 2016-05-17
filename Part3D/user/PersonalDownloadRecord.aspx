@@ -13,12 +13,23 @@
     <meta name="keywords" content="">
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
     <title>3D组件</title>
-   <link rel="stylesheet" type="text/css" href="/content/Style.css" />
+    <link rel="stylesheet" type="text/css" href="/content/Style.css" />
     <link rel="stylesheet" href="/content/iconfont.css" />
     <link rel="stylesheet" href="/content/ui-dialog.css" />
     <script type="text/javascript" src="/scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="/scripts/dialog.js"></script>
-        <script type="text/javascript" src="/scripts/common.js"></script>
+    <script type="text/javascript" src="/scripts/common.js"></script>
+    <script src="/scripts/laypage/laypage.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            getcount("1");//获取下载记录
+        });
+        function fndw(strid) {
+            $("#hidfileid").val(strid);
+            document.getElementById('<%=LinkButton1.ClientID %>').click();
+        }
+
+    </script>
 </head>
 <body class="body_Bg">
     <form id="form1" runat="server">
@@ -26,168 +37,30 @@
             <div class="navbarM">
                 <uc2:WUCTop ID="WUCTop1" runat="server" />
             </div>
-
             <div class="Clear"></div>
             <uc4:WUCPersonalBanner ID="WUCPersonalBanner1" runat="server" />
 
             <div class="Index_List Container Margin_T30">
                 <ul>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
-                    <li>
-                        <p>
-                            <img src="/images/img.png" alt="" />
-                        </p>
-                        <a href="#">GBT7246 波形弹簧垫圈</a></li>
+                </ul>
+            </div>
+
+            <div id="D_Step" style="display: none;">
+                <dl class="Class">
+                    <dt>快速定位型号：</dt>
+
+                </dl>
+                <ul>
                 </ul>
             </div>
 
             <div class="Clear"></div>
-            <div class="Page">
-                <ul>
-                    <li><a href="#">上一页</a></li>
-                    <li class="hover"><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li>......</li>
-                    <li><a href="#">15</a></li>
-                    <li><a href="#">下一页</a></li>
-                </ul>
+            <div id="page" class="Page">
             </div>
+
+            <input id="hidfileid" type="hidden" value="" runat="server" />
+            <asp:LinkButton ID="LinkButton1" runat="server" Style="display: none" OnClick="LinkButton1_Click"></asp:LinkButton>
+
             <div class="Index_Foot">
                 <uc3:WUCLink ID="WUCLink1" runat="server" />
             </div>

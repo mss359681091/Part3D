@@ -169,7 +169,22 @@ namespace _3DPart.DAL.BULayer.Schema {
         /// 关键字
         /// </summary>
         public static string Keyword_TABLE_FULL = "dp_PartKeyword";
-        
+
+        /// <summary>
+        /// 访问次数
+        /// </summary>
+        public static string Accesslog = "Accesslog";
+
+        /// <summary>
+        /// 访问次数
+        /// </summary>
+        public static string Accesslog_FULL = "dp_Part.Accesslog";
+
+        /// <summary>
+        /// 访问次数
+        /// </summary>
+        public static string Accesslog_TABLE_FULL = "dp_PartAccesslog";
+
         /// <summary>
         /// 备注
         /// </summary>

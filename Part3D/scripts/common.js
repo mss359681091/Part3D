@@ -426,13 +426,13 @@ function fnmore() {
     window.open("list.aspx");
 }
 
-function fnGetList(ParentID, UserID, ClassifyID, Name, CurrentIndex, PageSize) {
+function fnGetList(ParentID, UserID, ClassifyID, Name, CurrentIndex, PageSize, type) {
     $.ajax({
         type: "POST",
         contentType: "application/json",
         url: "/List.aspx/GetPartList",
         async: true,
-        data: "{ParentID:'" + ParentID + "',UserID:'" + UserID + "',ClassifyID:'" + ClassifyID + "',Name:'" + Name + "',CurrentIndex:'" + CurrentIndex + "',PageSize:'" + PageSize + "'}",
+        data: "{ParentID:'" + ParentID + "',UserID:'" + UserID + "',ClassifyID:'" + ClassifyID + "',Name:'" + Name + "',CurrentIndex:'" + CurrentIndex + "',PageSize:'" + PageSize + "',type:'" + type + "'}",
         dataType: 'json',
         success: function (result) {
             //var status = result.d.result;//状态
@@ -593,7 +593,8 @@ function getModelfile(partid, modelsname, format, models, id) {
 }
 
 //获取各个类别组件总数
-function getcount() {
+//type:0 普通列表  type:1 我的下载
+function getcount(type) {
 
     $.ajax({
         type: "POST",
@@ -614,24 +615,24 @@ function getcount() {
                     $(this).addClass("hover").siblings().removeClass("hover");
                     var classid = $(this).children().data("classid");
                     $("#Claa_S").data("classid", classid)
-                    binddate();
+                    binddate(type);
 
                 });
 
-                binddate();
+                binddate(type);
             }
 
         }
     });
 }
 
-function binddate() {
+function binddate(type) {
 
     $.ajax({
         type: "POST",
         contentType: "application/json",
         url: "/List.aspx/GetAllCount",
-        data: "{classid:'" + $("#Claa_S").data("classid") + "',partname:'" + $("#txtkey").val() + "'}",
+        data: "{classid:'" + $("#Claa_S").data("classid") + "',partname:'" + $("#txtkey").val() + "',type:'" + type + "'}",
         async: false,
         dataType: 'json',
         success: function (result) {
@@ -639,7 +640,7 @@ function binddate() {
             if (result.d.length > 0) {
 
                 //开始执行分页
-                var nums = 12; //每页出现的数量
+                var nums = 9; //每页出现的数量
                 //allcount = (allcount < nums) ? nums : allcount;
                 var all = result.d;
                 var pages = Math.ceil(all / nums); //得到总页数
@@ -651,7 +652,7 @@ function binddate() {
                     skin: '#F60',
                     groups: 5, //连续显示分页数
                     jump: function (obj) {
-                        fnGetList('', '', $("#Claa_S").data("classid"), $("#txtkey").val(), obj.curr, nums);
+                        fnGetList('', '', $("#Claa_S").data("classid"), $("#txtkey").val(), obj.curr, nums, type);
                     }
                 });
             }

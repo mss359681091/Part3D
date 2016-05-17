@@ -17,8 +17,8 @@
     <link rel="stylesheet" href="/content/iconfont.css" />
     <link rel="stylesheet" href="/content/ui-dialog.css" />
     <script type="text/javascript" src="/scripts/jquery-1.10.2.min.js"></script>
-    <script type="text/javascript" src="/scripts/scriptC.js"></script>
-    <script type="text/javascript" src="/scripts/jquery.kinMaxShow-1.1.min.js"></script>
+    <%--    <script type="text/javascript" src="/scripts/scriptC.js"></script>
+    <script type="text/javascript" src="/scripts/jquery.kinMaxShow-1.1.min.js"></script>--%>
     <script type="text/javascript" src="/scripts/dialog.js"></script>
     <script type="text/javascript" src="/scripts/common.js"></script>
     <script src="/scripts/jquery.form.js"></script>
@@ -152,7 +152,7 @@
                 <ul class="Clear"></ul>
                 <ul class="All">
                     <li style="margin-bottom: 3px;"><span class="_span"><b>3D上传文件：</b><i>推荐大小：单个文件10M之内</i></span></li>
-                    <div class="_div"  style="max-height: 300px; overflow-x: scroll">
+                    <div class="_div" style="max-height: 300px; overflow-y: scroll">
                         <button type="button">
                             <div id="file_upload"></div>
                         </button>

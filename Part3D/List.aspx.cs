@@ -2,6 +2,7 @@
 using _3DPart.DAL.BULayer.Schema;
 using Part3D.models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -25,26 +26,43 @@ namespace Part3D
 
 
         [WebMethod(Description = "获取组件列表", EnableSession = true)]
-        public static dynamic GetPartList(string ParentID, string UserID, string ClassifyID, string Name, string CurrentIndex, string PageSize)
+        public static dynamic GetPartList(string ParentID, string UserID, string ClassifyID, string Name, string CurrentIndex, string PageSize, string type)
         {
             string status = string.Empty;//状态
             string errmsg = string.Empty;//错误信息
             IList<dpPartData> returnData = null;//返回实体列表
 
-            dpPartManager mydp_Part = new dpPartManager();
-            dpPartQuery mydpPartQuery = new dpPartQuery();
-            mydpPartQuery.ParentID = ParentID;
-            mydpPartQuery.UserID = UserID;
-            mydpPartQuery.ClassifyID = ClassifyID;
-            mydpPartQuery.Name = Name;
-            mydpPartQuery.CurrentIndex = Convert.ToInt32(CurrentIndex == "" ? "1" : CurrentIndex);
-            mydpPartQuery.PageSize = Convert.ToInt32(PageSize == "" ? "12" : PageSize);
-
-            DataSet myDataSet = mydp_Part.SearchPaging(mydpPartQuery);
-
-            if (myDataSet.Tables[0].Rows.Count > 0)
+            if (type == "0")
             {
-                returnData = CommonManager.GetList<dpPartData>(myDataSet.Tables[0]);//转换实体类list
+                dpPartManager mydp_Part = new dpPartManager();
+                dpPartQuery mydpPartQuery = new dpPartQuery();
+                mydpPartQuery.ParentID = ParentID;
+                mydpPartQuery.UserID = UserID;
+                mydpPartQuery.ClassifyID = ClassifyID;
+                mydpPartQuery.Name = Name;
+                mydpPartQuery.CurrentIndex = Convert.ToInt32(CurrentIndex == "" ? "1" : CurrentIndex);
+                mydpPartQuery.PageSize = Convert.ToInt32(PageSize == "" ? "12" : PageSize);
+
+                DataSet myDataSet = mydp_Part.SearchPaging(mydpPartQuery);
+
+                if (myDataSet.Tables[0].Rows.Count > 0)
+                {
+                    returnData = CommonManager.GetList<dpPartData>(myDataSet.Tables[0]);//转换实体类list
+                }
+            }
+            else
+            {
+                dpDownRecordManager my = new dpDownRecordManager();
+                dpDownRecordQuery myquery = new dpDownRecordQuery();
+                myquery.UserID = HttpContext.Current.Session[sysUser.ID].ToString();
+                myquery.CurrentIndex = Convert.ToInt32(CurrentIndex == "" ? "1" : CurrentIndex);
+                myquery.PageSize = Convert.ToInt32(PageSize == "" ? "12" : PageSize);
+                DataSet myDataSet = my.SearchPaging(myquery);
+
+                if (myDataSet.Tables[0].Rows.Count > 0)
+                {
+                    returnData = CommonManager.GetList<dpPartData>(myDataSet.Tables[0]);//转换实体类list
+                }
             }
             return new { status = status, errmsg = errmsg, returnData = returnData };
         }
@@ -67,17 +85,32 @@ namespace Part3D
         }
 
         [WebMethod(Description = "获取总数", EnableSession = true)]
-        public static string GetAllCount(string classid, string partname)
+        public static string GetAllCount(string classid, string partname, string type)
         {
             string reutrnValue = string.Empty;
-            dpPartManager mydpPartManager = new dpPartManager();
-            dpPartQuery mydpPartQuery = new dpPartQuery();
-            mydpPartQuery.ClassifyID = classid;
-            mydpPartQuery.Name = partname;
-            DataSet myDataSet = mydpPartManager.SearchAllCount(mydpPartQuery);
-            if (myDataSet.Tables[0].Rows.Count > 0)
+            if (type == "0")
             {
-                reutrnValue = myDataSet.Tables[0].Rows[0]["countall"].ToString();
+                dpPartManager mydpPartManager = new dpPartManager();
+                dpPartQuery mydpPartQuery = new dpPartQuery();
+                mydpPartQuery.ClassifyID = classid;
+                mydpPartQuery.Name = partname;
+                DataSet myDataSet = mydpPartManager.SearchAllCount(mydpPartQuery);
+                if (myDataSet.Tables[0].Rows.Count > 0)
+                {
+                    reutrnValue = myDataSet.Tables[0].Rows[0]["countall"].ToString();
+                }
+            }
+            else
+            {
+                dpDownRecordManager my = new dpDownRecordManager();
+                dpDownRecordQuery myquery = new dpDownRecordQuery();
+                myquery.UserID = HttpContext.Current.Session[sysUser.ID].ToString();
+                DataSet myDataSet = my.SearchAllCount(myquery);
+                if (myDataSet.Tables[0].Rows.Count > 0)
+                {
+                    reutrnValue = myDataSet.Tables[0].Rows[0]["countall"].ToString();
+                }
+
             }
             return reutrnValue;
         }
@@ -107,7 +140,6 @@ namespace Part3D
 
         private void DowmLoad(string strid)
         {
-
             try
             {
                 dpModelFileManager mydpModelFileManager = new dpModelFileManager();
@@ -121,6 +153,13 @@ namespace Part3D
 
                     if (file.Exists)//判断文件是否存在
                     {
+                        //添加下载记录
+                        Hashtable myHashtable = new Hashtable();
+                        myHashtable.Add(dpDownRecord.UserID, Session[sysUser.ID]);
+                        myHashtable.Add(dpDownRecord.PartID, myDataSet.Tables[0].Rows[0][dpModelFile.PartID].ToString());
+                        myHashtable.Add(dpDownRecord.IPAddress, CommonManager.GetClientIPv4Address());
+                        SQLHelper.ExcuteProc("sp_DownRecord", myHashtable);//执行存储过程注册
+
                         Response.Clear();
                         Response.ClearHeaders();
                         Response.Buffer = false;

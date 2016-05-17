@@ -64,6 +64,22 @@ namespace _3DPart.DAL.BULayer.Schema {
         /// 用户ID
         /// </summary>
         public static string UserID_TABLE_FULL = "dp_DownRecordUserID";
+
+        /// <summary>
+        /// IP地址
+        /// </summary>
+        public static string IPAddress = "IPAddress";
+
+        /// <summary>
+        /// IP地址
+        /// </summary>
+        public static string IPAddress_FULL = "dp_DownRecord.IPAddress";
+
+        /// <summary>
+        /// IP地址
+        /// </summary>
+        public static string IPAddress_TABLE_FULL = "dp_DownRecordIPAddress";
+
         
         /// <summary>
         /// 备注

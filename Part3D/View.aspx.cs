@@ -7,6 +7,8 @@ using System.Web.UI.WebControls;
 using _3DPart.DAL.BULayer;
 using System.Data;
 using _3DPart.DAL.BULayer.Schema;
+using System.Collections;
+using Part3D.models;
 
 namespace Part3D
 {
@@ -18,6 +20,7 @@ namespace Part3D
             {
                 if (Request.QueryString["partid"] != null)
                 {
+                    string count = "0";
                     dpPartManager mydpPartManager = new dpPartManager();
                     dpPartQuery mydpPartQuery = new dpPartQuery();
                     mydpPartQuery.ID = Request.QueryString["partid"];
@@ -30,7 +33,11 @@ namespace Part3D
                         this.ausername.InnerText = myDataSet.Tables[0].Rows[0][sysUser.Nickname].ToString();
                         this.acreate.InnerText = myDataSet.Tables[0].Rows[0]["CreateDate"].ToString();
                         this.imgPreview.Src = myDataSet.Tables[0].Rows[0][dpPart.Preview].ToString();
+                        count = myDataSet.Tables[0].Rows[0][dpPart.Accesslog].ToString();
                     }
+
+                    count = count == "" ? "0" : count;
+                    mydpPartManager.UpdateParams(dpPart.Accesslog, (Convert.ToInt32(count) + 1).ToString(), Request.QueryString["partid"]);
 
                 }
                 else
@@ -56,6 +63,13 @@ namespace Part3D
 
                     if (file.Exists)//判断文件是否存在
                     {
+                        //添加下载记录
+                        Hashtable myHashtable = new Hashtable();
+                        myHashtable.Add(dpDownRecord.UserID, Session[sysUser.ID]);
+                        myHashtable.Add(dpDownRecord.PartID, myDataSet.Tables[0].Rows[0][dpModelFile.PartID].ToString());
+                        myHashtable.Add(dpDownRecord.IPAddress, CommonManager.GetClientIPv4Address());
+                        SQLHelper.ExcuteProc("sp_DownRecord", myHashtable);//执行存储过程注册
+
                         Response.Clear();
                         Response.ClearHeaders();
                         Response.Buffer = false;
