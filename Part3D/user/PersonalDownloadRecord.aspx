@@ -24,10 +24,12 @@
         $(document).ready(function () {
             getcount("1");//获取下载记录
         });
+
+        //下载js
         function fndw(strid) {
             $("#hidfileid").val(strid);
             document.getElementById('<%=LinkButton1.ClientID %>').click();
-        }
+}
 
     </script>
 </head>

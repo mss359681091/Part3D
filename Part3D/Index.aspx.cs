@@ -185,7 +185,14 @@ namespace Part3D
                     {
                         //添加下载记录
                         Hashtable myHashtable = new Hashtable();
-                        myHashtable.Add(dpDownRecord.UserID, Session[sysUser.ID]);
+                        if (Session[sysUser.ID] != null)
+                        {
+                            myHashtable.Add(dpDownRecord.UserID, Session[sysUser.ID].ToString());
+                        }
+                        else
+                        {
+                            myHashtable.Add(dpDownRecord.UserID, "0");
+                        }
                         myHashtable.Add(dpDownRecord.PartID, myDataSet.Tables[0].Rows[0][dpModelFile.PartID].ToString());
                         myHashtable.Add(dpDownRecord.IPAddress, CommonManager.GetClientIPv4Address());
                         SQLHelper.ExcuteProc("sp_DownRecord", myHashtable);//执行存储过程注册

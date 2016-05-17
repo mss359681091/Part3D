@@ -23,10 +23,13 @@
     <script type="text/javascript" src="/scripts/common.js"></script>
     <script src="/scripts/laypage/laypage.js"></script>
     <script type="text/javascript">
+
+        //下载js
         function fndw(strid) {
             $("#hidfileid").val(strid);
             document.getElementById('<%=LinkButton1.ClientID %>').click();
-        }
+}
+
     </script>
 </head>
 <body>

@@ -22,9 +22,7 @@
     <script type="text/javascript" src="/scripts/dialog.js"></script>
     <script type="text/javascript" src="/scripts/common.js"></script>
     <script type="text/javascript">
-
         $(document).ready(function () {
-
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
@@ -35,18 +33,15 @@
                     $(".Index_Top ul").append(result.d);
                 }
             });
-
             //加载最新推荐
             fnGetList('', '', '', '', '1', '12', '0');
-
-            //getStandard('', '');
         });
-
-
+        //下载js
         function fndw(strid) {
             $("#hidfileid").val(strid);
             document.getElementById('<%=LinkButton1.ClientID %>').click();
-        }
+}
+
     </script>
 </head>
 <body>
