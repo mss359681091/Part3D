@@ -98,6 +98,7 @@
                         $('button[data-event=setpartname]').on('click', function () {
                             var $this = $(this);
                             var partid = $(this).data("id");
+                            $("#txt_newname").val($(this).text());
                             var d = dialog({
                                 title: '修改名称',
                                 content: document.getElementById('setnewname'),
@@ -137,7 +138,11 @@
 
         //修改名称
         function fnSetPartname(partid, newname) {
-
+            if (newname.trim().length == 0) {
+                $("#txt_newname").focus();
+                alert("名称不能为空！");
+                return;
+            }
             $.ajax({
                 type: "POST",
                 contentType: "application/json",

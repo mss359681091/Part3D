@@ -141,7 +141,7 @@
                 </ul>
                 <ul class="Right">
                     <li><span class="_span"><b>名称：</b><i></i></span><input type="text" id="txtPartname" name="txtPartname" maxlength="30" placeholder="请在这里输入名称..." /></li>
-                    <li><span class="_span"><b>分类：</b></span><input type="text" placeholder="请选择分类..." class="inp txtClassifyID"><strong class="iconfont" data-event="Class_L">&#xe607;</strong>
+                    <li><span class="_span"><b>分类：</b></span><input type="text" disabled="disabled" placeholder="请选择分类..." class="inp txtClassifyID"><strong class="iconfont" data-event="Class_L">&#xe607;</strong>
 
                     </li>
                 </ul>
@@ -166,7 +166,7 @@
                     </div>
                 </ul>
                 <ul class="Clear"></ul>
-             
+
                 <button type="button" class="But" onclick="closeLoad()">取消上传</button>
                 <button type="button" style="margin-right: 15px" class="But" onclick="doUplaod()">上传文件</button>
             </div>
