@@ -1444,8 +1444,8 @@ header .navbar a:hover {
         }
 
         .User_List table tr td img {
-            width: 64px;
-            height: 64px;
+            width: 80px;
+            /*height: 64px;*/
         }
 
         .User_List table tr td a {
@@ -1461,7 +1461,7 @@ header .navbar a:hover {
                 color: #F60;
             }
 
-        .User_List table tr td.Top button {
+        .User_List table tr td.Top ._button {
             background: #F60;
             color: #FFF;
             border: none;
@@ -1475,7 +1475,7 @@ header .navbar a:hover {
             -o-transition: all 0.2s ease-in-out;
         }
 
-            .User_List table tr td.Top button:hover {
+            .User_List table tr td.Top ._button:hover {
                 background: #F30;
             }
 
@@ -1650,3 +1650,21 @@ header .navbar a:hover {
         .Claa_Su ul li:hover {
             background: #f9f9f9;
         }
+
+._button {
+
+    background: #edeeef;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+}
+
+    ._button:hover {
+        background: #F60;
+        color: #FFF;
+    }

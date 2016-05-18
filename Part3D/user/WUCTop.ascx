@@ -5,7 +5,7 @@
         <b onmouseover="MM_showHideLayers('T_Class','','show')" onmouseout="MM_showHideLayers('T_Class','','hide')">分类 <i class="iconfont">&#xe603;</i>
             <div id="T_Class">
                 <strong>
-                    <img src="/images/TOp_T.png" alt="" /></strong>
+                    <img src="/images/TOp_T.png" alt="" style="display: none" /></strong>
                 <ul id="top_ul">
                     <%--  <li>
                         <p><a target="_blank" href="/List.aspx">国标</a></p>

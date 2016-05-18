@@ -461,6 +461,47 @@ namespace _3DPart.DAL.BULayer
         }
 
         /// <summary>
+        /// 删除组件信息
+        /// </summary>
+        /// <param name="strParam">修改字段</param>
+        /// <param name="strValue">字段值</param>
+        /// <param name="strPartID">组件ID</param>
+        /// <returns></returns>
+        public string DeleteParams(dpPartQuery QueryData)
+        {
+            string returnValue = string.Empty;
+            string strQuery = @"DELETE FROM " + dpPart.TABLENAME + " WHERE 1 = 1 ";
+
+            Hashtable myParam = new Hashtable();
+            if (QueryData.UserID.Length > 0)
+            {
+                strQuery += " AND " + dpPart.UserID_FULL + " =@UserID ";
+                myParam.Add("@UserID", QueryData.UserID);
+            }
+            if (QueryData.ID.Length > 0)
+            {
+                strQuery += " AND " + dpPart.ID_FULL + " = @ID ";
+                myParam.Add("@ID", QueryData.ID);
+            }
+
+            try
+            {
+                returnValue = SQLHelper.ExcuteSQL(strQuery, myParam).ToString();
+            }
+            catch (Exception myEx)
+            {
+
+                throw new Exception(myEx.Message + "\r\n SQL:" + strQuery);
+            }
+            finally
+            {
+
+            }
+            return returnValue;
+        }
+
+
+        /// <summary>
         /// 检索我的资源，带分页
         /// </summary>
         /// <param name="QueryData"></param>
@@ -473,14 +514,17 @@ namespace _3DPart.DAL.BULayer
             + dpPart.PreviewSmall_FULL + ","
             + dpPart.Name_FULL + ","
             + dpPart.Accesslog_FULL + ","
+            + dpClassify.Name_FULL + " as classname ,"
             + " (select count(*) from  " + dpDownRecord.TABLENAME
             + " left join " + dpPart.TABLENAME + " as dp1 on " + dpDownRecord.PartID_FULL + " = dp1.id "
             + " where 1=1 "
             + " and dp1.userid = " + dpPart.UserID_FULL
             + " and dp1.id= " + dpPart.ID_FULL
             + " ) as mycount , "
-            + "CONVERT(varchar(100)," + dpPart.CreateDate_FULL + ", 120) as CreateDate "
+
+            + "CONVERT(varchar(100)," + dpPart.CreateDate_FULL + ", 120) as CreateDate1 "
             + " FROM " + dpPart.TABLENAME
+            + " LEFT JOIN " + dpClassify.TABLENAME + " ON " + dpPart.ClassifyID_FULL + " = " + dpClassify.ID_FULL
             + " WHERE 1 = 1 ";
 
 

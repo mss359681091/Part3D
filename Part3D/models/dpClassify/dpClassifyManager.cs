@@ -36,7 +36,7 @@ namespace _3DPart.DAL.BULayer
             + dpClassify.ModifyDate_FULL
              + " FROM " + dpClassify.TABLENAME + " WHERE 1 = 1 ";
 
-            
+
             Hashtable myParam = new Hashtable();
 
             if (QueryData.ID.Length > 0)
@@ -73,6 +73,56 @@ namespace _3DPart.DAL.BULayer
 
             }
             return myDs;
+        }
+
+        /// <summary>
+        /// 根据id检索
+        /// </summary>
+        /// <param name="QueryData"></param>
+        /// <param name="strParam"></param>
+        /// <returns></returns>
+        public string GetParams(dpClassifyQuery QueryData, string strParam)
+        {
+            string returnValue = string.Empty;
+            string strQuery = @"SELECT " + strParam + " FROM " + dpClassify.TABLENAME + " WHERE 1 = 1 ";
+            strQuery += " AND " + dpClassify.Enabled_FULL + " =1 ";
+
+
+            Hashtable myParam = new Hashtable();
+
+            if (QueryData.ID.Length > 0)
+            {
+                strQuery += " AND " + dpClassify.ID_FULL + " = @ID ";
+                myParam.Add("@ID", QueryData.ID);
+            }
+            if (QueryData.ParentID.Length > 0)
+            {
+                strQuery += " AND " + dpClassify.ParentID_FULL + " = @ParentID";
+                myParam.Add("@ParentID", QueryData.ParentID);
+            }
+            if (QueryData.Name.Length > 0)
+            {
+                strQuery += " AND " + dpClassify.ParentID_FULL + " = @Name";
+                myParam.Add("@Name", QueryData.Name);
+            }
+
+            try
+            {
+                if (SQLHelper.GetObject(strQuery, myParam) != null)
+                {
+                    returnValue = SQLHelper.GetObject(strQuery, myParam).ToString();
+                }
+            }
+            catch (Exception myEx)
+            {
+
+                throw new Exception(myEx.Message + "\r\n SQL:" + strQuery);
+            }
+            finally
+            {
+
+            }
+            return returnValue;
         }
     }
 

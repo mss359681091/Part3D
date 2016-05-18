@@ -214,6 +214,9 @@
     </Compile>
     <Compile Include="models\DESEncrypt.cs" />
     <Compile Include="models\dpPart\dpPartData.cs" />
+    <Compile Include="models\FileManager.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="user\jqUploadify\scripts\upload.ashx.cs">
       <DependentUpon>upload.ashx</DependentUpon>
     </Compile>

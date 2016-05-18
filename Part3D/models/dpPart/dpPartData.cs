@@ -121,6 +121,36 @@ namespace _3DPart.DAL.BULayer
             set { _Keyword = value; }
         }
 
+        private int _Accesslog = 0;
+        /// <summary>
+        /// 关键字
+        /// </summary>
+        public int Accesslog
+        {
+            get { return _Accesslog; }
+            set { _Accesslog = value; }
+        }
+
+        private string _classname = string.Empty;
+        /// <summary>
+        /// 类别
+        /// </summary>
+        public string classname
+        {
+            get { return _classname; }
+            set { _classname = value; }
+        }
+
+        private int _mycount = 0;
+        /// <summary>
+        /// 我的资源总数
+        /// </summary>
+        public int mycount
+        {
+            get { return _mycount; }
+            set { _mycount = value; }
+        }
+
         private string _Remark = string.Empty;
         /// <summary>
         /// 备注
@@ -163,6 +193,18 @@ namespace _3DPart.DAL.BULayer
             get { return _CreateDate; }
             set { _CreateDate = value; }
         }
+
+        private string _CreateDate1 = DateTime.Now.ToString();
+        /// <summary>
+        /// 
+        /// </summary>
+
+        public string CreateDate1
+        {
+            get { return _CreateDate1; }
+            set { _CreateDate1 = value; }
+        }
+
 
         private int _ModifyStaff = 0;
         /// <summary>

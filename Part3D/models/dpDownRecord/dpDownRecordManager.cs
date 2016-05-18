@@ -210,6 +210,41 @@ namespace _3DPart.DAL.BULayer
             return myDs;
         }
 
+        /// <summary>
+        /// 删除下载记录
+        /// </summary>
+        /// <param name="strParam">修改字段</param>
+        /// <param name="strValue">字段值</param>
+        /// <param name="strPartID">组件ID</param>
+        /// <returns></returns>
+        public string DeleteParams(dpDownRecordQuery QueryData)
+        {
+            string returnValue = string.Empty;
+            string strQuery = @"DELETE FROM " + dpDownRecord.TABLENAME + " WHERE 1 = 1 ";
+
+            Hashtable myParam = new Hashtable();
+            if (QueryData.PartID.Length > 0)
+            {
+                strQuery += " AND " + dpDownRecord.PartID_FULL + " =@PartID";
+                myParam.Add("@PartID", QueryData.PartID);
+            }
+
+            try
+            {
+                returnValue = SQLHelper.ExcuteSQL(strQuery, myParam).ToString();
+            }
+            catch (Exception myEx)
+            {
+
+                throw new Exception(myEx.Message + "\r\n SQL:" + strQuery);
+            }
+            finally
+            {
+
+            }
+            return returnValue;
+        }
+
     }
 
     [Serializable()]

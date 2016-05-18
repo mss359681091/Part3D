@@ -143,12 +143,15 @@ namespace _3DPart.DAL.BULayer
                     {
                         cmd.Parameters.Add(new SqlParameter(dEntry.Key.ToString(), dEntry.Value));
                     }
-                    cmd.Parameters.Add(new SqlParameter("CreateDate", DateTime.Now));//自动添加日期
-                    cmd.Parameters.Add(parID);
+                    if (cmdType == CommandType.StoredProcedure)
+                    {
+                        cmd.Parameters.Add(new SqlParameter("CreateDate", DateTime.Now));//自动添加日期
+                        cmd.Parameters.Add(parID);
+                    }
                 }
                 conn.Open();
                 i = cmd.ExecuteNonQuery();
-                if (pas != null)
+                if (pas != null && (cmdType == CommandType.StoredProcedure))
                 {
                     i = int.Parse(parID.Value.ToString());//返回ID
                 }

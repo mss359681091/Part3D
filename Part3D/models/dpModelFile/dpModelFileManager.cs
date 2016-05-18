@@ -149,6 +149,86 @@ namespace _3DPart.DAL.BULayer
             return myDs;
         }
 
+        /// <summary>
+        /// 删除文件
+        /// </summary>
+        /// <param name="strParam">修改字段</param>
+        /// <param name="strValue">字段值</param>
+        /// <param name="strPartID">组件ID</param>
+        /// <returns></returns>
+        public string DeleteParams(dpModelFileQuery QueryData)
+        {
+            string returnValue = string.Empty;
+            string strQuery = @"DELETE FROM " + dpModelFile.TABLENAME + " WHERE 1 = 1 ";
+
+            Hashtable myParam = new Hashtable();
+
+            if (QueryData.PartID.Length > 0)
+            {
+                strQuery += " AND " + dpModelFile.PartID_FULL + " = @PartID";
+                myParam.Add("@PartID", QueryData.PartID);
+            }
+
+            try
+            {
+                returnValue = SQLHelper.ExcuteSQL(strQuery, myParam).ToString();
+            }
+            catch (Exception myEx)
+            {
+
+                throw new Exception(myEx.Message + "\r\n SQL:" + strQuery);
+            }
+            finally
+            {
+
+            }
+            return returnValue;
+        }
+
+        /// <summary>
+        /// 根据id检索
+        /// </summary>
+        /// <param name="QueryData"></param>
+        /// <param name="strParam"></param>
+        /// <returns></returns>
+        public string GetParams(dpModelFileQuery QueryData, string strParam)
+        {
+            string returnValue = string.Empty;
+            string strQuery = @"SELECT " + strParam + " FROM " + dpModelFile.TABLENAME + " WHERE 1 = 1 ";
+            strQuery += " AND " + dpModelFile.Enabled_FULL + " =1 ";
+
+
+            Hashtable myParam = new Hashtable();
+
+            if (QueryData.ID.Length > 0)
+            {
+                strQuery += " AND " + dpModelFile.ID_FULL + " = @ID ";
+                myParam.Add("@ID", QueryData.ID);
+            }
+            if (QueryData.PartID.Length > 0)
+            {
+                strQuery += " AND " + dpModelFile.PartID_FULL + " = @PartID ";
+                myParam.Add("@PartID", QueryData.PartID);
+            }
+
+            try
+            {
+                if (SQLHelper.GetObject(strQuery, myParam) != null)
+                {
+                    returnValue = SQLHelper.GetObject(strQuery, myParam).ToString();
+                }
+            }
+            catch (Exception myEx)
+            {
+
+                throw new Exception(myEx.Message + "\r\n SQL:" + strQuery);
+            }
+            finally
+            {
+
+            }
+            return returnValue;
+        }
     }
 
     [Serializable()]

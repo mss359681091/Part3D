@@ -607,7 +607,9 @@ function getcount(type) {
                 var strs = new Array(); //定义一数组 
                 strs = result.d.split(","); //字符分割 
                 for (i = 0; i < strs.length ; i++) {
-                    $("#lnkclass li span").eq(i).text("( " + strs[i] + " )");//赋值
+                    var str = strs[i];
+                    str = str == "" ? "0" : str;
+                    $("#lnkclass li span").eq(i).text("( " + str + " )");//赋值
                     $("#lnkclass li ").eq(i).data("count", strs[i]);//赋值
                 }
 

@@ -17,8 +17,6 @@
     <link rel="stylesheet" href="/content/iconfont.css" />
     <link rel="stylesheet" href="/content/ui-dialog.css" />
     <script type="text/javascript" src="/scripts/jquery-1.10.2.min.js"></script>
-    <%--    <script type="text/javascript" src="/scripts/scriptC.js"></script>
-    <script type="text/javascript" src="/scripts/jquery.kinMaxShow-1.1.min.js"></script>--%>
     <script type="text/javascript" src="/scripts/dialog.js"></script>
     <script type="text/javascript" src="/scripts/common.js"></script>
     <script src="/scripts/jquery.form.js"></script>
@@ -32,13 +30,9 @@
             filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=image);
         }
     </style>
-    <!--上传控件-->
-    <script src="scripts/swfobject.js" type="text/javascript"></script>
-    <script src="scripts/jquery.uploadify.min.js" type="text/javascript"></script>
+
 
     <script type="text/javascript">
-
-
         function fndw(strid) {
             $("#hidfileid").val(strid);
             document.getElementById('<%=LinkButton1.ClientID %>').click();
@@ -55,6 +49,14 @@
                     $("#ulclassify").append(result.d);
                 }
             });
+
+
+            $(".swfupload").css("left", "0");
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
             $("#file_upload").uploadify({
                 //开启调试
                 'debug': false,
@@ -104,28 +106,24 @@
                     $("#Submit1").click();
                 }
             });
-            $(".swfupload").css("left", "0");
         });
-
-
     </script>
-
 </head>
 <body>
     <form id="fm1" runat="server" method="post">
         <div>
+
             <input id="hidfileid" type="hidden" value="" runat="server" />
             <asp:LinkButton ID="LinkButton1" class="lnkdown" Style="display: none" runat="server" OnClick="LinkButton1_Click"></asp:LinkButton>
             <div class="navbarM">
                 <uc2:WUCTop ID="WUCTop1" runat="server" />
             </div>
 
+
             <div class="Clear"></div>
             <div class="Top_divM">
                 <uc4:WUCBanner ID="WUCBanner1" runat="server" />
             </div>
-
-
 
             <div class="upload_List Container">
 
@@ -168,7 +166,7 @@
                     </div>
                 </ul>
                 <ul class="Clear"></ul>
-                <asp:HiddenField ID="hidClassifyId" runat="server" />
+             
                 <button type="button" class="But" onclick="closeLoad()">取消上传</button>
                 <button type="button" style="margin-right: 15px" class="But" onclick="doUplaod()">上传文件</button>
             </div>
@@ -187,18 +185,9 @@
                     d.showModal();
                 });
             </script>
+            <asp:HiddenField ID="hidClassifyId" runat="server" />
             <div id="Class_L" style="display: none;">
                 <ul id="ulclassify">
-                    <%--  <li>
-                        <p><a href="#">国标</a></p>
-                        <a href="#">组合件</a><span>/</span><a href="#">连接副</a><span>/</span><a href="#">焊钉</a><span>/</span><a href="#">螺栓</a><span>/</span><a href="#">螺母销</a><span>/</span><a href="#">柳钉</a><span>/</span><a href="#">挡圈</a><span>/</span><a href="#">螺钉</a>
-                    </li>
-                    <li>
-                        <p><a href="#">3D素材</a></p>
-                    </li>
-                    <li style="border: none;">
-                        <p><a href="#">3D模型</a></p>
-                    </li>--%>
                 </ul>
             </div>
 
@@ -215,7 +204,9 @@
         </div>
 
 
-
+        <!--上传控件-->
+        <script src="scripts/swfobject.js" type="text/javascript"></script>
+        <script src="scripts/jquery.uploadify.min.js" type="text/javascript"></script>
     </form>
 </body>
 </html>
