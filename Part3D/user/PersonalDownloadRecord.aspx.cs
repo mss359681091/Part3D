@@ -1,5 +1,6 @@
 ﻿using _3DPart.DAL.BULayer;
 using _3DPart.DAL.BULayer.Schema;
+using log4net;
 using Part3D.models;
 using System;
 using System.Collections;
@@ -14,6 +15,8 @@ namespace Part3D
 {
     public partial class PersonalDownloadRecord : System.Web.UI.Page
     {
+        private static readonly ILog m_log = LogHelper.GetInstance(); //LogManager.GetLogger(typeof(TEST));
+
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -64,9 +67,9 @@ namespace Part3D
 
 
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.Write(e.ToString());
+                m_log.Error(ex.Message);
             }
         }
 

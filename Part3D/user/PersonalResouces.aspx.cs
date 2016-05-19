@@ -1,68 +1,87 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using _3DPart.DAL.BULayer;
+﻿using _3DPart.DAL.BULayer;
 using _3DPart.DAL.BULayer.Schema;
+using log4net;
 using Part3D.models;
-using System.Web.Services;
+using System;
+using System.Collections.Generic;
 using System.Data;
-using System.Threading;
 using System.IO;
+using System.Web;
+using System.Web.Services;
 
 namespace Part3D
 {
     public partial class PersonalResouces : System.Web.UI.Page
     {
+        private static readonly ILog m_log = LogHelper.GetInstance(); //LogManager.GetLogger(typeof(TEST));
+
         protected void Page_Load(object sender, EventArgs e)
         {
 
         }
 
-
-
+        /// <summary>
+        /// 获取我的组件
+        /// </summary>
+        /// <param name="CurrentIndex">页数</param>
+        /// <param name="PageSize">每页显示条数</param>
+        /// <returns></returns>
         [WebMethod(Description = "获取我的组件", EnableSession = true)]
         public static dynamic GetMyResouces(string CurrentIndex, string PageSize)
         {
             string status = string.Empty;//状态
             string errmsg = string.Empty;//错误信息
             IList<dpPartData> returnData = null;//返回实体列表
-
-            if (HttpContext.Current.Session[sysUser.ID] != null)
+            try
             {
-                dpPartManager my = new dpPartManager();
-                dpPartQuery myquery = new dpPartQuery();
-                myquery.UserID = HttpContext.Current.Session[sysUser.ID].ToString();
-                myquery.CurrentIndex = Convert.ToInt32(CurrentIndex == "" ? "1" : CurrentIndex);
-                myquery.PageSize = Convert.ToInt32(PageSize == "" ? "12" : PageSize);
-                DataSet myds = my.SearchMyPart(myquery);
-                if (myds.Tables[0].Rows.Count > 0)
+                if (HttpContext.Current.Session[sysUser.ID] != null)
                 {
-                    returnData = CommonManager.GetList<dpPartData>(myds.Tables[0]);//转换实体类list
+                    dpPartManager my = new dpPartManager();
+                    dpPartQuery myquery = new dpPartQuery();
+                    myquery.UserID = HttpContext.Current.Session[sysUser.ID].ToString();
+                    myquery.CurrentIndex = Convert.ToInt32(CurrentIndex == "" ? "1" : CurrentIndex);
+                    myquery.PageSize = Convert.ToInt32(PageSize == "" ? "12" : PageSize);
+                    DataSet myds = my.SearchMyPart(myquery);
+                    if (myds.Tables[0].Rows.Count > 0)
+                    {
+                        returnData = CommonManager.GetList<dpPartData>(myds.Tables[0]);//转换实体类list
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                m_log.Error(ex.Message);
             }
             return new { status = status, errmsg = errmsg, returnData = returnData };
         }
 
+        /// <summary>
+        /// 获取我的组件总数
+        /// </summary>
+        /// <returns></returns>
         [WebMethod(Description = "获取我的组件总数", EnableSession = true)]
         public static string GetAllCount()
         {
             string returnValue = string.Empty;
-
-            if (HttpContext.Current.Session[sysUser.ID] != null)
+            try
             {
-                dpPartManager my = new dpPartManager();
-                dpPartQuery myquery = new dpPartQuery();
-                myquery.UserID = HttpContext.Current.Session[sysUser.ID].ToString();
-                DataSet myds = my.SearchAllCount(myquery);
-                if (myds.Tables[0].Rows.Count > 0)
+                if (HttpContext.Current.Session[sysUser.ID] != null)
                 {
-                    returnValue = myds.Tables[0].Rows[0]["countall"].ToString();
+                    dpPartManager my = new dpPartManager();
+                    dpPartQuery myquery = new dpPartQuery();
+                    myquery.UserID = HttpContext.Current.Session[sysUser.ID].ToString();
+                    DataSet myds = my.SearchAllCount(myquery);
+                    if (myds.Tables[0].Rows.Count > 0)
+                    {
+                        returnValue = myds.Tables[0].Rows[0]["countall"].ToString();
+                    }
                 }
-            }
 
+            }
+            catch (Exception ex)
+            {
+                m_log.Error(ex.Message);
+            }
             return returnValue;
         }
 
@@ -75,54 +94,51 @@ namespace Part3D
         public static string DelMyRs(string partids)
         {
             string returnValue = string.Empty;
-            if (partids.Length > 0)
+
+            try
             {
-                if (partids.Contains(","))
-                {
-                    partids = partids.Substring(0, partids.Length - 1);
-                }
-                string[] str = partids.Split(',');
 
-                for (int i = 0; i < str.Length; i++)
+                if (partids.Length > 0)
                 {
-                    if (str[i].ToString().Trim().Length > 0)
+                    if (partids.Contains(","))
                     {
-                        //删除下载记录
-                        dpDownRecordManager mydpDownRecordManager = new dpDownRecordManager();
-                        dpDownRecordQuery mydpDownRecordQuery = new dpDownRecordQuery();
-                        mydpDownRecordQuery.PartID = str[i].ToString().Trim();
-                        mydpDownRecordManager.DeleteParams(mydpDownRecordQuery);
+                        partids = partids.Substring(0, partids.Length - 1);
+                    }
+                    string[] str = partids.Split(',');
 
-                        //删除组件标准匹配
-                        dpStandardMappingManager mydpStandardMappingManager = new dpStandardMappingManager();
-                        dpStandardMappingQuery mydpStandardMappingQuery = new dpStandardMappingQuery();
-                        mydpStandardMappingQuery.PartID = str[i].ToString().Trim();
-                        mydpStandardMappingManager.DeleteParams(mydpStandardMappingQuery);
+                    for (int i = 0; i < str.Length; i++)
+                    {
+                        if (str[i].ToString().Trim().Length > 0)
+                        {
+                            //删除下载记录
+                            dpDownRecordManager mydpDownRecordManager = new dpDownRecordManager();
+                            dpDownRecordQuery mydpDownRecordQuery = new dpDownRecordQuery();
+                            mydpDownRecordQuery.PartID = str[i].ToString().Trim();
+                            mydpDownRecordManager.DeleteParams(mydpDownRecordQuery);
 
-                        ////删除组件文件
-                        //Thread t1 = new Thread(() =>
-                        //{
+                            //删除组件标准匹配
+                            dpStandardMappingManager mydpStandardMappingManager = new dpStandardMappingManager();
+                            dpStandardMappingQuery mydpStandardMappingQuery = new dpStandardMappingQuery();
+                            mydpStandardMappingQuery.PartID = str[i].ToString().Trim();
+                            mydpStandardMappingManager.DeleteParams(mydpStandardMappingQuery);
 
-                        //});
-                        //t1.IsBackground = true;
-                        //t1.Start();
+                            DelModelFile(str[i].ToString().Trim());//删除组件文件
 
-                        DelModelFile(str[i].ToString().Trim());//删除组件文件
-
-                        //删除组件
-                        DelPreview(str[i].ToString().Trim());//删除组件缩略图
-                        dpPartManager mydpPartManager = new dpPartManager();
-                        dpPartQuery mydpPartQuery = new dpPartQuery();
-                        mydpPartQuery.UserID = HttpContext.Current.Session[sysUser.ID].ToString();
-                        mydpPartQuery.ID = str[i].ToString().Trim();
-                        returnValue = mydpPartManager.DeleteParams(mydpPartQuery);
-
-
-
+                            //删除组件
+                            DelPreview(str[i].ToString().Trim());//删除组件缩略图
+                            dpPartManager mydpPartManager = new dpPartManager();
+                            dpPartQuery mydpPartQuery = new dpPartQuery();
+                            mydpPartQuery.UserID = HttpContext.Current.Session[sysUser.ID].ToString();
+                            mydpPartQuery.ID = str[i].ToString().Trim();
+                            returnValue = mydpPartManager.DeleteParams(mydpPartQuery);
+                        }
                     }
                 }
             }
-
+            catch (Exception ex)
+            {
+                m_log.Error(ex.Message);
+            }
             return returnValue;
         }
 
@@ -153,6 +169,7 @@ namespace Part3D
                 }
             }
         }
+
         /// <summary>
         ///删除组件文件
         /// </summary>
@@ -181,7 +198,6 @@ namespace Part3D
             }
         }
 
-
         /// <summary>
         /// 修改组件名称
         /// </summary>
@@ -192,9 +208,16 @@ namespace Part3D
         public static string SetPartname(string partid, string newname)
         {
             string returnValue = string.Empty;
-            dpPartManager mydpPartManager = new dpPartManager();
-            mydpPartManager.UpdateParams(dpPart.Name, newname, partid);
-            returnValue = "1";
+            try
+            {
+                dpPartManager mydpPartManager = new dpPartManager();
+                mydpPartManager.UpdateParams(dpPart.Name, newname, partid);
+                returnValue = "1";
+            }
+            catch (Exception ex)
+            {
+                m_log.Error(ex.Message);
+            }
             return returnValue;
         }
 
@@ -208,9 +231,16 @@ namespace Part3D
         public static string SetClass(string partid, string classid)
         {
             string returnValue = string.Empty;
-            dpPartManager mydpPartManager = new dpPartManager();
-            mydpPartManager.UpdateParams(dpPart.ClassifyID, classid, partid);
-            returnValue = new dpClassifyManager().GetParams(new dpClassifyQuery() { ID = classid }, dpClassify.Name);
+            try
+            {
+                dpPartManager mydpPartManager = new dpPartManager();
+                mydpPartManager.UpdateParams(dpPart.ClassifyID, classid, partid);
+                returnValue = new dpClassifyManager().GetParams(new dpClassifyQuery() { ID = classid }, dpClassify.Name);
+            }
+            catch (Exception ex)
+            {
+                m_log.Error(ex.Message);
+            }
             return returnValue;
         }
     }

@@ -30,7 +30,7 @@
 <div class="User_TM">
     <div class="Container">
         <div class="User_img">
-            <img id="imgphoto" runat="server" src="/images/img.png" alt="" />
+            <img id="imgphoto" runat="server" src="/images/img.png" alt="" style="display: none" />
             <span id="spnickname" runat="server">昵称</span>
         </div>
         <div class="SearchM">

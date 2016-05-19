@@ -1,21 +1,20 @@
 ﻿using _3DPart.DAL.BULayer;
 using _3DPart.DAL.BULayer.Schema;
+using log4net;
 using Part3D.models;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Data;
-using System.IO;
-using System.Linq;
 using System.Web;
 using System.Web.Services;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace Part3D
 {
     public partial class Index : System.Web.UI.Page
     {
+
+        private static readonly ILog m_log = LogHelper.GetInstance(); //LogManager.GetLogger(typeof(TEST));
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -36,61 +35,69 @@ namespace Part3D
         public static string GetClassify(string paramtype)
         {
             string returnValue = string.Empty;
-            string returnType = string.Empty;
-            paramtype = paramtype == "" ? "0" : paramtype;
-            dpClassifyManager mydpClassifyManager = new dpClassifyManager();
-            dpClassifyQuery mydpClassifyQuery = new dpClassifyQuery();
-            mydpClassifyQuery.ParentID = "0";
-            DataSet myDataSet = mydpClassifyManager.Search(mydpClassifyQuery);
-            if (myDataSet.Tables[0].Rows.Count > 0)
+            try
             {
-                for (int i = 0; i < myDataSet.Tables[0].Rows.Count; i++)
+                string returnType = string.Empty;
+                paramtype = paramtype == "" ? "0" : paramtype;
+                dpClassifyManager mydpClassifyManager = new dpClassifyManager();
+                dpClassifyQuery mydpClassifyQuery = new dpClassifyQuery();
+                mydpClassifyQuery.ParentID = "0";
+                DataSet myDataSet = mydpClassifyManager.Search(mydpClassifyQuery);
+                if (myDataSet.Tables[0].Rows.Count > 0)
                 {
-                    returnValue += "<li>";
-                    if (paramtype == "0")
+                    for (int i = 0; i < myDataSet.Tables[0].Rows.Count; i++)
                     {
-                        returnValue += "<p><a target='_blank' href ='/List.aspx?classid=" + myDataSet.Tables[0].Rows[i][dpClassify.ID] + "'>" + myDataSet.Tables[0].Rows[i][dpClassify.Name] + "</a></p>";
-                    }
-                    else if (paramtype == "1")
-                    {
-                        returnValue += "<p><a href ='javascript:void(0);' onclick='fnChooseme(" + myDataSet.Tables[0].Rows[i][dpClassify.ID] + ",this);'>" + myDataSet.Tables[0].Rows[i][dpClassify.Name] + "</a></p>";
-                    }
-                    else
-                    {
-
-                    }
-
-                    string flag = string.Empty;
-                    mydpClassifyQuery = new dpClassifyQuery();
-                    mydpClassifyQuery.ParentID = myDataSet.Tables[0].Rows[i][dpClassify.ID].ToString();
-                    DataSet myDs = mydpClassifyManager.Search(mydpClassifyQuery);
-                    if (myDs.Tables[0].Rows.Count > 0)
-                    {
-                        for (int j = 0; j < myDs.Tables[0].Rows.Count; j++)
+                        returnValue += "<li>";
+                        if (paramtype == "0")
                         {
-                            if (paramtype == "0")
+                            returnValue += "<p><a target='_blank' href ='/List.aspx?classid=" + myDataSet.Tables[0].Rows[i][dpClassify.ID] + "'>" + myDataSet.Tables[0].Rows[i][dpClassify.Name] + "</a></p>";
+                        }
+                        else if (paramtype == "1")
+                        {
+                            returnValue += "<p><a href ='javascript:void(0);' onclick='fnChooseme(" + myDataSet.Tables[0].Rows[i][dpClassify.ID] + ",this);'>" + myDataSet.Tables[0].Rows[i][dpClassify.Name] + "</a></p>";
+                        }
+                        else
+                        {
+
+                        }
+
+                        string flag = string.Empty;
+                        mydpClassifyQuery = new dpClassifyQuery();
+                        mydpClassifyQuery.ParentID = myDataSet.Tables[0].Rows[i][dpClassify.ID].ToString();
+                        DataSet myDs = mydpClassifyManager.Search(mydpClassifyQuery);
+                        if (myDs.Tables[0].Rows.Count > 0)
+                        {
+                            for (int j = 0; j < myDs.Tables[0].Rows.Count; j++)
                             {
-                                flag += "<a target='_blank' href ='/List.aspx?classid=" + myDs.Tables[0].Rows[j][dpClassify.ID] + "'>" + myDs.Tables[0].Rows[j][dpClassify.Name] + "</a><span>/</span>";
-                            }
-                            else if (paramtype == "1")
-                            {
-                                flag += "<a href ='javascript:void(0);' onclick='fnChooseme(" + myDs.Tables[0].Rows[j][dpClassify.ID] + ",this);'>" + myDs.Tables[0].Rows[j][dpClassify.Name] + "</a><span>/</span>";
-                            }
-                            else
-                            {
-                                returnType += "<li><a target='_blank' href='/List.aspx?classid=" + myDs.Tables[0].Rows[j][dpClassify.ID] + "'><i class='Ico" + (Convert.ToInt32(j) + 1) + "'></i>" + myDs.Tables[0].Rows[j][dpClassify.Name] + "</a></li>";
+                                if (paramtype == "0")
+                                {
+                                    flag += "<a target='_blank' href ='/List.aspx?classid=" + myDs.Tables[0].Rows[j][dpClassify.ID] + "'>" + myDs.Tables[0].Rows[j][dpClassify.Name] + "</a><span>/</span>";
+                                }
+                                else if (paramtype == "1")
+                                {
+                                    flag += "<a href ='javascript:void(0);' onclick='fnChooseme(" + myDs.Tables[0].Rows[j][dpClassify.ID] + ",this);'>" + myDs.Tables[0].Rows[j][dpClassify.Name] + "</a><span>/</span>";
+                                }
+                                else
+                                {
+                                    returnType += "<li><a target='_blank' href='/List.aspx?classid=" + myDs.Tables[0].Rows[j][dpClassify.ID] + "'><i class='Ico" + (Convert.ToInt32(j) + 1) + "'></i>" + myDs.Tables[0].Rows[j][dpClassify.Name] + "</a></li>";
+                                }
                             }
                         }
+                        returnValue += flag;
+                        returnValue += "</li>";
                     }
-                    returnValue += flag;
-                    returnValue += "</li>";
-                }
-                if (paramtype == "2")
-                {
-                    returnType += "<li><a target='_blank' href='/List.aspx'><i class='Ico11'></i>更多标准</a></li>";
-                    returnValue = returnType;
+                    if (paramtype == "2")
+                    {
+                        returnType += "<li><a target='_blank' href='/List.aspx'><i class='Ico11'></i>更多标准</a></li>";
+                        returnValue = returnType;
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                m_log.Error(ex.Message);
+            }
+
             return returnValue;
         }
 
@@ -103,17 +110,23 @@ namespace Part3D
         public static string GetStandard(string partid)
         {
             string returnValue = string.Empty;
-            dpStandardMappingManager mydpStandardMappingManager = new dpStandardMappingManager();
-            dpStandardMappingQuery mydpStandardMappingQuery = new dpStandardMappingQuery();
-            mydpStandardMappingQuery.PartID = partid;
-            DataSet myDataSet = mydpStandardMappingManager.SearchBind(mydpStandardMappingQuery);
-            if (myDataSet.Tables[0].Rows.Count > 0)
+            try
             {
-                //for (int i = 0; i < myDataSet.Tables[0].Rows.Count; i++)
-                //{
-                returnValue += myDataSet.Tables[0].Rows[0][dpStandard.Name].ToString();
-                //}
+                dpStandardMappingManager mydpStandardMappingManager = new dpStandardMappingManager();
+                dpStandardMappingQuery mydpStandardMappingQuery = new dpStandardMappingQuery();
+                mydpStandardMappingQuery.PartID = partid;
+                DataSet myDataSet = mydpStandardMappingManager.SearchBind(mydpStandardMappingQuery);
+                if (myDataSet.Tables[0].Rows.Count > 0)
+                {
+                    returnValue += myDataSet.Tables[0].Rows[0][dpStandard.Name].ToString();
+                }
             }
+            catch (Exception ex)
+            {
+                m_log.Error(ex.Message);
+            }
+
+
             return returnValue;
         }
 
@@ -121,21 +134,28 @@ namespace Part3D
         public static string GetModels(string partid, string format)
         {
             string returnValue = string.Empty;
-            dpModelFileManager mydpModelFileManager = new dpModelFileManager();
-            dpModelFileQuery mydpModelFileQuery = new dpModelFileQuery();
-            mydpModelFileQuery.PartID = partid;
-            mydpModelFileQuery.Format = format;
-            DataSet myDataSet = mydpModelFileManager.SearchModels(mydpModelFileQuery);
-            if (myDataSet.Tables[0].Rows.Count > 0)
+            try
             {
-                returnValue += "<dd id='ddall' title='型号'>全部</dd>";
-                for (int i = 0; i < myDataSet.Tables[0].Rows.Count; i++)
+                dpModelFileManager mydpModelFileManager = new dpModelFileManager();
+                dpModelFileQuery mydpModelFileQuery = new dpModelFileQuery();
+                mydpModelFileQuery.PartID = partid;
+                mydpModelFileQuery.Format = format;
+                DataSet myDataSet = mydpModelFileManager.SearchModels(mydpModelFileQuery);
+                if (myDataSet.Tables[0].Rows.Count > 0)
                 {
-                    if (myDataSet.Tables[0].Rows[i][dpModelFile.Models].ToString().Trim().Length > 0)
+                    returnValue += "<dd id='ddall' title='型号'>全部</dd>";
+                    for (int i = 0; i < myDataSet.Tables[0].Rows.Count; i++)
                     {
-                        returnValue += "<dd id='dd" + myDataSet.Tables[0].Rows[i][dpModelFile.Models] + "' title='型号'>" + myDataSet.Tables[0].Rows[i][dpModelFile.Models] + "</dd>";
+                        if (myDataSet.Tables[0].Rows[i][dpModelFile.Models].ToString().Trim().Length > 0)
+                        {
+                            returnValue += "<dd id='dd" + myDataSet.Tables[0].Rows[i][dpModelFile.Models] + "' title='型号'>" + myDataSet.Tables[0].Rows[i][dpModelFile.Models] + "</dd>";
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                m_log.Error(ex.Message);
             }
             return returnValue;
         }
@@ -149,25 +169,38 @@ namespace Part3D
         public static string GetModelfile(string partid, string modelsname, string format, string models)
         {
             string returnValue = string.Empty;
-            dpModelFileManager mydpModelFileManager = new dpModelFileManager();
-            dpModelFileQuery mydpModelFileQuery = new dpModelFileQuery();
-            mydpModelFileQuery.PartID = partid;
-            mydpModelFileQuery.Name = modelsname;
-            mydpModelFileQuery.Format = format;
-            mydpModelFileQuery.Models = models;
-            DataSet myDataSet = mydpModelFileManager.Search(mydpModelFileQuery);
-            if (myDataSet.Tables[0].Rows.Count > 0)
+            try
             {
-                for (int i = 0; i < myDataSet.Tables[0].Rows.Count; i++)
+                dpModelFileManager mydpModelFileManager = new dpModelFileManager();
+                dpModelFileQuery mydpModelFileQuery = new dpModelFileQuery();
+                mydpModelFileQuery.PartID = partid;
+                mydpModelFileQuery.Name = modelsname;
+                mydpModelFileQuery.Format = format;
+                mydpModelFileQuery.Models = models;
+                DataSet myDataSet = mydpModelFileManager.Search(mydpModelFileQuery);
+                if (myDataSet.Tables[0].Rows.Count > 0)
                 {
-                    string showname = myDataSet.Tables[0].Rows[i][dpModelFile.Name].ToString();
-                    showname = showname.Split(' ')[1].ToString();
-                    returnValue += "<li onclick='fndw(" + myDataSet.Tables[0].Rows[i][dpModelFile.ID].ToString() + ")' >" + showname + "</li>";
+                    for (int i = 0; i < myDataSet.Tables[0].Rows.Count; i++)
+                    {
+                        string showname = myDataSet.Tables[0].Rows[i][dpModelFile.Name].ToString();
+                        showname = showname.Split(' ')[1].ToString();
+                        returnValue += "<li onclick='fndw(" + myDataSet.Tables[0].Rows[i][dpModelFile.ID].ToString() + ")' >" + showname + "</li>";
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                m_log.Error(ex.Message);
+            }
+
+
             return returnValue;
         }
 
+        /// <summary>
+        /// 文件下载
+        /// </summary>
+        /// <param name="strid">文件id</param>
         private void DowmLoad(string strid)
         {
             try
@@ -213,9 +246,9 @@ namespace Part3D
 
 
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.Write(e.ToString());
+                m_log.Error(ex.Message);
             }
         }
 

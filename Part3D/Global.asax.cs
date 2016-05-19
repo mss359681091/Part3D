@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Routing;
@@ -13,6 +14,7 @@ namespace _3DPart
         void Application_Start(object sender, EventArgs e)
         {
             // 在应用程序启动时运行的代码
+            log4net.Config.XmlConfigurator.ConfigureAndWatch(new FileInfo(Server.MapPath("Log4Net.config")));
         }
 
         protected void Application_AuthenticateRequest(Object sender, EventArgs e)

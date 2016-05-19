@@ -1,5 +1,6 @@
 ﻿using _3DPart.DAL.BULayer;
 using _3DPart.DAL.BULayer.Schema;
+using log4net;
 using Part3D.models;
 using System;
 using System.Collections;
@@ -12,14 +13,16 @@ namespace Part3D
 {
     public partial class List : System.Web.UI.Page
     {
+        private static readonly ILog m_log = LogHelper.GetInstance(); //LogManager.GetLogger(typeof(TEST));
+
         protected void Page_Load(object sender, EventArgs e)
         {
 
             if (!IsPostBack)
             {
+
             }
         }
-
 
         [WebMethod(Description = "获取组件列表", EnableSession = true)]
         public static dynamic GetPartList(string ParentID, string UserID, string ClassifyID, string Name, string CurrentIndex, string PageSize, string type)
@@ -27,38 +30,45 @@ namespace Part3D
             string status = string.Empty;//状态
             string errmsg = string.Empty;//错误信息
             IList<dpPartData> returnData = null;//返回实体列表
-
-            if (type == "0")
+            try
             {
-                dpPartManager mydp_Part = new dpPartManager();
-                dpPartQuery mydpPartQuery = new dpPartQuery();
-                mydpPartQuery.ParentID = ParentID;
-                mydpPartQuery.UserID = UserID;
-                mydpPartQuery.ClassifyID = ClassifyID;
-                mydpPartQuery.Name = Name;
-                mydpPartQuery.CurrentIndex = Convert.ToInt32(CurrentIndex == "" ? "1" : CurrentIndex);
-                mydpPartQuery.PageSize = Convert.ToInt32(PageSize == "" ? "12" : PageSize);
-
-                DataSet myDataSet = mydp_Part.SearchPaging(mydpPartQuery);
-
-                if (myDataSet.Tables[0].Rows.Count > 0)
+                if (type == "0")
                 {
-                    returnData = CommonManager.GetList<dpPartData>(myDataSet.Tables[0]);//转换实体类list
+                    dpPartManager mydp_Part = new dpPartManager();
+                    dpPartQuery mydpPartQuery = new dpPartQuery();
+                    mydpPartQuery.ParentID = ParentID;
+                    mydpPartQuery.UserID = UserID;
+                    mydpPartQuery.ClassifyID = ClassifyID;
+                    mydpPartQuery.Name = Name;
+                    mydpPartQuery.CurrentIndex = Convert.ToInt32(CurrentIndex == "" ? "1" : CurrentIndex);
+                    mydpPartQuery.PageSize = Convert.ToInt32(PageSize == "" ? "12" : PageSize);
+
+                    DataSet myDataSet = mydp_Part.SearchPaging(mydpPartQuery);
+
+                    if (myDataSet.Tables[0].Rows.Count > 0)
+                    {
+                        returnData = CommonManager.GetList<dpPartData>(myDataSet.Tables[0]);//转换实体类list
+                    }
                 }
+                else
+                {
+                    dpDownRecordManager my = new dpDownRecordManager();
+                    dpDownRecordQuery myquery = new dpDownRecordQuery();
+                    myquery.UserID = HttpContext.Current.Session[sysUser.ID].ToString();
+                    myquery.CurrentIndex = Convert.ToInt32(CurrentIndex == "" ? "1" : CurrentIndex);
+                    myquery.PageSize = Convert.ToInt32(PageSize == "" ? "12" : PageSize);
+                    DataSet myDataSet = my.SearchPaging(myquery);
+
+                    if (myDataSet.Tables[0].Rows.Count > 0)
+                    {
+                        returnData = CommonManager.GetList<dpPartData>(myDataSet.Tables[0]);//转换实体类list
+                    }
+                }
+
             }
-            else
+            catch (Exception ex)
             {
-                dpDownRecordManager my = new dpDownRecordManager();
-                dpDownRecordQuery myquery = new dpDownRecordQuery();
-                myquery.UserID = HttpContext.Current.Session[sysUser.ID].ToString();
-                myquery.CurrentIndex = Convert.ToInt32(CurrentIndex == "" ? "1" : CurrentIndex);
-                myquery.PageSize = Convert.ToInt32(PageSize == "" ? "12" : PageSize);
-                DataSet myDataSet = my.SearchPaging(myquery);
-
-                if (myDataSet.Tables[0].Rows.Count > 0)
-                {
-                    returnData = CommonManager.GetList<dpPartData>(myDataSet.Tables[0]);//转换实体类list
-                }
+                m_log.Error(ex.Message);
             }
             return new { status = status, errmsg = errmsg, returnData = returnData };
         }
@@ -67,16 +77,24 @@ namespace Part3D
         public static string GetCount()
         {
             string reutrnValue = string.Empty;
-            dpPartManager mydpPartManager = new dpPartManager();
-            dpPartQuery mydpPartQuery = new dpPartQuery();
-            DataSet myDataSet = mydpPartManager.SearchCount(mydpPartQuery);
-            if (myDataSet.Tables[0].Rows.Count > 0)
+            try
             {
-                reutrnValue = myDataSet.Tables[0].Rows[0]["countall"].ToString() + ",";
-                reutrnValue += myDataSet.Tables[0].Rows[0]["count1"].ToString() + ",";
-                reutrnValue += myDataSet.Tables[0].Rows[0]["count2"].ToString() + ",";
-                reutrnValue += myDataSet.Tables[0].Rows[0]["count3"].ToString();
+                dpPartManager mydpPartManager = new dpPartManager();
+                dpPartQuery mydpPartQuery = new dpPartQuery();
+                DataSet myDataSet = mydpPartManager.SearchCount(mydpPartQuery);
+                if (myDataSet.Tables[0].Rows.Count > 0)
+                {
+                    reutrnValue = myDataSet.Tables[0].Rows[0]["countall"].ToString() + ",";
+                    reutrnValue += myDataSet.Tables[0].Rows[0]["count1"].ToString() + ",";
+                    reutrnValue += myDataSet.Tables[0].Rows[0]["count2"].ToString() + ",";
+                    reutrnValue += myDataSet.Tables[0].Rows[0]["count3"].ToString();
+                }
             }
+            catch (Exception ex)
+            {
+                m_log.Error(ex.Message);
+            }
+
             return reutrnValue;
         }
 
@@ -84,30 +102,39 @@ namespace Part3D
         public static string GetAllCount(string classid, string partname, string type)
         {
             string reutrnValue = string.Empty;
-            if (type == "0")
-            {
-                dpPartManager mydpPartManager = new dpPartManager();
-                dpPartQuery mydpPartQuery = new dpPartQuery();
-                mydpPartQuery.ClassifyID = classid;
-                mydpPartQuery.Name = partname;
-                DataSet myDataSet = mydpPartManager.SearchAllCount(mydpPartQuery);
-                if (myDataSet.Tables[0].Rows.Count > 0)
-                {
-                    reutrnValue = myDataSet.Tables[0].Rows[0]["countall"].ToString();
-                }
-            }
-            else
-            {
-                dpDownRecordManager my = new dpDownRecordManager();
-                dpDownRecordQuery myquery = new dpDownRecordQuery();
-                myquery.UserID = HttpContext.Current.Session[sysUser.ID].ToString();
-                DataSet myDataSet = my.SearchAllCount(myquery);
-                if (myDataSet.Tables[0].Rows.Count > 0)
-                {
-                    reutrnValue = myDataSet.Tables[0].Rows[0]["countall"].ToString();
-                }
 
+            try
+            {
+                if (type == "0")
+                {
+                    dpPartManager mydpPartManager = new dpPartManager();
+                    dpPartQuery mydpPartQuery = new dpPartQuery();
+                    mydpPartQuery.ClassifyID = classid;
+                    mydpPartQuery.Name = partname;
+                    DataSet myDataSet = mydpPartManager.SearchAllCount(mydpPartQuery);
+                    if (myDataSet.Tables[0].Rows.Count > 0)
+                    {
+                        reutrnValue = myDataSet.Tables[0].Rows[0]["countall"].ToString();
+                    }
+                }
+                else
+                {
+                    dpDownRecordManager my = new dpDownRecordManager();
+                    dpDownRecordQuery myquery = new dpDownRecordQuery();
+                    myquery.UserID = HttpContext.Current.Session[sysUser.ID].ToString();
+                    DataSet myDataSet = my.SearchAllCount(myquery);
+                    if (myDataSet.Tables[0].Rows.Count > 0)
+                    {
+                        reutrnValue = myDataSet.Tables[0].Rows[0]["countall"].ToString();
+                    }
+
+                }
             }
+            catch (Exception ex)
+            {
+                m_log.Error(ex.Message);
+            }
+
             return reutrnValue;
         }
 
@@ -118,17 +145,24 @@ namespace Part3D
             string errmsg = string.Empty;//错误信息
             IList<dpPartData> returnData = null;//返回实体列表
 
-            dpPartManager mydp_Part = new dpPartManager();
-            dpPartQuery mydpPartQuery = new dpPartQuery();
-            mydpPartQuery.UserID = UserID;
-            mydpPartQuery.ClassifyID = ClassifyID;
-            mydpPartQuery.ID = ID;
-
-            DataSet myDataSet = mydp_Part.SearchRecommend(mydpPartQuery);
-
-            if (myDataSet.Tables[0].Rows.Count > 0)
+            try
             {
-                returnData = CommonManager.GetList<dpPartData>(myDataSet.Tables[0]);//转换实体类list
+                dpPartManager mydp_Part = new dpPartManager();
+                dpPartQuery mydpPartQuery = new dpPartQuery();
+                mydpPartQuery.UserID = UserID;
+                mydpPartQuery.ClassifyID = ClassifyID;
+                mydpPartQuery.ID = ID;
+
+                DataSet myDataSet = mydp_Part.SearchRecommend(mydpPartQuery);
+
+                if (myDataSet.Tables[0].Rows.Count > 0)
+                {
+                    returnData = CommonManager.GetList<dpPartData>(myDataSet.Tables[0]);//转换实体类list
+                }
+            }
+            catch (Exception ex)
+            {
+                m_log.Error(ex.Message);
             }
 
             return new { status = status, errmsg = errmsg, returnData = returnData };
@@ -176,12 +210,10 @@ namespace Part3D
 
                     }
                 }
-
-
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.Write(e.ToString());
+                m_log.Error(ex.Message);
             }
         }
 

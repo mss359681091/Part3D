@@ -16,7 +16,7 @@ namespace Part3D
             {
                 if (Session[sysUser.Nickname] != null)
                 {
-                    this.spnickname.InnerText = Session[sysUser.Nickname].ToString();
+                    this.spnickname.InnerText = Session[sysUser.Nickname].ToString() + "的个人中心";
                     this.imgphoto.Src = Session[sysUser.Photo].ToString();
                 }
             }

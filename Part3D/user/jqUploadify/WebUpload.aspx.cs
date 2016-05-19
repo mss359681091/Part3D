@@ -1,29 +1,25 @@
 ﻿using _3DPart.DAL.BULayer;
 using _3DPart.DAL.BULayer.Schema;
-using Part3D.models;
+using log4net;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.Web;
-using System.Web.Services;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
 
 namespace Part3D
 {
     public partial class WebUpload : System.Web.UI.Page
     {
+        private static readonly ILog m_log = LogHelper.GetInstance(); //LogManager.GetLogger(typeof(TEST));
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Request["txtPartname"] != null && Request["hidClassifyId"] != null)
             {
                 string strName = Request["txtPartname"];
                 string strClassify = this.hidClassifyId.Value;
-                //var file = Request.Files[0];
 
                 HttpFileCollection file = System.Web.HttpContext.Current.Request.Files;
 
@@ -42,6 +38,13 @@ namespace Part3D
             }
         }
 
+        /// <summary>
+        /// 生成缩略图
+        /// </summary>
+        /// <param name="sourcePath"></param>
+        /// <param name="newPath"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
         public static void MakeThumbnail(string sourcePath, string newPath, int width, int height)
         {
             System.Drawing.Image ig = System.Drawing.Image.FromFile(sourcePath);
@@ -89,42 +92,39 @@ namespace Part3D
 
         }
 
-
         public void fnSaveImg(string clssifyid, string partname, HttpPostedFile inputfile)
         {
-
-            //第一步上传封面
-            string uploadPath = HttpContext.Current.Server.MapPath(@"/user/jqUploadify/uploads/f/");
-            if (!Directory.Exists(uploadPath))
+            try
             {
-                Directory.CreateDirectory(uploadPath);
+                //第一步上传封面
+                string fileExtname, ran;
+                UploadPreview(inputfile, out fileExtname, out ran);
+
+                //第二步插入插件数据
+                dpPartManager mydpPartManager = new dpPartManager();
+                Hashtable myHashtable = new Hashtable();
+                myHashtable.Add(dpPart.UserID, HttpContext.Current.Session["ID"].ToString());//用户ID
+                myHashtable.Add(dpPart.ParentID, "0");//父组件ID
+                myHashtable.Add(dpPart.ClassifyID, clssifyid);//班级ID
+                myHashtable.Add(dpPart.Name, partname);//组件名称
+                myHashtable.Add(dpPart.Preview, @"/user/jqUploadify/uploads/f/" + ran + fileExtname); //封面
+                myHashtable.Add(dpPart.PreviewSmall, @"/user/jqUploadify/uploads/f/" + ran + "_s" + fileExtname);//封面缩略图
+                myHashtable.Add(dpPart.Description, "");
+                myHashtable.Add(dpPart.Limits, "");
+                myHashtable.Add(dpPart.Keyword, "");
+                int partid = SQLHelper.ExcuteProc("sp_AddPart", myHashtable);//执行存储过程并返回id
+
+                //第三部插入附件表
+                InsertModelFile(partid);
             }
-            string filePath = inputfile.FileName;//文件路径
-            string fileName = filePath.Substring(filePath.LastIndexOf("\\") + 1);//文件名称
-            string fileExtname = System.IO.Path.GetExtension(filePath).ToLower();//文件扩展名
-            string ran = DateTime.Now.ToString("yyyyMMddHHmmss") + new Random().Next(100, 999);
-            string temp = uploadPath + ran;
-            string newfilename = temp + fileExtname; //新文件名称
-            string newfile_s_name = temp + "_s" + fileExtname;//新文件名称（缩略图）
-            inputfile.SaveAs(newfilename);//上传文件
-            MakeThumbnail(newfilename, newfile_s_name, 240, 170);//生成缩略图
+            catch (Exception ex)
+            {
+                m_log.Error(ex.Message);
+            }
+        }
 
-
-            //第二步插入插件数据
-            dpPartManager mydpPartManager = new dpPartManager();
-            Hashtable myHashtable = new Hashtable();
-            myHashtable.Add(dpPart.UserID, HttpContext.Current.Session["ID"].ToString());//用户ID
-            myHashtable.Add(dpPart.ParentID, "0");//父组件ID
-            myHashtable.Add(dpPart.ClassifyID, clssifyid);//班级ID
-            myHashtable.Add(dpPart.Name, partname);//组件名称
-            myHashtable.Add(dpPart.Preview, @"/user/jqUploadify/uploads/f/" + ran + fileExtname); //封面
-            myHashtable.Add(dpPart.PreviewSmall, @"/user/jqUploadify/uploads/f/" + ran + "_s" + fileExtname);//封面缩略图
-            myHashtable.Add(dpPart.Description, "");
-            myHashtable.Add(dpPart.Limits, "");
-            myHashtable.Add(dpPart.Keyword, "");
-            int partid = SQLHelper.ExcuteProc("sp_AddPart", myHashtable);//执行存储过程并返回id
-
-            //第三部插入附件表
+        private void InsertModelFile(int partid)
+        {
             if (HttpContext.Current.Session["modefile"] != null)
             {
                 string modefiles = HttpContext.Current.Session["modefile"].ToString();
@@ -161,7 +161,7 @@ namespace Part3D
                             ht.Add(dpModelFile.Models, strmodels);//型号
                             SQLHelper.ExcuteProc("sp_AddModelFile", ht);//执行存储过程
 
-                         
+
                         }
                     }
                 }
@@ -169,35 +169,59 @@ namespace Part3D
             }
         }
 
+        private static void UploadPreview(HttpPostedFile inputfile, out string fileExtname, out string ran)
+        {
+            string uploadPath = HttpContext.Current.Server.MapPath(@"/user/jqUploadify/uploads/f/");
+            if (!Directory.Exists(uploadPath))
+            {
+                Directory.CreateDirectory(uploadPath);
+            }
+            string filePath = inputfile.FileName;//文件路径
+            string fileName = filePath.Substring(filePath.LastIndexOf("\\") + 1);//文件名称
+            fileExtname = System.IO.Path.GetExtension(filePath).ToLower();
+            ran = DateTime.Now.ToString("yyyyMMddHHmmss") + new Random().Next(100, 999);
+            string temp = uploadPath + ran;
+            string newfilename = temp + fileExtname; //新文件名称
+            string newfile_s_name = temp + "_s" + fileExtname;//新文件名称（缩略图）
+            inputfile.SaveAs(newfilename);//上传文件
+            MakeThumbnail(newfilename, newfile_s_name, 240, 170);//生成缩略图
+        }
+
         private void savestandard(string standard, int partid)
         {
 
-            //检测并添加或获取标准id
-            dpStandardManager mydpStandardManager = new dpStandardManager();
-            dpStandardQuery mydpStandardQuery = new dpStandardQuery();
-            mydpStandardQuery.Name = standard.ToLower();//转小写
-            string standardid = mydpStandardManager.CheckISNull(mydpStandardQuery);//返回id
-            if (standardid.Trim().Length == 0)
+            try
             {
-                Hashtable ht = new Hashtable();
-                ht.Add(dpStandard.Name, standard.ToLower());
-                ht.Add(dpStandard.Content, "");
-                standardid = SQLHelper.ExcuteProc("sp_Adddp_Standard", ht).ToString();//执行存储过程
+                //检测并添加或获取标准id
+                dpStandardManager mydpStandardManager = new dpStandardManager();
+                dpStandardQuery mydpStandardQuery = new dpStandardQuery();
+                mydpStandardQuery.Name = standard.ToLower();//转小写
+                string standardid = mydpStandardManager.CheckISNull(mydpStandardQuery);//返回id
+                if (standardid.Trim().Length == 0)
+                {
+                    Hashtable ht = new Hashtable();
+                    ht.Add(dpStandard.Name, standard.ToLower());
+                    ht.Add(dpStandard.Content, "");
+                    standardid = SQLHelper.ExcuteProc("sp_Adddp_Standard", ht).ToString();//执行存储过程
+                }
+                //匹配组件和标准关联
+                dpStandardMappingManager mydpStandardMappingManager = new dpStandardMappingManager();
+                dpStandardMappingQuery mydpStandardMappingQuery = new dpStandardMappingQuery();
+                mydpStandardMappingQuery.PartID = partid.ToString();
+                mydpStandardMappingQuery.StandardID = standardid;
+                string dpStandardMappingid = mydpStandardMappingManager.CheckISNull(mydpStandardMappingQuery);
+                if (dpStandardMappingid.Trim().Length == 0)
+                {
+                    Hashtable ht = new Hashtable();
+                    ht.Add(dpStandardMapping.StandardID, Convert.ToInt32(standardid));//标准ID
+                    ht.Add(dpStandardMapping.PartID, partid);//组件ID
+                    SQLHelper.ExcuteProc("sp_Adddp_StandardMapping", ht).ToString();//执行存储过程
+                }
             }
-            //匹配组件和标准关联
-            dpStandardMappingManager mydpStandardMappingManager = new dpStandardMappingManager();
-            dpStandardMappingQuery mydpStandardMappingQuery = new dpStandardMappingQuery();
-            mydpStandardMappingQuery.PartID = partid.ToString();
-            mydpStandardMappingQuery.StandardID = standardid;
-            string dpStandardMappingid = mydpStandardMappingManager.CheckISNull(mydpStandardMappingQuery);
-            if (dpStandardMappingid.Trim().Length == 0)
+            catch (Exception ex)
             {
-                Hashtable ht = new Hashtable();
-                ht.Add(dpStandardMapping.StandardID, Convert.ToInt32(standardid));//标准ID
-                ht.Add(dpStandardMapping.PartID, partid);//组件ID
-                SQLHelper.ExcuteProc("sp_Adddp_StandardMapping", ht).ToString();//执行存储过程
+                m_log.Error(ex.Message);
             }
-
         }
 
         private void DowmLoad(string strid)
@@ -229,12 +253,10 @@ namespace Part3D
 
                     }
                 }
-
-
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.Write(e.ToString());
+                m_log.Error(ex.Message);
             }
         }
 

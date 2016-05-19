@@ -85,7 +85,7 @@
                             strtr += "<tr class='trcenter'>";
                             strtr += "<td align='center'><input data-id='" + item.ID + "' type='checkbox'></td>";
                             strtr += "<td><a href='/View.aspx?partid=" + item.ID + "' target='_blank' ><img src='" + item.PreviewSmall + "' alt='' /></a></td>";
-                            strtr += "<td><button data-id='" + item.ID + "' type='button' class='_button' data-event='Class_L'>" + item.classname + "</button></td>";
+                            strtr += "<td><button data-classid='" + item.ClassifyID + "' data-id='" + item.ID + "' type='button' class='_button' data-event='Class_L'>" + item.classname + "</button></td>";
                             strtr += "<td><button data-id='" + item.ID + "' type='button' class='_button' data-event='setpartname'>" + names + "</button></li></td>";
                             strtr += "<td>" + item.Accesslog + "</td>";
                             strtr += "<td>" + item.mycount + "</td>";
@@ -118,6 +118,7 @@
                         $('button[data-event=Class_L]').on('click', function () {
                             var $this = $(this);
                             var partid = $(this).data("id");
+                            document.getElementById("hidClassifyId").value = $this.data("classid");
                             var d = dialog({
                                 fixed: true,
                                 title: '选择分类',

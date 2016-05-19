@@ -1,5 +1,6 @@
 ﻿using _3DPart.DAL.BULayer;
 using _3DPart.DAL.BULayer.Schema;
+using log4net;
 using Part3D.models;
 using System;
 using System.Collections.Generic;
@@ -13,20 +14,30 @@ namespace Part3D
 {
     public partial class PersonalInfo : System.Web.UI.Page
     {
+        private static readonly ILog m_log = LogHelper.GetInstance(); //LogManager.GetLogger(typeof(TEST));
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                if (Session[sysUser.Username] != null)
+                try
                 {
-                    this.spUsername.InnerText = Session[sysUser.Username].ToString();
-                    this.spNickname.InnerText = Session[sysUser.Nickname].ToString();
-                    this.spMobile.InnerText = Session[sysUser.Mobile].ToString();
-                    this.spEmail.InnerText = Session[sysUser.Email].ToString();
-                    this.sp_nickname.InnerText = "昵称：" + Session[sysUser.Nickname].ToString();
-                    this.sp_email.InnerText = "邮箱：" + Session[sysUser.Email].ToString();
-                    this.sp_mobile.InnerText = "手机号：" + Session[sysUser.Mobile].ToString();
+                    if (Session[sysUser.Username] != null)
+                    {
+                        this.spUsername.InnerText = Session[sysUser.Username].ToString();
+                        this.spNickname.InnerText = Session[sysUser.Nickname].ToString();
+                        this.spMobile.InnerText = Session[sysUser.Mobile].ToString();
+                        this.spEmail.InnerText = Session[sysUser.Email].ToString();
+                        this.sp_nickname.InnerText = "昵称：" + Session[sysUser.Nickname].ToString();
+                        this.sp_email.InnerText = "邮箱：" + Session[sysUser.Email].ToString();
+                        this.sp_mobile.InnerText = "手机号：" + Session[sysUser.Mobile].ToString();
+                    }
                 }
+                catch (Exception ex)
+                {
+                    m_log.Error(ex.Message);
+                }
+
             }
         }
 
@@ -34,12 +45,20 @@ namespace Part3D
         public static string SetMobile(string mobile)
         {
             string returnValue = string.Empty;
-            sysUserManager mysysUserManager = new sysUserManager();
-            returnValue = mysysUserManager.UpdateParams(sysUser.Mobile, mobile, HttpContext.Current.Session[sysUser.ID].ToString());
-            if (returnValue == "1")
+            try
             {
-                HttpContext.Current.Session[sysUser.Mobile] = mobile;
+                sysUserManager mysysUserManager = new sysUserManager();
+                returnValue = mysysUserManager.UpdateParams(sysUser.Mobile, mobile, HttpContext.Current.Session[sysUser.ID].ToString());
+                if (returnValue == "1")
+                {
+                    HttpContext.Current.Session[sysUser.Mobile] = mobile;
+                }
             }
+            catch (Exception ex)
+            {
+                m_log.Error(ex.Message);
+            }
+
             return returnValue;
         }
 
@@ -47,12 +66,20 @@ namespace Part3D
         public static string SetEmail(string email)
         {
             string returnValue = string.Empty;
-            sysUserManager mysysUserManager = new sysUserManager();
-            returnValue = mysysUserManager.UpdateParams(sysUser.Email, email, HttpContext.Current.Session[sysUser.ID].ToString());
-            if (returnValue == "1")
+            try
             {
-                HttpContext.Current.Session[sysUser.Email] = email;
+                sysUserManager mysysUserManager = new sysUserManager();
+                returnValue = mysysUserManager.UpdateParams(sysUser.Email, email, HttpContext.Current.Session[sysUser.ID].ToString());
+                if (returnValue == "1")
+                {
+                    HttpContext.Current.Session[sysUser.Email] = email;
+                }
             }
+            catch (Exception ex)
+            {
+                m_log.Error(ex.Message);
+            }
+
             return returnValue;
         }
 
@@ -60,12 +87,20 @@ namespace Part3D
         public static string SetNickname(string nickname)
         {
             string returnValue = string.Empty;
-            sysUserManager mysysUserManager = new sysUserManager();
-            returnValue = mysysUserManager.UpdateParams(sysUser.Nickname, nickname, HttpContext.Current.Session[sysUser.ID].ToString());
-            if (returnValue == "1")
+            try
             {
-                HttpContext.Current.Session[sysUser.Nickname] = nickname;
+                sysUserManager mysysUserManager = new sysUserManager();
+                returnValue = mysysUserManager.UpdateParams(sysUser.Nickname, nickname, HttpContext.Current.Session[sysUser.ID].ToString());
+                if (returnValue == "1")
+                {
+                    HttpContext.Current.Session[sysUser.Nickname] = nickname;
+                }
             }
+            catch (Exception ex)
+            {
+                m_log.Error(ex.Message);
+            }
+
             return returnValue;
         }
 
@@ -73,19 +108,28 @@ namespace Part3D
         public static string SetPassword(string oldpassword, string newpassword)
         {
             string returnValue = string.Empty;
-            string password = DESEncrypt.Encrypt(oldpassword);//加密
-            string strPassword = new sysUserManager().GetParams(new sysUserQuery() { Username = HttpContext.Current.Session[sysUser.Username].ToString() }, sysUser.Password);
+            try
+            {
+                string password = DESEncrypt.Encrypt(oldpassword);//加密
+                string strPassword = new sysUserManager().GetParams(new sysUserQuery() { Username = HttpContext.Current.Session[sysUser.Username].ToString() }, sysUser.Password);
 
-            if (password != strPassword)
-            {
-                return "-1";
+                if (password != strPassword)
+                {
+                    return "-1";
+                }
+                sysUserManager mysysUserManager = new sysUserManager();
+                returnValue = mysysUserManager.UpdateParams(sysUser.Password, password, HttpContext.Current.Session[sysUser.ID].ToString());
+                if (returnValue == "1")
+                {
+                    HttpContext.Current.Session[sysUser.Password] = password;
+                }
+
             }
-            sysUserManager mysysUserManager = new sysUserManager();
-            returnValue = mysysUserManager.UpdateParams(sysUser.Password, password, HttpContext.Current.Session[sysUser.ID].ToString());
-            if (returnValue == "1")
+            catch (Exception ex)
             {
-                HttpContext.Current.Session[sysUser.Password] = password;
+                m_log.Error(ex.Message);
             }
+
             return returnValue;
         }
     }

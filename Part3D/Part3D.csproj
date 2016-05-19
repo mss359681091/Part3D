@@ -43,6 +43,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\3DPart\3DPart\bin\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net40-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.0.1010, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.0\lib\net40\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -212,6 +216,7 @@
     <Compile Include="Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
     </Compile>
+    <Compile Include="LogHelper.cs" />
     <Compile Include="models\DESEncrypt.cs" />
     <Compile Include="models\dpPart\dpPartData.cs" />
     <Compile Include="models\FileManager.cs">
@@ -355,6 +360,7 @@
     <Content Include="content\iconfont.ttf" />
     <Content Include="content\iconfont.woff" />
     <Content Include="user\Web.config" />
+    <Content Include="Log4Net.config" />
     <None Include="Properties\PublishProfiles\3dpart发布包.pubxml" />
     <Content Include="Web.config" />
     <None Include="Web.Debug.config">

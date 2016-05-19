@@ -514,6 +514,7 @@ namespace _3DPart.DAL.BULayer
             + dpPart.PreviewSmall_FULL + ","
             + dpPart.Name_FULL + ","
             + dpPart.Accesslog_FULL + ","
+            + dpPart.ClassifyID_FULL + ","
             + dpClassify.Name_FULL + " as classname ,"
             + " (select count(*) from  " + dpDownRecord.TABLENAME
             + " left join " + dpPart.TABLENAME + " as dp1 on " + dpDownRecord.PartID_FULL + " = dp1.id "
