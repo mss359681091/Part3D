@@ -141,6 +141,7 @@
     <Content Include="images\Gr.gif" />
     <Content Include="images\Img.jpg" />
     <Content Include="images\img.png" />
+    <Content Include="images\lanren_top.jpg" />
     <Content Include="images\Login.png" />
     <Content Include="images\mail.png" />
     <Content Include="images\netclass.png" />
