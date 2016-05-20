@@ -4,9 +4,11 @@ using log4net;
 using Part3D.models;
 using System;
 using System.Collections;
+using System.Configuration;
 using System.Data;
 using System.Web;
 using System.Web.Services;
+using System.Web.UI;
 
 namespace Part3D
 {
@@ -255,7 +257,39 @@ namespace Part3D
         protected void LinkButton1_Click(object sender, EventArgs e)
         {
             string id = this.hidfileid.Value;
-            DowmLoad(id);
+            if (ChkIP())
+            {
+                DowmLoad(id);
+            }
+            else
+            {
+                ////如果有UpdatePanel就用如下代码调用前台js
+                //ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "Ceshi();", true);
+                //如果没有就如下代码
+                //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "", "<script>fntip();</script>", true);
+                Response.Write("<script>alert('非注册用户每天只能下载10次！')</script>");
+            }
+        }
+
+
+        private bool ChkIP()
+        {
+            bool returnValue = false;
+            string currentip = CommonManager.GetClientIPv4Address();
+            dpDownRecordManager mydpDownRecordManager = new dpDownRecordManager();
+            dpDownRecordQuery mydpDownRecordQuery = new dpDownRecordQuery();
+            mydpDownRecordQuery.CreateDate = DateTime.Now.ToString("yyyy-MM-dd");
+            mydpDownRecordQuery.IP = currentip.Trim();
+            string count = mydpDownRecordManager.SearchIP(mydpDownRecordQuery);
+            if (count.Length > 0)
+            {
+                int defaultcount = Convert.ToInt32(ConfigurationManager.AppSettings["UploadCount"].ToString());//默认非用户可下载数量
+                if (int.Parse(count) < defaultcount)
+                {
+                    returnValue = true;
+                }
+            }
+            return returnValue;
         }
     }
 }

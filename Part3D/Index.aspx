@@ -40,8 +40,11 @@
         function fndw(strid) {
             $("#hidfileid").val(strid);
             document.getElementById('<%=LinkButton1.ClientID %>').click();
-}
+        }
 
+        function fntip() {
+            alert('非注册用户每天只能下载10次！');
+        }
     </script>
 </head>
 <body>
@@ -49,7 +52,7 @@
         <div>
             <header>
                 <div class="navbar fixed-top ZindexT">
-                    <uc2:WUCTop ID="WUCTop1" runat="server" />
+                    <uc2:wuctop id="WUCTop1" runat="server" />
                 </div>
             </header>
 
@@ -176,11 +179,11 @@
             </div>
 
             <div class="Index_Foot">
-                <uc3:WUCLink ID="WUCLink1" runat="server" />
+                <uc3:wuclink id="WUCLink1" runat="server" />
             </div>
 
             <div class="Index_FootB">
-                <uc1:WUCBottom ID="WUCBottom1" runat="server" />
+                <uc1:wucbottom id="WUCBottom1" runat="server" />
             </div>
 
         </div>

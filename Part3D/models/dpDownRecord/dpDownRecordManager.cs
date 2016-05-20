@@ -245,6 +245,54 @@ namespace _3DPart.DAL.BULayer
             return returnValue;
         }
 
+        public string SearchIP(dpDownRecordQuery QueryData)
+        {
+            string returnValue = string.Empty;
+            string strQuery = @"SELECT count(*) as count"
+
+             + " FROM " + dpDownRecord.TABLENAME + " WHERE 1 = 1 ";
+
+
+            Hashtable myParam = new Hashtable();
+
+            if (QueryData.UserID.Length > 0)
+            {
+                strQuery += " AND " + dpDownRecord.UserID_FULL + " = @UserID ";
+                myParam.Add("@UserID", QueryData.UserID);
+            }
+
+            if (QueryData.Enabled.Length > 0)
+            {
+                strQuery += " AND " + dpDownRecord.Enabled_FULL + " = @Enabled ";
+                myParam.Add("@Enabled", QueryData.Enabled);
+            }
+            if (QueryData.CreateDate.Length > 0)
+            {
+                strQuery += " AND CONVERT(varchar(100), " + dpDownRecord.CreateDate_FULL + ", 23) = @CreateDate ";
+                myParam.Add("@CreateDate", QueryData.CreateDate);
+            }
+            if (QueryData.IP.Length > 0)
+            {
+                strQuery += " AND " + dpDownRecord.IPAddress_FULL + " = @IPAddress ";
+                myParam.Add("@IPAddress", QueryData.IP);
+            }
+
+            try
+            {
+                returnValue = SQLHelper.ExcuteScalarSQL(strQuery, myParam);
+            }
+            catch (Exception myEx)
+            {
+
+                throw new Exception(myEx.Message + "\r\n SQL:" + strQuery);
+            }
+            finally
+            {
+
+            }
+            return returnValue;
+        }
+
     }
 
     [Serializable()]
@@ -254,6 +302,8 @@ namespace _3DPart.DAL.BULayer
         public string PartID = string.Empty;
         public string UserID = string.Empty;
         public string Enabled = string.Empty;
+        public string CreateDate = string.Empty;
+        public string IP = string.Empty;
         public int CurrentIndex = 1;
         public int PageSize = 12;
         public string SortField = " ID ";
