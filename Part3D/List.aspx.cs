@@ -5,6 +5,7 @@ using Part3D.models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Web;
 using System.Web.Services;
@@ -168,6 +169,10 @@ namespace Part3D
             return new { status = status, errmsg = errmsg, returnData = returnData };
         }
 
+        /// <summary>
+        /// 文件下载
+        /// </summary>
+        /// <param name="strid">文件id</param>
         private void DowmLoad(string strid)
         {
             try
@@ -196,7 +201,7 @@ namespace Part3D
                         myHashtable.Add(dpDownRecord.PartID, myDataSet.Tables[0].Rows[0][dpModelFile.PartID].ToString());
                         myHashtable.Add(dpDownRecord.IPAddress, CommonManager.GetClientIPv4Address());
                         SQLHelper.ExcuteProc("sp_DownRecord", myHashtable);//执行存储过程注册
-
+                        //执行下载
                         Response.Clear();
                         Response.ClearHeaders();
                         Response.Buffer = false;
@@ -210,6 +215,8 @@ namespace Part3D
 
                     }
                 }
+
+
             }
             catch (Exception ex)
             {
@@ -220,8 +227,39 @@ namespace Part3D
         protected void LinkButton1_Click(object sender, EventArgs e)
         {
             string id = this.hidfileid.Value;
-            DowmLoad(id);
+            if (ChkIP())
+            {
+                DowmLoad(id);
+            }
+            else
+            {
+                ////如果有UpdatePanel就用如下代码调用前台js
+                //ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "Ceshi();", true);
+                //如果没有就如下代码
+                //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "", "<script>fntip();</script>", true);
+                Response.Write("<script>alert('非注册用户每天只能下载10次！')</script>");
+            }
         }
+        private bool ChkIP()
+        {
+            bool returnValue = false;
+            string currentip = CommonManager.GetClientIPv4Address();
+            dpDownRecordManager mydpDownRecordManager = new dpDownRecordManager();
+            dpDownRecordQuery mydpDownRecordQuery = new dpDownRecordQuery();
+            mydpDownRecordQuery.CreateDate = DateTime.Now.ToString("yyyy-MM-dd");
+            mydpDownRecordQuery.IP = currentip.Trim();
+            string count = mydpDownRecordManager.SearchIP(mydpDownRecordQuery);
+            if (count.Length > 0)
+            {
+                int defaultcount = Convert.ToInt32(ConfigurationManager.AppSettings["UploadCount"].ToString());//默认非用户可下载数量
+                if (int.Parse(count) < defaultcount)
+                {
+                    returnValue = true;
+                }
+            }
+            return returnValue;
+        }
+
 
     }
 }

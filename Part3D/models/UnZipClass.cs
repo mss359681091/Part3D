@@ -120,7 +120,7 @@ namespace Part3D.models
                     }
                 }
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                
             }

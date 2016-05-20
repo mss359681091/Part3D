@@ -299,7 +299,7 @@ namespace Part3D.models
                 g.Dispose();
                 tImage.Dispose();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }

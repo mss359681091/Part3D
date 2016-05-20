@@ -270,8 +270,6 @@ namespace Part3D
                 Response.Write("<script>alert('非注册用户每天只能下载10次！')</script>");
             }
         }
-
-
         private bool ChkIP()
         {
             bool returnValue = false;
@@ -291,5 +289,6 @@ namespace Part3D
             }
             return returnValue;
         }
+
     }
 }

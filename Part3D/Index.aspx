@@ -42,9 +42,6 @@
             document.getElementById('<%=LinkButton1.ClientID %>').click();
         }
 
-        function fntip() {
-            alert('非注册用户每天只能下载10次！');
-        }
     </script>
 </head>
 <body>
