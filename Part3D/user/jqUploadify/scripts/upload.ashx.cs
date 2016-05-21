@@ -37,7 +37,8 @@ namespace jqUploadify.scripts
                 {
                     Directory.CreateDirectory(uploadPaths);
                 }
-                string ran = DateTime.Now.ToString("yyyyMMddHHmmss") + new Random().Next(100, 999);
+                //string ran = DateTime.Now.ToString("yyyyMMddHHmmss") + new Random().Next(100, 999);
+                string ran = new Random().Next(100, 999).ToString();
                 string fileExtname = System.IO.Path.GetExtension(uploadPath + file.FileName).ToLower();//文件扩展名
                 string fileName = System.IO.Path.GetFileNameWithoutExtension(uploadPath + file.FileName).ToLower();//文件扩展名
                 file.SaveAs(uploadPath + fileName.Replace(" ", "") + ran + fileExtname);
@@ -45,7 +46,7 @@ namespace jqUploadify.scripts
                 // MakeThumbnail(uploadPath + ran + fileExtname, uploadPath + "\\s\\" + ran + fileExtname, 240, 170);
                 if (HttpContext.Current.Session["modefile"] != null)
                 {
-                    HttpContext.Current.Session["modefile"] += fileName + ";" + fileExtname + ";" + @"/user/jqUploadify/uploads/" + fileName.Replace(" ","") + ran + fileExtname + ";" + file.ContentLength + ",";
+                    HttpContext.Current.Session["modefile"] += fileName + ";" + fileExtname + ";" + @"/user/jqUploadify/uploads/" + fileName.Replace(" ", "") + ran + fileExtname + ";" + file.ContentLength + ",";
                 }
                 else
                 {

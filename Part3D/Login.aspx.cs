@@ -35,7 +35,7 @@ namespace Part3D
                 return "-2";//状态-2：密码空值
             }
             paramPassword = DESEncrypt.Encrypt(paramPassword);//加密
-            returnValue = CommonManager.LoginValidate(paramUsername, paramPassword, paramRemember);//登录验证
+            returnValue = CommonManager.LoginValidate(paramUsername.Trim(), paramPassword.Trim(), paramRemember);//登录验证
             return returnValue;
         }
 
@@ -105,14 +105,14 @@ namespace Part3D
             paramNickname = CommonManager.FilterHtmlTarget(paramNickname);
             paramEmail = CommonManager.FilterHtmlTarget(paramEmail);
             paramMobile = CommonManager.FilterHtmlTarget(paramMobile);
-            paramPassword = DESEncrypt.Encrypt(paramPassword);//密码加密
+            paramPassword = DESEncrypt.Encrypt(paramPassword.Trim());//密码加密
 
             Hashtable myHashtable = new Hashtable();
-            myHashtable.Add(sysUser.Username, paramUsername);
-            myHashtable.Add(sysUser.Password, paramPassword);
-            myHashtable.Add(sysUser.Nickname, paramNickname);
-            myHashtable.Add(sysUser.Email, paramEmail);
-            myHashtable.Add(sysUser.Mobile, paramMobile);
+            myHashtable.Add(sysUser.Username, paramUsername.Trim());
+            myHashtable.Add(sysUser.Password, paramPassword.Trim());
+            myHashtable.Add(sysUser.Nickname, paramNickname.Trim());
+            myHashtable.Add(sysUser.Email, paramEmail.Trim());
+            myHashtable.Add(sysUser.Mobile, paramMobile.Trim());
 
             SQLHelper.ExcuteProc("sp_Register", myHashtable);//执行存储过程注册
             returnValue = "1";//注册成功

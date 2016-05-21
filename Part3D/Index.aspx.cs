@@ -50,13 +50,31 @@ namespace Part3D
                     for (int i = 0; i < myDataSet.Tables[0].Rows.Count; i++)
                     {
                         returnValue += "<li>";
+
+
                         if (paramtype == "0")
                         {
                             returnValue += "<p><a target='_blank' href ='/List.aspx?classid=" + myDataSet.Tables[0].Rows[i][dpClassify.ID] + "'>" + myDataSet.Tables[0].Rows[i][dpClassify.Name] + "</a></p>";
                         }
                         else if (paramtype == "1")
                         {
-                            returnValue += "<p><a href ='javascript:void(0);' onclick='fnChooseme(" + myDataSet.Tables[0].Rows[i][dpClassify.ID] + ",this);'>" + myDataSet.Tables[0].Rows[i][dpClassify.Name] + "</a></p>";
+
+                            if (HttpContext.Current.Session[sysUser.Username].ToString().Trim() == "admin")
+                            {
+                                returnValue += "<p><a href ='javascript:void(0);' onclick='fnChooseme(" + myDataSet.Tables[0].Rows[i][dpClassify.ID] + ",this);'>" + myDataSet.Tables[0].Rows[i][dpClassify.Name] + "</a></p>";
+                            }
+                            else
+                            {
+                                if (myDataSet.Tables[0].Rows[i][dpClassify.Name].ToString().Trim() == "国标")
+                                {
+                                    returnValue += "<p><a href ='javascript:void(0);'>" + myDataSet.Tables[0].Rows[i][dpClassify.Name] + "</a></p>";
+                                }
+                                else
+                                {
+                                    returnValue += "<p><a href ='javascript:void(0);' onclick='fnChooseme(" + myDataSet.Tables[0].Rows[i][dpClassify.ID] + ",this);'>" + myDataSet.Tables[0].Rows[i][dpClassify.Name] + "</a></p>";
+                                }
+
+                            }
                         }
                         else
                         {

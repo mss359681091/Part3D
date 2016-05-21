@@ -305,6 +305,8 @@ function fnNext() {
 
 //图片上传预览    IE是用了滤镜。
 function previewImage(file) {
+    var flagname = file.files[0].name.split('.')[0].toString();
+    $("#txtPartname").val(flagname);
     var MAXWIDTH = 260;
     var MAXHEIGHT = 180;
     var div = document.getElementById('preview');
@@ -389,6 +391,8 @@ function fnSaveImg(filenames, successcount) {
             $("#preview").hide();
             $("#addpic").show();
             alert("上传成功！");
+            window.location.href = "/user/PersonalResouces.aspx";
+
         }
     };
     $("#fm1").ajaxForm(options);
