@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="PersonalResouces.aspx.cs" Inherits="Part3D.PersonalResouces" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AdManager.aspx.cs" Inherits="Part3D.AdManager" %>
 
 
 <%@ Register Src="WUCBottom.ascx" TagName="WUCBottom" TagPrefix="uc1" %>
@@ -24,15 +24,17 @@
     <script src="/scripts/laypage/laypage.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $.ajax({
-                type: "POST",
-                contentType: "application/json",
-                url: "/Index.aspx/GetClassify",
-                data: "{paramtype:'1'}",
-                dataType: 'json',
-                success: function (result) {
-                    $("#ulclassify").append(result.d);
-                }
+            $(function () {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json",
+                    url: "/Index.aspx/GetClassify",
+                    data: "{paramtype:'1'}",
+                    dataType: 'json',
+                    success: function (result) {
+                        $("#ulclassify").append(result.d);
+                    }
+                });
             });
             fnload();
         });
@@ -84,7 +86,7 @@
                             strtr += "<td align='center'><input data-id='" + item.ID + "' type='checkbox'></td>";
                             strtr += "<td><a href='/View.aspx?partid=" + item.ID + "' target='_blank' ><img src='" + item.PreviewSmall + "' alt='' /></a></td>";
                             strtr += "<td><button data-classid='" + item.ClassifyID + "' data-id='" + item.ID + "' type='button' class='_button' data-event='Class_L'>" + item.classname + "</button></td>";
-                            strtr += "<td><button data-id='" + item.ID + "' type='button' class='_button' data-event='setpartname'>" + names + "</button></li></td>";
+                            strtr += "<td><button data-id='" + item.ID + "' type='button' class='_button' data-event='setpartname'>" + names + "</button></td>";
                             strtr += "<td>" + item.Accesslog + "</td>";
                             strtr += "<td>" + item.mycount + "</td>";
                             strtr += "<td>" + item.CreateDate1 + "</td>";
@@ -92,7 +94,6 @@
                             strtr += "</tr>";
                         });
                         $("#trtop").after(strtr);
-
                         //修改名称
                         $('button[data-event=setpartname]').on('click', function () {
                             var $this = $(this);

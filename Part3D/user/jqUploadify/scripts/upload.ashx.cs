@@ -38,7 +38,7 @@ namespace jqUploadify.scripts
                     Directory.CreateDirectory(uploadPaths);
                 }
                 //string ran = DateTime.Now.ToString("yyyyMMddHHmmss") + new Random().Next(100, 999);
-                string ran = new Random().Next(100, 999).ToString();
+                string ran = "_" + new Random().Next(100, 999).ToString();
                 string fileExtname = System.IO.Path.GetExtension(uploadPath + file.FileName).ToLower();//文件扩展名
                 string fileName = System.IO.Path.GetFileNameWithoutExtension(uploadPath + file.FileName).ToLower();//文件扩展名
                 file.SaveAs(uploadPath + fileName.Replace(" ", "") + ran + fileExtname);

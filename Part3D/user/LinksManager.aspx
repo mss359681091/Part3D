@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="PersonalResouces.aspx.cs" Inherits="Part3D.PersonalResouces" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="LinksManager.aspx.cs" Inherits="Part3D.LinksManager" %>
 
 
 <%@ Register Src="WUCBottom.ascx" TagName="WUCBottom" TagPrefix="uc1" %>
@@ -24,16 +24,6 @@
     <script src="/scripts/laypage/laypage.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $.ajax({
-                type: "POST",
-                contentType: "application/json",
-                url: "/Index.aspx/GetClassify",
-                data: "{paramtype:'1'}",
-                dataType: 'json',
-                success: function (result) {
-                    $("#ulclassify").append(result.d);
-                }
-            });
             fnload();
         });
 
@@ -41,7 +31,7 @@
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
-                url: "/user/PersonalResouces.aspx/GetAllCount",
+                url: "/user/LinksManager.aspx/GetAllCount",
                 dataType: 'json',
                 success: function (result) {
 
@@ -71,40 +61,36 @@
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
-                url: "/user/PersonalResouces.aspx/GetMyResouces",
+                url: "/user/LinksManager.aspx/GetLinks",
                 data: "{CurrentIndex:'" + cindex + "',PageSize:'" + pagesize + "'}",
                 dataType: 'json',
                 success: function (result) {
-                    //$(".trcenter").remove();
+
                     if (result.d != null) {
                         var strtr = "";
                         $.each(result.d.returnData, function (i, item) {
-                            var names = subString(item.Name, 28);
                             strtr += "<tr class='trcenter'>";
                             strtr += "<td align='center'><input data-id='" + item.ID + "' type='checkbox'></td>";
-                            strtr += "<td><a href='/View.aspx?partid=" + item.ID + "' target='_blank' ><img src='" + item.PreviewSmall + "' alt='' /></a></td>";
-                            strtr += "<td><button data-classid='" + item.ClassifyID + "' data-id='" + item.ID + "' type='button' class='_button' data-event='Class_L'>" + item.classname + "</button></td>";
-                            strtr += "<td><button data-id='" + item.ID + "' type='button' class='_button' data-event='setpartname'>" + names + "</button></li></td>";
-                            strtr += "<td>" + item.Accesslog + "</td>";
-                            strtr += "<td>" + item.mycount + "</td>";
-                            strtr += "<td>" + item.CreateDate1 + "</td>";
+                            strtr += "<td><button data-id='" + item.ID + "' type='button' class='_button' data-event='SetLinkName'>" + item.LinkName + "</button></td>";
+                            strtr += "<td><button data-id='" + item.ID + "' type='button' class='_button' data-event='SetLinkUrl'>" + item.LinkUrl + "</button></td>";
+                            strtr += "<td>" + item.CreateDate + "</td>";
                             strtr += "<td align='center' style='color: #CCC;'> <button type='button' class='_button'  onclick='fnDel(" + item.ID + ")'>删除</button></td>";
                             strtr += "</tr>";
                         });
-                        $("#trtop").after(strtr);
 
-                        //修改名称
-                        $('button[data-event=setpartname]').on('click', function () {
+                        $("#trtop").after(strtr);
+                        //修改链接名称
+                        $('button[data-event=SetLinkName]').on('click', function () {
                             var $this = $(this);
-                            var partid = $(this).data("id");
+                            var linkid = $(this).data("id");
                             $("#txt_newname").val($(this).text());
                             var d = dialog({
-                                title: '修改名称',
-                                content: document.getElementById('setnewname'),
+                                title: '修改链接名称',
+                                content: document.getElementById('SetLinkName'),
                                 okValue: '确定',
                                 ok: function () {
                                     var newname = $("#txt_newname").val();
-                                    fnSetPartname(partid, newname);
+                                    fnSetLinksName(linkid, newname);
                                     $this.text(newname);
                                     return false;
                                 },
@@ -113,41 +99,46 @@
                             });
                             d.showModal();
                         });
-                        //修改分类
-                        $('button[data-event=Class_L]').on('click', function () {
+                        //修改链接地址
+                        $('button[data-event=SetLinkUrl]').on('click', function () {
                             var $this = $(this);
-                            var partid = $(this).data("id");
-                            document.getElementById("hidClassifyId").value = $this.data("classid");
+                            var linkid = $(this).data("id");
+                            $("#txt_newlnk").val($(this).text());
                             var d = dialog({
                                 fixed: true,
-                                title: '选择分类',
-                                content: document.getElementById('Class_L'),
+                                title: '修改链接名称',
+                                content: document.getElementById('SetLinkUrl'),
                                 okValue: '确定',
                                 ok: function () {
-                                    var classname = fnSetClass(partid);
-                                    $this.text(classname);
-                                }
+                                    var newlink = $("#txt_newlnk").val();
+                                    fnSetLinksUrl(linkid, newlink);
+                                    $this.text(newlink);
+                                    return false;
+                                },
+                                cancelValue: '取消',
+                                cancel: function () { }
                             })
                             d.width(460);
                             d.showModal();
                         });
+
                     }
                 }
             });
         }
 
         //修改名称
-        function fnSetPartname(partid, newname) {
+        function fnSetLinksName(Linksid, newname) {
             if (newname.trim().length == 0) {
                 $("#txt_newname").focus();
-                alert("名称不能为空！");
+                alert("链接名称不能为空！");
                 return;
             }
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
-                url: "/user/PersonalResouces.aspx/SetPartname",
-                data: "{partid:'" + partid + "',newname:'" + newname + "'}",
+                url: "/user/LinksManager.aspx/SetLinksName",
+                data: "{linksid:'" + Linksid + "',newname:'" + newname + "'}",
                 async: false,
                 dataType: 'json',
                 success: function (result) {
@@ -157,26 +148,23 @@
                 }
             });
         }
-        //修改分类
-        function fnSetClass(partid) {
-            var classid = document.getElementById("hidClassifyId").value;
-            var classname = "";
+        //修改链接
+        function fnSetLinksUrl(Linksid, newlink) {
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
-                url: "/user/PersonalResouces.aspx/SetClass",
-                data: "{partid:'" + partid + "',classid:'" + classid + "'}",
+                url: "/user/LinksManager.aspx/SetLinksUrl",
+                data: "{linksid:'" + Linksid + "',newlink:'" + newlink + "'}",
                 async: false,
                 dataType: 'json',
                 success: function (result) {
-                    if (result.d.length > 0) {
-                        classname = result.d;//重新赋值
+                    if (result.d == "1") {
                         alert("修改成功！");
                     }
                 }
             });
-            return classname;
         }
+
 
         function fnchk() {
 
@@ -196,25 +184,25 @@
 
         function fnDel(id) {
             if (confirm("确定要删除选中项吗？")) {
-                var partids = "";
+                var linksids = "";
                 if (id == "") {
                     $(".trcenter :checked").each(function () {
-                        partids += $(this).data("id") + ",";
+                        linksids += $(this).data("id") + ",";
                     });
-                    if (partids == "") {
+                    if (linksids == "") {
                         alert("请选择删除项！");
                         return;
                     }
                 }
                 else {
-                    partids = id;
+                    linksids = id;
                 }
 
                 $.ajax({
                     type: "POST",
                     contentType: "application/json",
-                    url: "/user/PersonalResouces.aspx/DelMyRs",
-                    data: "{partids:'" + partids + "'}",
+                    url: "/user/LinksManager.aspx/DelLinks",
+                    data: "{linksids:'" + linksids + "'}",
                     dataType: 'json',
                     success: function (result) {
                         if (result.d != "-1") {
@@ -224,6 +212,28 @@
                     }
                 });
             }
+        }
+
+        function fnAddLinks(lnkname, lnkurl) {
+            if (lnkname.trim().length == 0) {
+                $("#txt_lnkname").focus();
+                alert("链接名称不能为空！");
+                return;
+            }
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/user/LinksManager.aspx/AddLinks",
+                data: "{lnkname:'" + lnkname + "',lnkurl:'" + lnkurl + "'}",
+                async: false,
+                dataType: 'json',
+                success: function (result) {
+                    if (result.d == "1") {
+                        alert("添加成功！");
+                        fnload();
+                    }
+                }
+            });
         }
 
     </script>
@@ -243,31 +253,39 @@
                     <tr id="trtop">
                         <td class="Top" width="70" style="text-align: center">
                             <input id="chkall" onclick="fnchk()" type="checkbox"></td>
-                        <td class="Top">缩略图</td>
-                        <td class="Top">类别</td>
-                        <td class="Top">名称</td>
-                        <td class="Top">浏览量</td>
-                        <td class="Top">下载量</td>
+                        <td class="Top">链接名称</td>
+                        <td class="Top">链接地址</td>
                         <td class="Top" width="160">创建时间</td>
                         <td class="Top" width="120" align="center">操作</td>
                     </tr>
 
-                    <%--  <tr class="trcenter">
-                        <td align="center">
-                            <input type="checkbox"></td>
-                        <td>
-                            <img src="/images/img.png" alt="" /></td>
-                        <td>GBT7246 波形弹簧垫圈</td>
-                        <td>127</td>
-                        <td>41</td>
-                        <td>2015.12.31 12:23</td>
-                        <td align="center" style="color: #CCC;"><a href="#">修改</a>|<a href="#" class="del">删除</a></td>
-                    </tr>--%>
-
-
                     <tr>
-                        <td class="Top" colspan="2"><a onclick="fnchkall()" href="javascript:void(0);">全选</a>
-                            <button type="button" class="_button" onclick="fnDel('')"><i class="iconfont">&#xe60a;</i>删除</button></td>
+                        <td class="Top" colspan="2">
+                            <a onclick="fnchkall()" href="javascript:void(0);">全选</a>
+                            <button type="button" class="_button" onclick="fnDel('')"><i class="iconfont">&#xe60a;</i>删除</button>
+                            <button type="button" class="_button" data-event='AddLink'><i class="iconfont">&#xe60f;</i>添加</button>
+                            <script>
+
+                                //添加友情链接
+                                $('button[data-event=AddLink]').on('click', function () {
+
+                                    var d = dialog({
+                                        title: '添加友情链接',
+                                        content: document.getElementById('AddLinkName'),
+                                        okValue: '确定',
+                                        ok: function () {
+                                            var lnkname = $("#txt_lnkname").val();
+                                            var lnkurl = $("#txt_lnkurl").val();
+                                            fnAddLinks(lnkname, lnkurl);
+                                            return false;
+                                        },
+                                        cancelValue: '取消',
+                                        cancel: function () { }
+                                    });
+                                    d.showModal();
+                                });
+                            </script>
+                        </td>
                         <td class="Top" colspan="5" align="right">
 
                             <%-- <div class="Page_U"><a href="#"><</a><a href="#" class="hover">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">></a></div>--%>
@@ -277,16 +295,25 @@
                     </tr>
                 </table>
 
-                <asp:HiddenField ID="hidClassifyId" runat="server" />
-                <div id="Class_L" style="display: none;">
-                    <ul id="ulclassify">
+                <div id="AddLinkName" style="display: none;" class="User_Windows">
+                    <ul>
+                        <li><span>链接名称：</span><input maxlength="50" id="txt_lnkname" type="text" placeholder="请输入新名称..."></li>
+                        <li><span>链接地址：</span><input maxlength="200" id="txt_lnkurl" type="text" placeholder="请输入新链接..."></li>
                     </ul>
                 </div>
-                <div id="setnewname" style="display: none;" class="User_Windows">
+
+                <div id="SetLinkName" style="display: none;" class="User_Windows">
                     <ul>
                         <li><span>新名称：</span><input maxlength="50" id="txt_newname" type="text" placeholder="请输入新名称..."></li>
                     </ul>
                 </div>
+
+                <div id="SetLinkUrl" style="display: none;" class="User_Windows">
+                    <ul>
+                        <li><span>新链接：</span><input maxlength="200" id="txt_newlnk" type="text" placeholder="请输入新链接..."></li>
+                    </ul>
+                </div>
+
             </div>
 
 

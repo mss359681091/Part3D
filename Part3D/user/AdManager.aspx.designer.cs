@@ -10,60 +10,60 @@
 namespace Part3D {
     
     
-    public partial class WUCPersonalBanner {
+    public partial class AdManager {
         
         /// <summary>
-        /// imgphoto 控件。
+        /// form1 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlImage imgphoto;
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// spnickname 控件。
+        /// WUCTop1 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spnickname;
+        protected global::Part3D.WUCTop WUCTop1;
         
         /// <summary>
-        /// sp_yqlj 控件。
+        /// WUCPersonalBanner1 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl sp_yqlj;
+        protected global::Part3D.WUCPersonalBanner WUCPersonalBanner1;
         
         /// <summary>
-        /// lnk_yqlj 控件。
+        /// hidClassifyId 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnk_yqlj;
+        protected global::System.Web.UI.WebControls.HiddenField hidClassifyId;
         
         /// <summary>
-        /// sp_ad 控件。
+        /// WUCLink1 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl sp_ad;
+        protected global::Part3D.WUCLink WUCLink1;
         
         /// <summary>
-        /// lnk_ad 控件。
+        /// WUCBottom1 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnk_ad;
+        protected global::Part3D.WUCBottom WUCBottom1;
     }
 }

@@ -14,6 +14,16 @@ namespace Part3D
         {
             if (!IsPostBack)
             {
+                if (Session[sysUser.Username] != null)
+                {
+                    if (Session[sysUser.Username].ToString().Trim() == "admin")
+                    {
+                        this.lnk_ad.Visible = true;//显示广告模块
+                        this.lnk_yqlj.Visible = true;//显示友情链接模块
+                        this.sp_ad.Visible = true;
+                        this.sp_yqlj.Visible = true;
+                    }
+                }
                 if (Session[sysUser.Nickname] != null)
                 {
                     this.spnickname.InnerText = Session[sysUser.Nickname].ToString() + "的个人中心";

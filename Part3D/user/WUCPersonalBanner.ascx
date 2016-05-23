@@ -11,8 +11,17 @@
             case "/user/PersonalDownloadRecord.aspx":
                 $("#pcm a").eq(1).addClass("hover");
                 break;
-            default:
+            case "/user/PersonalInfo.aspx":
                 $("#pcm a").eq(2).addClass("hover");
+                break;
+            case "/user/LinksManager.aspx":
+                $("#pcm a").eq(3).addClass("hover");
+                break;
+            case "/user/AdManager.aspx":
+                $("#pcm a").eq(4).addClass("hover");
+                break;
+            default:
+                $("#pcm a").eq(0).addClass("hover");
                 break;
 
         }
@@ -53,6 +62,11 @@
 
 <div class="User_Maun">
     <div id="pcm" class="Container Maunx">
-        <a class="hover" href="/user/PersonalResouces.aspx">我的资源</a>|<a href="/user/PersonalDownloadRecord.aspx">下载记录</a>|<a href="/user/PersonalInfo.aspx">个人信息</a>
+        <a class="hover" href="/user/PersonalResouces.aspx">我的资源</a>|
+        <a href="/user/PersonalDownloadRecord.aspx">下载记录</a>|
+        <a href="/user/PersonalInfo.aspx">个人信息</a><span id="sp_yqlj" runat="server" visible="false">|</span>
+
+        <a id="lnk_yqlj" runat="server" visible="false" href="/user/LinksManager.aspx">友情链接</a><span id="sp_ad" runat="server" visible="false">|</span>
+        <a id="lnk_ad" runat="server" visible="false" href="/user/AdManager.aspx">广告管理</a>
     </div>
 </div>

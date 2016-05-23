@@ -229,6 +229,8 @@ function fnRegister(username, password, nickname, email, mobile) {
             switch (result.d) {
                 case "1":
                     alert("注册成功!");
+                    $("#txtusername").val(username);
+                    setTab_T(0, 0);
                     return;
                     break;
                 case "-1":

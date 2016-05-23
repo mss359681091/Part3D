@@ -49,9 +49,6 @@
                     $("#ulclassify").append(result.d);
                 }
             });
-
-
-            $(".swfupload").css("left", "0");
         });
     </script>
 
@@ -106,6 +103,7 @@
                     $("#Submit1").click();
                 }
             });
+            $(".swfupload").css("left", "0");
         });
     </script>
 </head>

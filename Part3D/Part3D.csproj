@@ -197,6 +197,8 @@
     <Content Include="user\Loginout.aspx" />
     <Content Include="user\PersonalDownloadRecord.aspx" />
     <Content Include="user\PersonalInfo.aspx" />
+    <Content Include="user\LinksManager.aspx" />
+    <Content Include="user\AdManager.aspx" />
     <Content Include="user\PersonalResouces.aspx" />
     <Content Include="images\sliderLock.png" />
     <Content Include="user\WUCBanner.ascx" />
@@ -219,6 +221,9 @@
     </Compile>
     <Compile Include="LogHelper.cs" />
     <Compile Include="models\DESEncrypt.cs" />
+    <Compile Include="models\dpLinks\dpLinksData.cs" />
+    <Compile Include="models\dpLinks\dpLinksManager.cs" />
+    <Compile Include="models\dpLinks\dpLinksSchema.cs" />
     <Compile Include="models\dpPart\dpPartData.cs" />
     <Compile Include="models\FileManager.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -300,6 +305,20 @@
     </Compile>
     <Compile Include="user\PersonalInfo.aspx.designer.cs">
       <DependentUpon>PersonalInfo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="user\LinksManager.aspx.cs">
+      <DependentUpon>LinksManager.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="user\LinksManager.aspx.designer.cs">
+      <DependentUpon>LinksManager.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="user\AdManager.aspx.cs">
+      <DependentUpon>AdManager.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="user\AdManager.aspx.designer.cs">
+      <DependentUpon>AdManager.aspx</DependentUpon>
     </Compile>
     <Compile Include="user\PersonalResouces.aspx.cs">
       <DependentUpon>PersonalResouces.aspx</DependentUpon>

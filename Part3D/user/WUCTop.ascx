@@ -24,6 +24,6 @@
     <div class="Right">
 
         <a id="lnkLogin" runat="server" href="/Login.aspx"><i class="iconfont">&#xe606;</i>登录</a>
-        <a id="lnkLogined" class="lnkLogined" visible="false" runat="server" href="/user/PersonalResouces.aspx"></a><a id="lnkLoginout" runat="server" visible="false" href="/user/Loginout.aspx"><i class="iconfont">&#xe609;</i>注销</a><a href="/user/jqUploadify/WebUpload.aspx"><i class="iconfont">&#xe605;</i>上传</a>
+        <a id="lnkLogined" class="lnkLogined" visible="false" runat="server" href="/user/PersonalResouces.aspx"></a><a id="lnkLoginout" runat="server" visible="false" href="/user/Loginout.aspx"><i class="iconfont">&#xe60b;</i>注销</a><a href="/user/jqUploadify/WebUpload.aspx"><i class="iconfont">&#xe605;</i>上传</a>
     </div>
 </div>

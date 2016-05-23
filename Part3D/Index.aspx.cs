@@ -108,7 +108,7 @@ namespace Part3D
                     }
                     if (paramtype == "2")
                     {
-                        returnType += "<li><a target='_blank' href='/List.aspx'><i class='Ico11'></i>更多标准</a></li>";
+                        //returnType += "<li><a target='_blank' href='/List.aspx'><i class='Ico11'></i>更多标准</a></li>";
                         returnValue = returnType;
                     }
                 }
