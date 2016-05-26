@@ -96,8 +96,8 @@
                     //$("#preview").hide();
                     //$("#addpic").show();
                     //alert("上传成功！");
-                    window.location.href = "/user/AdManager.aspx";
-
+                    //window.location.href = "/user/AdManager.aspx";
+                    fnload();
                 }
             };
             $("#fm1").ajaxForm(options);
@@ -116,15 +116,35 @@
                     if (result.d != null) {
                         var strtr = "";
                         $.each(result.d.returnData, function (i, item) {
+
+                            var val_Manufacturer = subString(item.Manufacturer.trim(), 10);
+                            val_Manufacturer = (val_Manufacturer.trim() == "" || val_Manufacturer.trim() == "&nbsp;") ? "请选择" : val_Manufacturer.trim();
+
+                            var val_PicturePath = item.PicturePath;
+                            if (val_PicturePath.trim() == "") {
+                                val_PicturePath = "/images/nopic.png";
+                            }
+
+
+                            var val_ADLink = subString(item.ADLink.trim(), 20);
+                            val_ADLink = (val_ADLink.trim() == "" || val_ADLink.trim() == "&nbsp;") ? "请选择" : val_ADLink.trim();
+                            var val_ClassName = item.Name;
+                            val_ClassName = (val_ClassName.trim() == "" || val_ClassName.trim() == "&nbsp;") ? "请选择" : val_ClassName.trim();
+
+                            var val_ADPosition = subString(item.ADPosition.trim(), 10);
+                            val_ADPosition = (val_ADPosition.trim() == "" || val_ADPosition.trim() == "&nbsp;") ? "请选择" : val_ADPosition.trim();
+                            var val_ADStartDate = item.ADStartDate;
+                            var var_ADEndDate = item.ADEndDate;
+
                             strtr += "<tr class='trcenter'>";
                             strtr += "<td align='center'><input data-id='" + item.ID + "' type='checkbox'></td>";
-                            strtr += "<td><button title='" + item.Manufacturer + "' data-id='" + item.ID + "' type='button' class='_button' data-event='setManufacturer'>" + subString(item.Manufacturer, 10) + "</button></td>";
-                            strtr += "<td id='td" + item.ID + "' ><a data-id='" + item.ID + "' href='javascript:void(0)' onclick='fnchoose(this)' ><img src='" + item.PicturePath + "' /></a></td>";
-                            strtr += "<td><button title='" + item.ADLink + "' data-id='" + item.ID + "' type='button' class='_button' data-event='setADLink'>" + subString(item.ADLink, 20) + "</button></td>";
-                            strtr += "<td><button data-classid='" + item.ClassifyID + "' data-id='" + item.ID + "' type='button' class='_button' data-event='Class_L'>" + item.Name + "</button></td>";
-                            strtr += "<td><button title='" + item.ADPosition + "' data-id='" + item.ID + "' type='button' class='_button' data-event='setADPosition'>" + subString(item.ADPosition, 10) + "</button></td>";
-                            strtr += "<td><button title='" + item.ADStartDate + "' data-id='" + item.ID + "' type='button' class='_button' data-event='setADStartDate'>" + item.ADStartDate + "</button></td>";
-                            strtr += "<td><button title='" + item.ADEndDate + "' data-id='" + item.ID + "' type='button' class='_button' data-event='setADEndDate'>" + item.ADEndDate + "</button></td>";
+                            strtr += "<td><button title='" + item.Manufacturer + "' data-id='" + item.ID + "' type='button' class='_button' data-event='setManufacturer'>" + val_Manufacturer + "</button></td>";
+                            strtr += "<td id='td" + item.ID + "' ><a data-id='" + item.ID + "' href='javascript:void(0)' onclick='fnchoose(this)' ><img src='" + val_PicturePath + "' /></a></td>";
+                            strtr += "<td><button title='" + item.ADLink + "' data-id='" + item.ID + "' type='button' class='_button' data-event='setADLink'>" + val_ADLink + "</button></td>";
+                            strtr += "<td><button data-classid='" + item.ClassifyID + "' data-id='" + item.ID + "' type='button' class='_button' data-event='Class_L'>" + val_ClassName + "</button></td>";
+                            strtr += "<td><button title='" + item.ADPosition + "' data-id='" + item.ID + "' type='button' class='_button' data-event='setADPosition'>" + val_ADPosition + "</button></td>";
+                            strtr += "<td><button title='" + item.ADStartDate + "' data-id='" + item.ID + "' type='button' class='_button' data-event='setADStartDate'>" + val_ADStartDate + "</button></td>";
+                            strtr += "<td><button title='" + item.ADEndDate + "' data-id='" + item.ID + "' type='button' class='_button' data-event='setADEndDate'>" + var_ADEndDate + "</button></td>";
 
                             strtr += "<td align='center' style='color: #CCC;'> <button type='button' class='_button'  onclick='fnDel(" + item.ID + ")'>删除</button></td>";
                             strtr += "</tr>";
@@ -135,14 +155,16 @@
                         $('button[data-event=setManufacturer]').on('click', function () {
                             var $this = $(this);
                             var partid = $(this).data("id");
-                            $("#txt_Manufacturer").val($(this).text());
+                            var curname = $(this).text();
+                            curname = curname == "请选择" ? "" : curname;
+                            $("#txt_Manufacturer").val(curname);
                             var d = dialog({
                                 title: '修改厂商',
                                 content: document.getElementById('setManufacturer'),
                                 okValue: '确定',
                                 ok: function () {
-                                    var newname = $("#txt_Manufacturer").val();
-                                    if (newname.trim().length == 0) {
+                                    var newname = $("#txt_Manufacturer").val().trim();
+                                    if (newname.length == 0) {
                                         $("#txt_Manufacturer").focus();
                                         alert("厂商不能为空！");
                                         return false;
@@ -161,13 +183,16 @@
                         $('button[data-event=setADLink]').on('click', function () {
                             var $this = $(this);
                             var partid = $(this).data("id");
-                            $("#txt_ADLink").val($(this).text());
+                            var curname = $(this).text();
+                            curname = curname == "请选择" ? "" : curname;
+                            $("#txt_ADLink").val(curname);
                             var d = dialog({
                                 title: '修改链接',
                                 content: document.getElementById('setADLink'),
                                 okValue: '确定',
                                 ok: function () {
-                                    var newname = $("#txt_ADLink").val();
+                                    var newname = $("#txt_ADLink").val().trim();
+                                    newname = newname == "" ? "" : newname;
                                     fnSetPartname(partid, newname, "ADLink");
                                     $this.text(newname);
                                     return false;
@@ -188,7 +213,8 @@
                                 content: document.getElementById('setADPosition'),
                                 okValue: '确定',
                                 ok: function () {
-                                    var newname = $("#sltADPosition").val();
+                                    var newname = $("#sltADPosition").val().trim();
+                                    newname = newname == "请选择" ? "" : newname;
                                     fnSetPartname(partid, newname, "ADPosition");
                                     $this.text(newname);
                                     return false;
@@ -203,7 +229,7 @@
                         //修改分类
                         $('button[data-event=Class_L]').on('click', function () {
                             var $this = $(this);
-                            var partid = $(this).data("id");
+                            var adid = $(this).data("id");
                             document.getElementById("hidClassifyId").value = $this.data("classid");
                             var d = dialog({
                                 fixed: true,
@@ -211,8 +237,14 @@
                                 content: document.getElementById('Class_L'),
                                 okValue: '确定',
                                 ok: function () {
-                                    var classname = fnSetClass(partid);
-                                    $this.text(classname);
+                                    if (adid != "") {
+                                        var classname = fnSetClass(adid);
+                                        $this.text(classname);
+                                    }
+                                    else {
+                                        var classname = fnGetClassname();
+                                        $this.text(classname);
+                                    }
                                 }
                             })
                             d.width(460);
@@ -267,6 +299,8 @@
             });
         }
 
+
+
         //修改值
         function fnSetPartname(partid, newname, columns) {
 
@@ -284,15 +318,37 @@
                 }
             });
         }
+
+        //获取分类值
+        function fnGetClassname() {
+            var classid = document.getElementById("hidClassifyId").value;
+            var classname = "";
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/user/AdManager.aspx/GetClass",
+                data: "{classid:'" + classid + "'}",
+                async: false,
+                dataType: 'json',
+                success: function (result) {
+                    if (result.d.length > 0) {
+                        classname = result.d;//重新赋值
+                        //alert("修改成功！");
+                    }
+                }
+            });
+            return classname;
+        }
+
         //修改分类
-        function fnSetClass(partid) {
+        function fnSetClass(adid) {
             var classid = document.getElementById("hidClassifyId").value;
             var classname = "";
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
                 url: "/user/AdManager.aspx/SetClass",
-                data: "{partid:'" + partid + "',classid:'" + classid + "'}",
+                data: "{adid:'" + adid + "',classid:'" + classid + "'}",
                 async: false,
                 dataType: 'json',
                 success: function (result) {
@@ -359,11 +415,12 @@
                 alert("厂家名称不能为空！");
                 return;
             }
+            var newClassifyID = document.getElementById("hidClassifyId").value;
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
                 url: "/user/AdManager.aspx/AddADs",
-                data: "{newADLink:'" + txt_newADLink + "',newManufacturer:'" + txt_newManufacturer + "',newsltADPosition:'" + newsltADPosition + "',newADStartDate:'" + txt_newADStartDate + "',newADEndDate:'" + txt_newADEndDate + "'}",
+                data: "{newADLink:'" + txt_newADLink + "',newManufacturer:'" + txt_newManufacturer + "',newsltADPosition:'" + newsltADPosition + "',newADStartDate:'" + txt_newADStartDate + "',newADEndDate:'" + txt_newADEndDate + "',newClassifyID:'" + newClassifyID + "'}",
                 async: false,
                 dataType: 'json',
                 success: function (result) {
@@ -389,16 +446,16 @@
             <div class="User_List Container">
                 <table cellpadding="0" cellspacing="0" border="0" width="100%">
                     <tr id="trtop">
-                        <td class="Top" width="70" style="text-align: center">
+                        <td class="Top center" width="70">
                             <input id="chkall" onclick="fnchk()" type="checkbox"></td>
-                        <td class="Top">厂商</td>
-                        <td class="Top">广告图片</td>
-                        <td class="Top">广告链接</td>
-                        <td class="Top">广告类别</td>
-                        <td class="Top">投放位置</td>
-                        <td class="Top">开始时间</td>
-                        <td class="Top">截止时间</td>
-                        <td class="Top" width="80" align="center">操作</td>
+                        <td class="Top center">厂商</td>
+                        <td class="Top center">广告图片</td>
+                        <td class="Top center">广告链接</td>
+                        <td class="Top center">广告类别</td>
+                        <td class="Top center">投放位置</td>
+                        <td class="Top center">开始时间</td>
+                        <td class="Top center">截止时间</td>
+                        <td class="Top center" width="80" align="center">操作</td>
                     </tr>
                     <tr>
                         <td class="Top" colspan="8"><a onclick="fnchkall()" href="javascript:void(0);">全选</a>
@@ -485,8 +542,9 @@
 
                 <div id="AddAd" style="display: none;" class="User_Windows">
                     <ul>
-                        <li><span>链接名称：</span><input maxlength="50" id="txt_newADLink" type="text" placeholder="请输入链接名称..."></li>
+
                         <li><span>厂商名称：</span><input maxlength="200" id="txt_newManufacturer" type="text" placeholder="请输入厂商名称..."></li>
+                        <li><span>链接名称：</span><input maxlength="50" id="txt_newADLink" type="text" placeholder="请输入链接名称..."></li>
                         <li>
                             <span>投放位置：</span>
                             <select id="newsltADPosition">
@@ -498,6 +556,10 @@
                         </li>
                         <li><span>开始日期：</span><input id="txt_newADStartDate" placeholder="请输入日期" class="laydate-icon" onclick="laydate()"></li>
                         <li><span>结束日期：</span><input id="txt_newADEndDate" placeholder="请输入日期" class="laydate-icon" onclick="laydate()"></li>
+                        <li>
+                            <span>选择分类：</span>
+                            <button id="btnclass" style="margin-left: 0; margin-top: 5px;" data-classid='' data-id='' type='button' class='_button' data-event='Class_L'>选择分类</button>
+                        </li>
                     </ul>
                 </div>
 

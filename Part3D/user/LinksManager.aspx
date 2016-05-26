@@ -69,10 +69,14 @@
                     if (result.d != null) {
                         var strtr = "";
                         $.each(result.d.returnData, function (i, item) {
+                            var linkname = item.LinkName;
+                            linkname = linkname == "" ? "请选择" : linkname;
+                            var linkurl = item.LinkUrl;
+                            linkurl = linkurl == "" ? "请选择" : linkurl;
                             strtr += "<tr class='trcenter'>";
                             strtr += "<td align='center'><input data-id='" + item.ID + "' type='checkbox'></td>";
-                            strtr += "<td><button data-id='" + item.ID + "' type='button' class='_button' data-event='SetLinkName'>" + item.LinkName + "</button></td>";
-                            strtr += "<td><button data-id='" + item.ID + "' type='button' class='_button' data-event='SetLinkUrl'>" + item.LinkUrl + "</button></td>";
+                            strtr += "<td><button data-id='" + item.ID + "' type='button' class='_button' data-event='SetLinkName'>" + linkname + "</button></td>";
+                            strtr += "<td><button data-id='" + item.ID + "' type='button' class='_button' data-event='SetLinkUrl'>" + linkurl + "</button></td>";
                             strtr += "<td>" + item.CreateDate + "</td>";
                             strtr += "<td align='center' style='color: #CCC;'> <button type='button' class='_button'  onclick='fnDel(" + item.ID + ")'>删除</button></td>";
                             strtr += "</tr>";
@@ -83,13 +87,20 @@
                         $('button[data-event=SetLinkName]').on('click', function () {
                             var $this = $(this);
                             var linkid = $(this).data("id");
-                            $("#txt_newname").val($(this).text());
+                            var flag = $(this).text();
+                            flag = flag == "请选择" ? "" : flag;
+                            $("#txt_newname").val(flag);
                             var d = dialog({
                                 title: '修改链接名称',
                                 content: document.getElementById('SetLinkName'),
                                 okValue: '确定',
                                 ok: function () {
                                     var newname = $("#txt_newname").val();
+                                    if (newname.trim() == "") {
+                                        $("#txt_newname").focus();
+                                        alert("链接名称不能为空！");
+                                        return false;
+                                    }
                                     fnSetLinksName(linkid, newname);
                                     $this.text(newname);
                                     return false;
@@ -103,7 +114,9 @@
                         $('button[data-event=SetLinkUrl]').on('click', function () {
                             var $this = $(this);
                             var linkid = $(this).data("id");
-                            $("#txt_newlnk").val($(this).text());
+                            var flag = $(this).text();
+                            flag = flag == "请选择" ? "" : flag;
+                            $("#txt_newlnk").val(flag);
                             var d = dialog({
                                 fixed: true,
                                 title: '修改链接名称',
@@ -111,6 +124,9 @@
                                 okValue: '确定',
                                 ok: function () {
                                     var newlink = $("#txt_newlnk").val();
+
+                                    newlink = newlink == "" ? "请选择" : newlink;
+
                                     fnSetLinksUrl(linkid, newlink);
                                     $this.text(newlink);
                                     return false;
@@ -251,12 +267,12 @@
             <div class="User_List Container">
                 <table cellpadding="0" cellspacing="0" border="0" width="100%">
                     <tr id="trtop">
-                        <td class="Top" width="70" style="text-align: center">
+                        <td class="Top center" width="70">
                             <input id="chkall" onclick="fnchk()" type="checkbox"></td>
-                        <td class="Top">链接名称</td>
-                        <td class="Top">链接地址</td>
-                        <td class="Top" width="160">创建时间</td>
-                        <td class="Top" width="120" align="center">操作</td>
+                        <td class="Top center">链接名称</td>
+                        <td class="Top center">链接地址</td>
+                        <td class="Top center" width="160">创建时间</td>
+                        <td class="Top center" width="120" align="center">操作</td>
                     </tr>
 
                     <tr>

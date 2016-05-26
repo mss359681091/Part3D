@@ -38,7 +38,7 @@
         function fndw(strid) {
             $("#hidfileid").val(strid);
             document.getElementById('<%=LinkButton1.ClientID %>').click();
-}
+        }
 
     </script>
 </head>
@@ -103,8 +103,11 @@
             </div>
 
             <div class="Clear"></div>
+
             <div class="V_Ad Container">
-                <img src="/images/Add.jpg" alt="" />
+                <a id="lnkad" runat="server" href="#" target="_blank" visible="false">
+                    <img id="imgad" width="1000" runat="server" alt="" />
+                </a>
             </div>
 
             <div class="Index_Foot">

@@ -104,6 +104,11 @@
                                 okValue: '确定',
                                 ok: function () {
                                     var newname = $("#txt_newname").val();
+                                    if (newname.trim() == "") {
+                                        $("#txt_newname").focus();
+                                        alert("名称不能为空！");
+                                        return false;
+                                    }
                                     fnSetPartname(partid, newname);
                                     $this.text(newname);
                                     return false;
@@ -138,11 +143,7 @@
 
         //修改名称
         function fnSetPartname(partid, newname) {
-            if (newname.trim().length == 0) {
-                $("#txt_newname").focus();
-                alert("名称不能为空！");
-                return;
-            }
+
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
@@ -241,15 +242,15 @@
             <div class="User_List Container">
                 <table cellpadding="0" cellspacing="0" border="0" width="100%">
                     <tr id="trtop">
-                        <td class="Top" width="70" style="text-align: center">
+                        <td class="Top center" width="70">
                             <input id="chkall" onclick="fnchk()" type="checkbox"></td>
-                        <td class="Top">缩略图</td>
-                        <td class="Top">类别</td>
-                        <td class="Top">名称</td>
-                        <td class="Top">浏览量</td>
-                        <td class="Top">下载量</td>
-                        <td class="Top" width="160">创建时间</td>
-                        <td class="Top" width="120" align="center">操作</td>
+                        <td class="Top center">缩略图</td>
+                        <td class="Top center">类别</td>
+                        <td class="Top center">名称</td>
+                        <td class="Top center">浏览量</td>
+                        <td class="Top center">下载量</td>
+                        <td class="Top center" width="160">创建时间</td>
+                        <td class="Top center" width="120">操作</td>
                     </tr>
 
                     <%--  <tr class="trcenter">

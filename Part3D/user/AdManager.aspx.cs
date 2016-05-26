@@ -4,6 +4,7 @@ using _3DPart.DAL.BULayer.Schema;
 using log4net;
 using Part3D.models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -201,13 +202,29 @@ namespace Part3D
         /// <param name="classid">广告类别</param>
         /// <returns></returns>
         [WebMethod(Description = "修改广告类别", EnableSession = true)]
-        public static string SetClass(string partid, string classid)
+        public static string SetClass(string adid, string classid)
         {
             string returnValue = string.Empty;
             try
             {
                 dpAdvertisementManager mydpAdvertisementManager = new dpAdvertisementManager();
-                mydpAdvertisementManager.UpdateParams(dpAdvertisement.ClassifyID, classid, partid);
+                mydpAdvertisementManager.UpdateParams(dpAdvertisement.ClassifyID, classid, adid);
+                returnValue = new dpClassifyManager().GetParams(new dpClassifyQuery() { ID = classid }, dpClassify.Name);
+            }
+            catch (Exception ex)
+            {
+                m_log.Error(ex.Message);
+            }
+            return returnValue;
+        }
+
+
+        [WebMethod(Description = "获取广告类别", EnableSession = true)]
+        public static string GetClass(string classid)
+        {
+            string returnValue = string.Empty;
+            try
+            {
                 returnValue = new dpClassifyManager().GetParams(new dpClassifyQuery() { ID = classid }, dpClassify.Name);
             }
             catch (Exception ex)
@@ -227,10 +244,23 @@ namespace Part3D
         /// <param name="newADEndDate">结束日期</param>
         /// <returns></returns>
         [WebMethod(Description = "添加广告", EnableSession = true)]
-        public static string fnAddADs(string newADLink, string newManufacturer, string newsltADPosition, string newADStartDate, string newADEndDate)
+        public static string AddADs(string newADLink, string newManufacturer, string newsltADPosition, string newADStartDate, string newADEndDate, string newClassifyID)
         {
             string returnValue = string.Empty;
+            newADStartDate = newADStartDate == "" ? DateTime.Now.ToString() : newADStartDate;
+            newADEndDate = newADEndDate == "" ? DateTime.Now.AddDays(10).ToString() : newADEndDate;
 
+            Hashtable myHashtable = new Hashtable();
+            myHashtable.Add(dpAdvertisement.ADLink, newADLink);
+            myHashtable.Add(dpAdvertisement.Manufacturer, newManufacturer);
+            myHashtable.Add(dpAdvertisement.ADPosition, newsltADPosition);
+            myHashtable.Add(dpAdvertisement.ADStartDate, newADStartDate);
+            myHashtable.Add(dpAdvertisement.ADEndDate, newADEndDate);
+            myHashtable.Add(dpAdvertisement.ClassifyID, newClassifyID);
+            myHashtable.Add(dpAdvertisement.PicturePath, "");
+            myHashtable.Add(dpAdvertisement.UserID, HttpContext.Current.Session[sysUser.ID].ToString());
+            SQLHelper.ExcuteProc("sp_dpAdvertisement", myHashtable);//执行存储过程注册
+            returnValue = "1";//添加成功
             return returnValue;
         }
 

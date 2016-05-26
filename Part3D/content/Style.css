@@ -1444,7 +1444,8 @@ header .navbar a:hover {
         }
 
         .User_List table tr td img {
-            width: 80px;
+            width: 85px;
+            height: 50px;
             /*height: 64px;*/
         }
 
@@ -1595,7 +1596,7 @@ header .navbar a:hover {
         padding: 5px 0;
     }
 
-    .User_Windows ul li input {
+    .User_Windows ul li input, .User_Windows ul li select {
         display: block;
         border: 1px #b8b8b8 solid;
         border-radius: 3px;
@@ -1669,3 +1670,8 @@ header .navbar a:hover {
         background: #F60;
         color: #FFF;
     }
+
+.center {
+    text-align: center;
+    font-weight: bold;
+}

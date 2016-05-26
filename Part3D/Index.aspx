@@ -49,7 +49,7 @@
         <div>
             <header>
                 <div class="navbar fixed-top ZindexT">
-                    <uc2:wuctop id="WUCTop1" runat="server" />
+                    <uc2:WUCTop ID="WUCTop1" runat="server" />
                 </div>
             </header>
 
@@ -175,12 +175,20 @@
                 <button type="button" onclick="fnmore()">发现更多</button>
             </div>
 
+            <div class="Clear"></div>
+
+            <div class="V_Ad Container">
+                <a id="lnkad" runat="server" href="#" target="_blank" visible="false">
+                    <img id="imgad" width="1000" runat="server" alt="" />
+                </a>
+            </div>
+
             <div class="Index_Foot">
-                <uc3:wuclink id="WUCLink1" runat="server" />
+                <uc3:WUCLink ID="WUCLink1" runat="server" />
             </div>
 
             <div class="Index_FootB">
-                <uc1:wucbottom id="WUCBottom1" runat="server" />
+                <uc1:WUCBottom ID="WUCBottom1" runat="server" />
             </div>
 
         </div>

@@ -25,6 +25,22 @@ namespace Part3D
                 {
                     Response.Redirect("/404/400.html");
                 }
+
+                dpAdvertisementManager mydpAdvertisementManager = new dpAdvertisementManager();
+                dpAdvertisementQuery mydpAdvertisementQuery = new dpAdvertisementQuery();
+                //mydpAdvertisementQuery.ClassifyID = myDataSet.Tables[0].Rows[0][dpPart.ClassifyID].ToString();
+                mydpAdvertisementQuery.ADPosition = "首页";
+                DataSet ds = mydpAdvertisementManager.Search(mydpAdvertisementQuery);
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    this.lnkad.HRef = ds.Tables[0].Rows[0][dpAdvertisement.ADLink].ToString();
+                    this.imgad.Src = ds.Tables[0].Rows[0][dpAdvertisement.PicturePath].ToString();
+                    this.lnkad.Visible = true;
+                }
+                else
+                {
+                    this.lnkad.Visible = false;
+                }
             }
         }
 

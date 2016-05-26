@@ -40,7 +40,7 @@ namespace _3DPart.DAL.BULayer
             + dpAdvertisement.CreateDate_FULL + ","
             + dpAdvertisement.ModifyStaff_FULL + ","
             + dpAdvertisement.ModifyDate_FULL
-             + " FROM " + dpAdvertisement.TABLENAME + " WHERE 1 = 1 ";
+            + " FROM " + dpAdvertisement.TABLENAME + " WHERE 1 = 1 ";
 
 
             Hashtable myParam = new Hashtable();
@@ -61,6 +61,12 @@ namespace _3DPart.DAL.BULayer
             {
                 strQuery += " AND " + dpAdvertisement.Enabled_FULL + " = @Enabled ";
                 myParam.Add("@Enabled", QueryData.Enabled);
+            }
+            if(QueryData.ADPosition.Length>0)
+            {
+                strQuery += " AND " + dpAdvertisement.ADPosition_FULL + " = @ADPosition ";
+                myParam.Add("@ADPosition", QueryData.ADPosition);
+
             }
 
             DataSet myDs = new DataSet();
@@ -300,6 +306,7 @@ namespace _3DPart.DAL.BULayer
         public string ClassifyID = string.Empty;
         public int CurrentIndex = 1;
         public int PageSize = 12;
+        public string ADPosition = string.Empty;
 
         public string SortField = " ID ";
         public string SortDir = " DESC ";

@@ -22,6 +22,7 @@ namespace Part3D
         {
             if (!IsPostBack)
             {
+
                 if (Request.QueryString["partid"] != null)
                 {
                     try
@@ -35,6 +36,22 @@ namespace Part3D
                         {
                             this.hidid.Value = Request.QueryString["partid"];
                             this.hidclassid.Value = myDataSet.Tables[0].Rows[0][dpPart.ClassifyID].ToString();
+                            dpAdvertisementManager mydpAdvertisementManager = new dpAdvertisementManager();
+                            dpAdvertisementQuery mydpAdvertisementQuery = new dpAdvertisementQuery();
+                            mydpAdvertisementQuery.ClassifyID = myDataSet.Tables[0].Rows[0][dpPart.ClassifyID].ToString();
+                            mydpAdvertisementQuery.ADPosition = "下载页";
+                            DataSet ds = mydpAdvertisementManager.Search(mydpAdvertisementQuery);
+                            if (ds.Tables[0].Rows.Count > 0)
+                            {
+                                this.lnkad.HRef = ds.Tables[0].Rows[0][dpAdvertisement.ADLink].ToString();
+                                this.imgad.Src = ds.Tables[0].Rows[0][dpAdvertisement.PicturePath].ToString();
+                                this.lnkad.Visible = true;
+                            }
+                            else
+                            {
+                                this.lnkad.Visible = false;
+                            }
+
                             this.btitle.InnerText = myDataSet.Tables[0].Rows[0][dpPart.Name].ToString();
                             this.ausername.InnerText = myDataSet.Tables[0].Rows[0][sysUser.Nickname].ToString();
                             this.acreate.InnerText = myDataSet.Tables[0].Rows[0]["CreateDate"].ToString();

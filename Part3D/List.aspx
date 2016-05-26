@@ -28,7 +28,7 @@
         function fndw(strid) {
             $("#hidfileid").val(strid);
             document.getElementById('<%=LinkButton1.ClientID %>').click();
-}
+        }
 
     </script>
 </head>
@@ -74,6 +74,15 @@
 
             <input id="hidfileid" type="hidden" value="" runat="server" />
             <asp:LinkButton ID="LinkButton1" runat="server" Style="display: none" OnClick="LinkButton1_Click"></asp:LinkButton>
+
+
+            <div class="Clear"></div>
+
+            <div class="V_Ad Container">
+                <a id="lnkad" runat="server" href="#" target="_blank" visible="false">
+                    <img id="imgad" width="1000" runat="server" alt="" />
+                </a>
+            </div>
 
             <div class="Index_Foot">
                 <uc3:WUCLink ID="WUCLink1" runat="server" />
