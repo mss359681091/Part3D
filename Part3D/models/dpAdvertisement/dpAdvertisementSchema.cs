@@ -19,7 +19,22 @@ namespace _3DPart.DAL.BULayer.Schema {
         /// 表名
         /// </summary>
         public static string TABLENAME = "dp_Advertisement";
-        
+
+        /// <summary>
+        /// 广告分类
+        /// </summary>
+        public static string ClassifyID = "ClassifyID";
+
+        /// <summary>
+        /// 广告分类
+        /// </summary>
+        public static string ClassifyID_FULL = "dp_Advertisement.ClassifyID";
+
+        /// <summary>
+        /// 广告分类
+        /// </summary>
+        public static string ClassifyID_TABLE_FULL = "dp_AdvertisementClassifyID";
+
         /// <summary>
         /// 
         /// </summary>
@@ -154,7 +169,11 @@ namespace _3DPart.DAL.BULayer.Schema {
         /// 投放位置
         /// </summary>
         public static string ADPosition_TABLE_FULL = "dp_AdvertisementADPosition";
-        
+
+     
+
+
+
         /// <summary>
         /// 备注
         /// </summary>

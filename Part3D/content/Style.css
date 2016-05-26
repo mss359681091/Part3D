@@ -1462,6 +1462,8 @@ header .navbar a:hover {
             }
 
         .User_List table tr td.Top ._button {
+            min-height: 26px;
+            min-width: 50px;
             background: #F60;
             color: #FFF;
             border: none;
@@ -1652,7 +1654,6 @@ header .navbar a:hover {
         }
 
 ._button {
-
     background: #edeeef;
     border: none;
     padding: 4px 10px;

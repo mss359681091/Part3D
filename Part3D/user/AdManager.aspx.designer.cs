@@ -13,13 +13,13 @@ namespace Part3D {
     public partial class AdManager {
         
         /// <summary>
-        /// form1 控件。
+        /// fm1 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.HtmlControls.HtmlForm fm1;
         
         /// <summary>
         /// WUCTop1 控件。
@@ -47,6 +47,15 @@ namespace Part3D {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hidClassifyId;
+        
+        /// <summary>
+        /// hidid 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hidid;
         
         /// <summary>
         /// WUCLink1 控件。

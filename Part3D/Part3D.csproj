@@ -133,6 +133,15 @@
     <Content Include="content\sliderLock.css" />
     <Content Include="content\Style.css" />
     <Content Include="content\ui-dialog.css" />
+    <Content Include="controls\laydate-v1.1\demo.html" />
+    <Content Include="controls\laydate-v1.1\laydate\laydate.js" />
+    <Content Include="controls\laydate-v1.1\laydate\need\laydate.css" />
+    <Content Include="controls\laydate-v1.1\laydate\skins\dahong\icon.png" />
+    <Content Include="controls\laydate-v1.1\laydate\skins\dahong\laydate.css" />
+    <Content Include="controls\laydate-v1.1\laydate\skins\default\icon.png" />
+    <Content Include="controls\laydate-v1.1\laydate\skins\default\laydate.css" />
+    <Content Include="controls\laydate-v1.1\laydate\skins\molv\icon.png" />
+    <Content Include="controls\laydate-v1.1\laydate\skins\molv\laydate.css" />
     <Content Include="images\favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -207,6 +216,7 @@
     <Content Include="user\WUCPersonalBanner.ascx" />
     <Content Include="user\WUCTop.ascx" />
     <Content Include="View.aspx" />
+    <Content Include="WebForm1.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Global.asax.cs">
@@ -221,6 +231,7 @@
     </Compile>
     <Compile Include="LogHelper.cs" />
     <Compile Include="models\DESEncrypt.cs" />
+    <Compile Include="models\dpAdvertisement\dpAdvertisementData.cs" />
     <Compile Include="models\dpLinks\dpLinksData.cs" />
     <Compile Include="models\dpLinks\dpLinksManager.cs" />
     <Compile Include="models\dpLinks\dpLinksSchema.cs" />
@@ -368,6 +379,13 @@
     </Compile>
     <Compile Include="View.aspx.designer.cs">
       <DependentUpon>View.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForm1.aspx.designer.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

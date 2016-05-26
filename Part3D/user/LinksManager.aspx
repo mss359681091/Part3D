@@ -14,7 +14,7 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
-    <title>个人中心-我的资源</title>
+    <title>个人中心-友情链接</title>
     <link rel="stylesheet" type="text/css" href="/content/Style.css" />
     <link rel="stylesheet" href="/content/iconfont.css" />
     <link rel="stylesheet" href="/content/ui-dialog.css" />
