@@ -154,7 +154,7 @@
     <Content Include="images\Login.png" />
     <Content Include="images\mail.png" />
     <Content Include="images\netclass.png" />
-    <Content Include="images\nopic.jpg" />
+    <Content Include="images\nopic.png" />
     <Content Include="images\Tatle1.png" />
     <Content Include="images\Tatle2.png" />
     <Content Include="images\Tatle3.png" />
@@ -173,6 +173,7 @@
     <Content Include="scripts\jquery.form.js" />
     <Content Include="scripts\laypage\laypage.js" />
     <Content Include="scripts\laypage\skin\laypage.css" />
+    <Content Include="test.aspx" />
     <Content Include="user\jqUploadify\images\BeginUpload.gif" />
     <Content Include="user\jqUploadify\images\cancel.png" />
     <Content Include="user\jqUploadify\images\CancelUpload.gif" />
@@ -217,7 +218,6 @@
     <Content Include="user\WUCPersonalBanner.ascx" />
     <Content Include="user\WUCTop.ascx" />
     <Content Include="View.aspx" />
-    <Content Include="WebForm1.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Global.asax.cs">
@@ -239,6 +239,13 @@
     <Compile Include="models\dpPart\dpPartData.cs" />
     <Compile Include="models\FileManager.cs">
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="test.aspx.cs">
+      <DependentUpon>test.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="test.aspx.designer.cs">
+      <DependentUpon>test.aspx</DependentUpon>
     </Compile>
     <Compile Include="user\jqUploadify\scripts\upload.ashx.cs">
       <DependentUpon>upload.ashx</DependentUpon>
@@ -381,13 +388,6 @@
     <Compile Include="View.aspx.designer.cs">
       <DependentUpon>View.aspx</DependentUpon>
     </Compile>
-    <Compile Include="WebForm1.aspx.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="WebForm1.aspx.designer.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -410,8 +410,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Demo\" />
     <Folder Include="user\jqUploadify\uploads\f\" />
     <Folder Include="user\jqUploadify\uploads\s\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DbManager\DbManager.csproj">
+      <Project>{cb0d0bf7-a8e6-4dc4-8b8d-554cf86f6d29}</Project>
+      <Name>DbManager</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

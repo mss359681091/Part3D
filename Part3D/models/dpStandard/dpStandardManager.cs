@@ -73,7 +73,7 @@ namespace _3DPart.DAL.BULayer
         {
             string returnValue = "";
             string strQuery = @"SELECT "
-            + dpStandard.ID_FULL 
+            + dpStandard.ID_FULL
             + " FROM " + dpStandard.TABLENAME
             + " WHERE 1 = 1 ";
 
@@ -87,7 +87,7 @@ namespace _3DPart.DAL.BULayer
 
             try
             {
-                returnValue = SQLHelper.ExcuteScalarSQL(strQuery, myParam);
+                returnValue = SQLHelper.GetObject(strQuery, myParam).ToString();
             }
             catch (Exception myEx)
             {

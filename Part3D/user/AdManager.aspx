@@ -41,6 +41,7 @@
             fnload();
         });
 
+        //加载广告列表，带分页
         function fnload() {
             $.ajax({
                 type: "POST",
@@ -71,40 +72,7 @@
             });
         }
 
-
-        function fnchoose(obj) {
-            var $parent = $(obj).parent();
-            document.getElementById("hidid").value = $(obj).data("id");
-            $(obj).remove();
-            $parent.append("<input id='btnfile'  onchange='fnsubmit()' type='file' name='btnfile' />");
-
-        }
-
-        function fnsubmit() {
-            $("#Submit1").click();
-        }
-
-        //保存图片
-        function fnSaveImg() {
-
-            var options = {
-                url: "/user/AdManager.aspx",
-                success: function () {
-                    //$("#td" + ("#hidid").val()).children().remove();
-                    //$("#td" + ("#hidid").val()).append($("#hidvalue").val());
-                    //$("#fm1").resetForm();
-                    //$("#preview").hide();
-                    //$("#addpic").show();
-                    //alert("上传成功！");
-                    //window.location.href = "/user/AdManager.aspx";
-                    fnload();
-                }
-            };
-            $("#fm1").ajaxForm(options);
-        }
-
-
-
+        //绑定数据
         function fnbinddata(cindex, pagesize) {
             $.ajax({
                 type: "POST",
@@ -124,8 +92,6 @@
                             if (val_PicturePath.trim() == "") {
                                 val_PicturePath = "/images/nopic.png";
                             }
-
-
                             var val_ADLink = subString(item.ADLink.trim(), 20);
                             val_ADLink = (val_ADLink.trim() == "" || val_ADLink.trim() == "&nbsp;") ? "请选择" : val_ADLink.trim();
                             var val_ClassName = item.Name;
@@ -299,7 +265,29 @@
             });
         }
 
+        //选择图片
+        function fnchoose(obj) {
+            var $parent = $(obj).parent();
+            document.getElementById("hidid").value = $(obj).data("id");
+            $(obj).remove();
+            $parent.append("<input id='btnfile'  onchange='fnsubmit()' type='file' name='btnfile' />");
 
+        }
+        //模拟上传
+        function fnsubmit() {
+            $("#Submit1").click();
+        }
+
+        //保存图片后重新加载页面
+        function fnSaveImg() {
+            var options = {
+                url: "/user/AdManager.aspx",
+                success: function () {
+                    fnload();//上传成功后重新加载
+                }
+            };
+            $("#fm1").ajaxForm(options);
+        }
 
         //修改值
         function fnSetPartname(partid, newname, columns) {
@@ -333,7 +321,6 @@
                 success: function (result) {
                     if (result.d.length > 0) {
                         classname = result.d;//重新赋值
-                        //alert("修改成功！");
                     }
                 }
             });
@@ -377,6 +364,7 @@
             $(".User_List :checkbox").prop("checked", true);
         }
 
+        //删除广告
         function fnDel(id) {
             if (confirm("确定要删除选中项吗？")) {
                 var partids = "";
@@ -409,6 +397,7 @@
             }
         }
 
+        //添加广告
         function fnAddADs(txt_newADLink, txt_newManufacturer, newsltADPosition, txt_newADStartDate, txt_newADEndDate) {
             if (txt_newManufacturer.trim().length == 0) {
                 $("#txt_newManufacturer").focus();

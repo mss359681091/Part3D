@@ -22,46 +22,53 @@ namespace Part3D
             if (Request.Files["btnfile"] != null)
             {
                 var adid = this.hidid.Value;
-                if (adid.Trim().Length > 0)
+                UpdateAdImg(adid);
+            }
+        }
+
+
+        /// <summary>
+        /// 修改广告图片
+        /// </summary>
+        /// <param name="adid">广告ID</param>
+        private void UpdateAdImg(string adid)
+        {
+            if (adid.Trim().Length > 0)
+            {
+                try
                 {
-                    try
+                    HttpPostedFile img = Request.Files["btnfile"];
+                    string uploadPath = HttpContext.Current.Server.MapPath(@"/user/jqUploadify/uploads/");
+                    if (!Directory.Exists(uploadPath))
                     {
-                        HttpPostedFile img = Request.Files["btnfile"];
-                        string uploadPath = HttpContext.Current.Server.MapPath(@"/user/jqUploadify/uploads/");
-                        if (!Directory.Exists(uploadPath))
-                        {
-                            Directory.CreateDirectory(uploadPath);
-                        }
-                        string filePath = img.FileName;//文件路径
-                        string fileName = filePath.Substring(filePath.LastIndexOf("\\") + 1);//文件名称
-                        string fileExtname = System.IO.Path.GetExtension(filePath).ToLower();
-                        string ran = DateTime.Now.ToString("yyyyMMddHHmmss") + new Random().Next(100, 999);
-                        string temp = uploadPath + ran;
-                        string newfilename = temp + fileExtname; //新文件名称
-
-                        img.SaveAs(newfilename);//上传文件
-
-
-                        dpAdvertisementManager mydpAdvertisementManager = new dpAdvertisementManager();
-                        dpAdvertisementQuery mydpAdvertisementQuery = new dpAdvertisementQuery();
-                        mydpAdvertisementQuery.ID = adid;
-
-                        //删除广告图片
-                        string strimg = mydpAdvertisementManager.GetParams(mydpAdvertisementQuery, dpAdvertisement.PicturePath);
-                        if (File.Exists(HttpContext.Current.Server.MapPath(strimg)))
-                        {
-                            File.Delete(HttpContext.Current.Server.MapPath(strimg));//删除文件
-                        }
-                        //更新广告信息
-                        mydpAdvertisementManager.UpdateParams(dpAdvertisement.PicturePath, @"/user/jqUploadify/uploads/" + ran + fileExtname, adid);
-
-
-
+                        Directory.CreateDirectory(uploadPath);
                     }
-                    catch (Exception ex)
+                    string filePath = img.FileName;//文件路径
+                    string fileName = filePath.Substring(filePath.LastIndexOf("\\") + 1);//文件名称
+                    string fileExtname = System.IO.Path.GetExtension(filePath).ToLower();
+                    string ran = DateTime.Now.ToString("yyyyMMddHHmmss") + new Random().Next(100, 999);
+                    string temp = uploadPath + ran;
+                    string newfilename = temp + fileExtname; //新文件名称
+
+                    img.SaveAs(newfilename);//上传文件
+
+                    dpAdvertisementManager mydpAdvertisementManager = new dpAdvertisementManager();
+                    dpAdvertisementQuery mydpAdvertisementQuery = new dpAdvertisementQuery();
+                    mydpAdvertisementQuery.ID = adid;
+
+                    //删除广告图片
+                    string strimg = mydpAdvertisementManager.GetParams(mydpAdvertisementQuery, dpAdvertisement.PicturePath);
+                    if (File.Exists(HttpContext.Current.Server.MapPath(strimg)))
                     {
-                        m_log.Error(ex.Message);
+                        File.Delete(HttpContext.Current.Server.MapPath(strimg));//删除文件
                     }
+                    //更新广告信息
+                    mydpAdvertisementManager.UpdateParams(dpAdvertisement.PicturePath, @"/user/jqUploadify/uploads/" + ran + fileExtname, adid);
+
+                }
+                catch (Exception ex)
+                {
+                    m_log.Error(ex.Message);
                 }
             }
         }
@@ -218,7 +225,11 @@ namespace Part3D
             return returnValue;
         }
 
-
+        /// <summary>
+        /// 获取广告类别
+        /// </summary>
+        /// <param name="classid">分类id</param>
+        /// <returns></returns>
         [WebMethod(Description = "获取广告类别", EnableSession = true)]
         public static string GetClass(string classid)
         {

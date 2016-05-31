@@ -17,6 +17,8 @@ namespace Part3D
     {
         private static readonly ILog m_log = LogHelper.GetInstance(); //LogManager.GetLogger(typeof(TEST));
 
+        public static object DBHelper { get; private set; }
+
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -115,7 +117,6 @@ namespace Part3D
                             dpLinksQuery mydpLinksQuery = new dpLinksQuery();
                             mydpLinksQuery.ID = str[i].ToString().Trim();
                             mydpLinksManager.DeleteParams(mydpLinksQuery);
-
 
                         }
                     }

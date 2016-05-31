@@ -155,7 +155,7 @@ namespace _3DPart.DAL.BULayer
             }
             try
             {
-                returnValue = SQLHelper.ExcuteScalarSQL(strQuery, myParam);
+                returnValue = SQLHelper.GetObject(strQuery, myParam).ToString();
             }
             catch (Exception myEx)
             {
