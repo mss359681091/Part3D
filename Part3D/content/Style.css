@@ -530,6 +530,7 @@ header .navbar a:hover {
 .Index_Hot {
     padding: 30px 0;
     text-align: center;
+    overflow: hidden;
 }
 
 .Index_List ul li {
@@ -734,7 +735,7 @@ header .navbar a:hover {
                 color: #F60;
             }
 
-.View {
+/*.View {
     background: #FFF;
     box-shadow: 0 0 5px rgba(0,0,0,0.3);
     margin: 30px auto 0 auto;
@@ -808,7 +809,90 @@ header .navbar a:hover {
 
             .View h5 button:hover {
                 background: #F30;
+            }*/
+.View {
+    margin: 30px auto 0 auto;
+}
+
+    .View .Tatle {
+        border-bottom: 1px #DDD solid;
+        padding: 10px 20px;
+        overflow: hidden;
+        font-weight: normal;
+    }
+
+        .View .Tatle b {
+            font-size: 24px;
+            font-weight: normal;
+            display: block;
+            padding-bottom: 10px;
+        }
+
+        .View .Tatle span {
+            display: block;
+            color: #999;
+            font-size: 12px;
+        }
+
+            .View .Tatle span a {
+                color: #F60;
+                padding-right: 10px;
+                font-size: 12px;
             }
+
+    .View .V_Img {
+        text-align: center;
+        padding: 50px 0;
+    }
+
+    .View .View_L {
+        float: left;
+        width: 780px;
+        background: #FFF;
+        box-shadow: 0 0 3px rgba(0,0,0,0.2);
+        overflow: hidden;
+    }
+
+    .View .View_R {
+        float: right;
+        width: 200px;
+        background: #FFF;
+        box-shadow: 0 0 3px rgba(0,0,0,0.2);
+        overflow: hidden;
+        text-align: center;
+        font-size: 16px;
+    }
+
+        .View .View_R img {
+            height: 72px;
+            width: 72px;
+            margin: 10px auto;
+            border-radius: 72px;
+            display: block;
+        }
+        /*.View .View_R h5{border-top:1px #DDD solid;padding:10px 0; text-align: center; margin-top: 10px; background: #f9f9f9;}*/
+        .View .View_R h5 {
+            padding-bottom: 10px;
+            text-align: center;
+            margin-top: 10px;
+            background: #f9f9f9;
+        }
+
+            .View .View_R h5 button {
+                border: none;
+                background: #ff6400;
+                color: #FFF;
+                border-bottom: 3px #c44e00 solid;
+                padding: 8px 30px;
+                margin: 6px 15px;
+                border-radius: 3px;
+                cursor: pointer;
+                width: 160px;
+            }
+
+                .View .View_R h5 button:hover {
+                    background: #F30;
+                }
 
 .V_Ad {
     margin: 30px auto;

@@ -57,23 +57,28 @@
             </div>
 
             <div class="View Container">
-                <div class="Tatle">
-                    <div class="Left">
-                        <b id="btitle" runat="server">组件名称</b>
-                        <%--     <span>标签：<a href="#">波形</a><a href="#">弹簧</a></span>--%>
-                        <span>上传人：<a id="ausername" runat="server" href="javascript:void(0);">李赛赛</a>上传日期：<a id="acreate" runat="server" href="javascript:void(0);">2016-05-14</a></span>
+                <div class="View_L">
+                    <div class="Tatle">
+                        <div class="Left">
+                            <b id="btitle" runat="server">组件名称</b>
+                            <%--     <span>标签：<a href="#">波形</a><a href="#">弹簧</a></span>--%>
+                            <span>上传人：<a id="ausername" runat="server" href="javascript:void(0);">李赛赛</a>上传日期：<a id="acreate" runat="server" href="javascript:void(0);">2016-05-14</a></span>
+                        </div>
+                        <div class="Right">
+                            <%-- <img id="imgPreview" runat="server" src="/images/img.png" alt="" />--%>
+                        </div>
                     </div>
-                    <div class="Right">
-                        <%-- <img id="imgPreview" runat="server" src="/images/img.png" alt="" />--%>
+                    <div class="V_Img">
+                        <img id="imgPreview" runat="server" src="/images/Img.jpg" alt="" style="max-width: 850px;" />
                     </div>
                 </div>
-                <div class="V_Img">
-                    <img id="imgPreview" runat="server" src="/images/Img.jpg" alt="" style="max-width: 850px;" />
+                <div class="View_R">
+                    <%--    <img src="Img/img.png" alt="" />一泽瑞尔--%>
+                    <h5 id="btn">
+                        <button type="button" data-format=".igs" data-event="D_Step">下载IGS</button>
+                        <button type="button" data-format=".step" data-event="D_Step">下载STEP</button>
+                        <button type="button" data-format=".x_t" data-event="D_Step">下载X_T</button></h5>
                 </div>
-                <h5 id="btn">
-                    <button type="button" data-format=".igs" data-event="D_Step">下载IGS</button>
-                    <button type="button" data-format=".step" data-event="D_Step">下载STEP</button>
-                    <button type="button" data-format=".x_t" data-event="D_Step">下载X_T</button></h5>
             </div>
 
             <div id="D_Step" style="display: none;">

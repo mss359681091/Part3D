@@ -35,9 +35,11 @@
     <script type="text/javascript" src="/scripts/sliderlock.js"></script>
     <script type="text/javascript">
         document.onkeydown = function (event) {
-            var e = event || window.event || arguments.callee.caller.arguments[0];
-            if (e && e.keyCode == 13) {
-                fnLogin();
+            if (document.activeElement.id == "txtusername" || document.activeElement.id == "txtpassword") {
+                var e = event || window.event || arguments.callee.caller.arguments[0];
+                if (e && e.keyCode == 13) {
+                    fnLogin();
+                }
             }
         }
     </script>

@@ -55,6 +55,19 @@
         });
     });
 </script>
+
+<script type="text/javascript">
+    document.onkeydown = function (event) {
+
+        if (document.activeElement.id == "txtkey") {
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            if (e && e.keyCode == 13) {
+                fnsearch();
+            }
+        }
+
+    }
+</script>
 <div class="Container">
     <div class="Left">
         <img src="/images/Login.png" alt="" />

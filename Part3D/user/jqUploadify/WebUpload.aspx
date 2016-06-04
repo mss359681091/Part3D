@@ -139,7 +139,7 @@
                 </ul>
                 <ul class="Right">
                     <li><span class="_span"><b>名称：</b><i></i></span><input type="text" id="txtPartname" name="txtPartname" maxlength="30" placeholder="请在这里输入名称..." /></li>
-                    <li><span class="_span"><b>分类：</b></span><input type="text" disabled="disabled" placeholder="请选择分类..." class="inp txtClassifyID"><strong class="iconfont" data-event="Class_L">&#xe607;</strong>
+                    <li><span class="_span"><b>分类：</b></span><input type="text" placeholder="请选择分类..." data-event="Class_L" class="inp txtClassifyID"><strong class="iconfont" data-event="Class_L">&#xe607;</strong>
 
                     </li>
                 </ul>
@@ -171,7 +171,7 @@
 
             <!--弹出下载窗口-->
             <script type="text/ecmascript">
-                $('strong[data-event=Class_L]').on('click', function () {
+                $('[data-event=Class_L]').on('click', function () {
                     var d = dialog({
                         fixed: true,
                         title: '选择分类',

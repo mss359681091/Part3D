@@ -392,7 +392,7 @@ function fnSaveImg(filenames, successcount) {
             $("#fm1").resetForm();
             $("#preview").hide();
             $("#addpic").show();
-            alert("上传成功！");
+            //alert("上传成功！");
             window.location.href = "/user/PersonalResouces.aspx";
 
         }

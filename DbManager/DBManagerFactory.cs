@@ -1,4 +1,12 @@
-﻿using System.Data;
+﻿/******************************************************************
+** 创建人: 李赛赛
+** 创建日期:2016-05-31
+** 描 述: 创建一个工厂类，用来产生不同数据库的实例
+** 版 本:1.0
+**-----------------------------------------------------------------
+********************************************************************/
+
+using System.Data;
 using System.Data.Odbc;
 using System.Data.OleDb;
 using System.Data.SqlClient;
@@ -7,10 +15,7 @@ namespace DbManager
 {
     public sealed class DBManagerFactory
     {
-        private DBManagerFactory()
-        {
-
-        }
+        private DBManagerFactory(){}
 
         public static IDbConnection GetConnection(Dataprovider providerType)
         {
@@ -70,6 +75,7 @@ namespace DbManager
             IDbTransaction iDbTransaction = iDbConnection.BeginTransaction();
             return iDbTransaction;
         }
+
         public static IDbDataParameter[] GetParameters(Dataprovider providerType, int paramsCount)
         {
             IDbDataParameter[] idbParams = new IDbDataParameter[paramsCount];

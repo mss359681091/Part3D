@@ -1,10 +1,19 @@
-﻿using System;
+﻿
+/******************************************************************
+** 创建人: 李赛赛
+** 创建日期:2016-05-31
+** 描 述: 调用DBManager类,外部直接调用DBHelper类即可
+** 版 本:1.0
+**-----------------------------------------------------------------
+********************************************************************/
+
+using System;
 using System.Configuration;
 using System.Data;
 
 namespace DbManager
 {
-    public class IDBHelper
+    public class DBHelper
     {
         private static readonly IDBManager dbManager = new DBManager(GetDataProvider(), GetConnectionString());
 
@@ -94,6 +103,29 @@ namespace DbManager
         }
 
         /// <summary>
+        /// 返回第一行第一列
+        /// </summary>
+        /// <param name="sqlString">安全的sql语句string.Format()</param>
+        /// <returns>操作成功返回true</returns>
+        public static string ExecuteScalar(string sqlString)
+        {
+            try
+            {
+                dbManager.Open();
+                return dbManager.ExecuteScalar(CommandType.Text, sqlString).ToString();
+            }
+            catch (Exception e)
+            {
+
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                dbManager.Dispose();
+            }
+        }
+
+        /// <summary>
         /// 执行查询
         /// </summary>
         /// <param name="sqlString">安全的sql语句string.Format()</param>
@@ -111,6 +143,25 @@ namespace DbManager
             }
         }
 
+        /// <summary>
+        /// 执行查询，返回数据集
+        /// </summary>
+        /// <param name="sqlString"></param>
+        /// <returns></returns>
+        public static DataSet ExecuteDataSet(string sqlString)
+        {
+            DataSet myDataSet = new DataSet();
+            try
+            {
+                dbManager.Open();
+                myDataSet = dbManager.ExecuteDataSet(CommandType.Text, sqlString);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return myDataSet;
+        }
 
 
     }

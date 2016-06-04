@@ -18,13 +18,23 @@ namespace Part3D
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            string sql = " select * from dp_Part ";
-            IDataReader reader = IDBHelper.ExecuteReader(sql);
+            string sql = " select * from dp_Part where Name=@Name ";
+
+            //若有参，请加上这句
+            DBHelper.CreateParameters(1);//参数个数，1个
+            DBHelper.AddParameters(0, "@Name", "丢雷螺母");
+
+
+
+            IDataReader reader = DBHelper.ExecuteReader(sql);
             while (reader.Read())
             {
                 Response.Write(reader["Name"].ToString());
             }
-            IDBHelper.Close();//关闭reader
+            DBHelper.Close();//关闭reader
+
+
+
         }
     }
 }

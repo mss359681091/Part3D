@@ -21,6 +21,8 @@
     <script type="text/javascript" src="/scripts/jquery.kinMaxShow-1.1.min.js"></script>
     <script type="text/javascript" src="/scripts/dialog.js"></script>
     <script type="text/javascript" src="/scripts/common.js"></script>
+
+
     <script type="text/javascript">
         $(document).ready(function () {
             $.ajax({
@@ -43,6 +45,19 @@
         }
 
     </script>
+    
+<script type="text/javascript">
+    document.onkeydown = function (event) {
+
+        if (document.activeElement.id == "txtkey") {
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            if (e && e.keyCode == 13) {
+                fnsearch();
+            }
+        }
+
+    }
+</script>
 </head>
 <body>
     <form id="fm1" runat="server" method="post">

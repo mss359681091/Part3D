@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataProvider.cs" />
-    <Compile Include="IDBHelper.cs" />
+    <Compile Include="DBHelper.cs" />
     <Compile Include="DBManager.cs" />
     <Compile Include="DBManagerFactory.cs" />
     <Compile Include="IDBManager.cs" />

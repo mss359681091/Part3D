@@ -1,4 +1,12 @@
-﻿using System;
+﻿/******************************************************************
+** 创建人: 李赛赛
+** 创建日期:2016-05-31
+** 描 述: 实现接口
+** 版 本:1.0
+**-----------------------------------------------------------------
+********************************************************************/
+
+using System;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -39,16 +47,19 @@ namespace DbManager
         #endregion
 
         #region 属性
+
         public Dataprovider ProviderType
         {
             get { return _providerType; }
             set { _providerType = value; }
         }
+
         public IDbConnection Connection
         {
             get { return _idbConnection; }
             set { _idbConnection = value; }
         }
+
         public IDataReader DataReader
         {
             get { return _IDataReader; }
