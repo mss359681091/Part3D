@@ -23,6 +23,7 @@
     <script type="text/javascript" src="/scripts/common.js"></script>
     <script type="text/javascript" src="/scripts/dialog.js"></script>
     <script type="text/javascript" src="/scripts/scriptC.js"></script>
+    <script src="scripts/laypage/laypage.js"></script>
     <!-- Bootstrap -->
     <link rel="stylesheet" media="screen" href="/content/bootstrap.min.css">
     <script src="/scripts/bootstrap.min.js"></script>
@@ -33,16 +34,6 @@
     <!-- SliderLock -->
     <link href="/content/sliderlock.css" rel="stylesheet" media="screen">
     <script type="text/javascript" src="/scripts/sliderlock.js"></script>
-    <script type="text/javascript">
-        document.onkeydown = function (event) {
-            if (document.activeElement.id == "txtusername" || document.activeElement.id == "txtpassword") {
-                var e = event || window.event || arguments.callee.caller.arguments[0];
-                if (e && e.keyCode == 13) {
-                    fnLogin();
-                }
-            }
-        }
-    </script>
 </head>
 <body>
     <form id="form1" runat="server">

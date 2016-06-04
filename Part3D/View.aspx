@@ -21,7 +21,7 @@
     <script type="text/javascript" src="/scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="/scripts/dialog.js"></script>
     <script type="text/javascript" src="/scripts/common.js"></script>
-
+      <script src="/scripts/laypage/laypage.js"></script>
     <script type="text/javascript">
 
         $(document).ready(function () {

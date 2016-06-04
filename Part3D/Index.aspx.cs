@@ -1,9 +1,11 @@
 ﻿using _3DPart.DAL.BULayer;
+using _3DPart.DAL.BULayer.Data;
 using _3DPart.DAL.BULayer.Schema;
 using log4net;
 using Part3D.models;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Web;
@@ -304,6 +306,7 @@ namespace Part3D
                 Response.Write("<script>alert('非注册用户每天只能下载10次！')</script>");
             }
         }
+
         private bool ChkIP()
         {
             bool returnValue = false;
@@ -323,6 +326,39 @@ namespace Part3D
             }
             return returnValue;
         }
+
+        /// <summary>
+        /// 获取友情链接
+        /// </summary>
+        /// <param name="CurrentIndex">页数</param>
+        /// <param name="PageSize">每页显示条数</param>
+        /// <returns></returns>
+        [WebMethod(Description = "获取友情链接", EnableSession = true)]
+        public static dynamic GetLinks(string CurrentIndex, string PageSize)
+        {
+            string status = string.Empty;//状态
+            string errmsg = string.Empty;//错误信息
+            IList<dpLinksData> returnData = null;//返回实体列表
+            try
+            {
+                dpLinksManager mydpLinksManager = new dpLinksManager();
+                dpLinksQuery mydpLinksQuery = new dpLinksQuery();
+                mydpLinksQuery.CurrentIndex = Convert.ToInt32(CurrentIndex == "" ? "1" : CurrentIndex);
+                mydpLinksQuery.PageSize = Convert.ToInt32(PageSize == "" ? "12" : PageSize);
+                DataSet myds = mydpLinksManager.SearchBind(mydpLinksQuery);
+                if (myds.Tables[0].Rows.Count > 0)
+                {
+                    returnData = CommonManager.GetList<dpLinksData>(myds.Tables[0]);//转换实体类list
+                }
+
+            }
+            catch (Exception ex)
+            {
+                m_log.Error(ex.Message);
+            }
+            return new { status = status, errmsg = errmsg, returnData = returnData };
+        }
+
 
     }
 }

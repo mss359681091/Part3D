@@ -421,7 +421,8 @@ function fnsearch() {
             default:
                 break;
         }
-        fnGetList('', '', classid, searchkey, '1', '12');
+        fnGetList('', '', classid, searchkey, '1', '12',"0");
+
     }
     else {
         window.open(encodeURI("/List.aspx?classid=" + classid + "&& sk=" + searchkey));

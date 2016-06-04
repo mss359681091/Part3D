@@ -20,6 +20,7 @@
     <script type="text/javascript" src="/scripts/dialog.js"></script>
     <script type="text/javascript" src="/scripts/common.js"></script>
     <script src="/scripts/jquery.form.js"></script>
+    <script src="/scripts/laypage/laypage.js"></script>
     <!--上传控件-->
     <link href="scripts/uploadify.css" rel="stylesheet" type="text/css" />
     <link href="scripts/default.css" rel="stylesheet" type="text/css" />

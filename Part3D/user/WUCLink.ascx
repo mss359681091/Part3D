@@ -6,7 +6,7 @@
         $.ajax({
             type: "POST",
             contentType: "application/json",
-            url: "/user/LinksManager.aspx/GetLinks",
+            url: "/Index.aspx/GetLinks",
             data: "{CurrentIndex:'" + cindex + "',PageSize:'" + pagesize + "'}",
             dataType: 'json',
             success: function (result) {
