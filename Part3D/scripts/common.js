@@ -421,7 +421,7 @@ function fnsearch() {
             default:
                 break;
         }
-        fnGetList('', '', classid, searchkey, '1', '12',"0");
+        fnGetList('', '', classid, searchkey, '1', '12', "0");
 
     }
     else {
@@ -461,7 +461,8 @@ function fnGetList(ParentID, UserID, ClassifyID, Name, CurrentIndex, PageSize, t
                 });
                 $(".Index_List li").remove();
                 $(".Index_List ul").append(strli);
-                $('button[data-event=D_Step]').on('click', function () {
+                $('button[data-event=D_Step]').unbind("click");
+                $('button[data-event=D_Step]').bind('click', function () {
                     var partid = $(this).data("partid");
                     var format = $(this).data("format");
                     //getStandard(partid, format);//获取该组件标准列表
@@ -509,7 +510,8 @@ function fnRecommend(UserID, ClassifyID, ID) {
                 $(".Index_List li").remove();
                 $(".Index_List ul").append(strli);
 
-                $('button[data-event=D_Step]').on('click', function () {
+                $('button[data-event=D_Step]').unbind("click");
+                $('button[data-event=D_Step]').bind('click', function () {
                     var partid = $(this).data("partid");
                     var format = $(this).data("format");
                     getModels(partid, format);//获取该组件下所有型号
@@ -518,7 +520,8 @@ function fnRecommend(UserID, ClassifyID, ID) {
                 });
             }
             else {
-                $('button[data-event=D_Step]').on('click', function () {
+                $('button[data-event=D_Step]').unbind("click");
+                $('button[data-event=D_Step]').bind('click', function () {
                     var partid = $(this).data("partid");
                     var format = $(this).data("format");
                     getModels(partid, format);//获取该组件下所有型号
