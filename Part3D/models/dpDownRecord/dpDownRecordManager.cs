@@ -293,6 +293,103 @@ namespace _3DPart.DAL.BULayer
             return returnValue;
         }
 
+
+        public string SearchDownCount(dpDownRecordQuery QueryData)
+        {
+            string returnValue = string.Empty;
+            string strQuery = @"SELECT ";
+            strQuery += " count(distinct " + dpDownRecord.PartID_FULL + ") as countall ";
+            strQuery += " FROM " + dpDownRecord.TABLENAME;
+            strQuery += " WHERE 1 = 1 ";
+
+            Hashtable myParam = new Hashtable();
+
+            if (QueryData.Enabled.Length > 0)
+            {
+                strQuery += " AND " + dpDownRecord.Enabled_FULL + " = @Enabled ";
+                myParam.Add("@Enabled", QueryData.Enabled);
+            }
+            if (QueryData.start.Length > 0)
+            {
+                strQuery += " AND " + dpDownRecord.CreateDate_FULL + " >= @start ";
+                myParam.Add("@start", QueryData.start);
+            }
+
+            if (QueryData.end.Length > 0)
+            {
+                strQuery += " AND " + dpDownRecord.CreateDate_FULL + " <= @end ";
+                myParam.Add("@end", QueryData.end);
+            }
+
+            DataSet myDs = new DataSet();
+            try
+            {
+                returnValue = SQLHelper.GetObject(strQuery, myParam).ToString();
+            }
+            catch (Exception myEx)
+            {
+
+                throw new Exception(myEx.Message + "\r\n SQL:" + strQuery);
+            }
+            finally
+            {
+
+            }
+            return returnValue;
+        }
+
+        public DataSet SearchDownPaging(dpDownRecordQuery QueryData)
+        {
+            Hashtable myParam = new Hashtable();
+            string strQuery = @" SELECT TOP " + QueryData.PageSize + "  * FROM ( SELECT  ROW_NUMBER() OVER ( ORDER BY partcount DESC ) AS RowNumber ,* FROM ( "
+            + " select *,(select  convert(varchar(100), max(CreateDate),120) ";
+            strQuery += " from dp_downrecord ";
+            strQuery += " where partid=temp.PartID) as lastdownload  ";
+            strQuery += " from ( ";
+            strQuery += " select dp_part.id as PartID ,PreviewSmall,dp_Classify.Name as classname,dp_part.name as name ";
+            strQuery += " ,count(dp_downrecord.id) as partcount ";
+            strQuery += " from dp_downrecord ";
+            strQuery += " left join dp_part on dp_downrecord.partid=dp_part.id ";
+            strQuery += " left join dp_Classify on dp_part.classifyid=dp_Classify.id ";
+            strQuery += " where 1=1 ";
+            if (QueryData.start.Length > 0)
+            {
+                strQuery += " AND " + dpDownRecord.CreateDate_FULL + " >= @start ";
+                myParam.Add("@start", QueryData.start);
+            }
+
+            if (QueryData.end.Length > 0)
+            {
+                strQuery += " AND " + dpDownRecord.CreateDate_FULL + " <= @end ";
+                myParam.Add("@end", QueryData.end);
+            }
+
+
+            strQuery += " group by dp_part.id,PreviewSmall,dp_Classify.Name,dp_part.name  ";
+            strQuery += " ) temp ";
+
+
+            strQuery += " ) A ) B";
+            strQuery += " WHERE RowNumber > " + QueryData.PageSize * (QueryData.CurrentIndex - 1);
+
+            DataSet myDs = new DataSet();
+            try
+            {
+
+                myDs = SQLHelper.GetDataSet(strQuery, myParam);
+            }
+            catch (Exception myEx)
+            {
+
+                throw new Exception(myEx.Message + "\r\n SQL:" + strQuery);
+            }
+            finally
+            {
+
+            }
+            return myDs;
+        }
+
     }
 
     [Serializable()]
@@ -303,6 +400,9 @@ namespace _3DPart.DAL.BULayer
         public string UserID = string.Empty;
         public string Enabled = string.Empty;
         public string CreateDate = string.Empty;
+        public string start = string.Empty;
+        public string end = string.Empty;
+
         public string IP = string.Empty;
         public int CurrentIndex = 1;
         public int PageSize = 12;

@@ -74,6 +74,7 @@
 
         //绑定数据
         function fnbinddata(cindex, pagesize) {
+            $(".trcenter").remove();
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
@@ -102,7 +103,7 @@
                             var val_ADStartDate = item.ADStartDate;
                             var var_ADEndDate = item.ADEndDate;
 
-                            strtr += "<tr class='center'>";
+                            strtr += "<tr class='center trcenter'>";
                             strtr += "<td align='center'><input data-id='" + item.ID + "' type='checkbox'></td>";
                             strtr += "<td><button title='" + item.Manufacturer + "' data-id='" + item.ID + "' type='button' class='_button' data-event='setManufacturer'>" + val_Manufacturer + "</button></td>";
                             strtr += "<td id='td" + item.ID + "' ><a data-id='" + item.ID + "' href='javascript:void(0)' onclick='fnchoose(this)' ><img src='" + val_PicturePath + "' /></a></td>";
@@ -352,10 +353,10 @@
 
             if ($("#chkall").prop("checked")) {
 
-                $(".trcenter :checkbox").prop("checked", true);
+                $(".center :checkbox").prop("checked", true);
             }
             else {
-                $(".trcenter :checkbox").prop("checked", false);
+                $(".center :checkbox").prop("checked", false);
             }
 
         }

@@ -58,6 +58,7 @@
         }
 
         function fnbinddata(cindex, pagesize) {
+            $(".trcenter").remove();
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
@@ -73,7 +74,7 @@
                             linkname = linkname == "" ? "请选择" : linkname;
                             var linkurl = item.LinkUrl;
                             linkurl = linkurl == "" ? "请选择" : linkurl;
-                            strtr += "<tr class='center'>";
+                            strtr += "<tr class='center trcenter'>";
                             strtr += "<td align='center'><input data-id='" + item.ID + "' type='checkbox'></td>";
                             strtr += "<td><button data-id='" + item.ID + "' type='button' class='_button' data-event='SetLinkName'>" + linkname + "</button></td>";
                             strtr += "<td><button data-id='" + item.ID + "' type='button' class='_button' data-event='SetLinkUrl'>" + linkurl + "</button></td>";

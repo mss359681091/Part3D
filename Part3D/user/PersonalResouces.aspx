@@ -68,6 +68,7 @@
         }
 
         function fnbinddata(cindex, pagesize) {
+            $(".trcenter").remove();
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
@@ -75,12 +76,12 @@
                 data: "{CurrentIndex:'" + cindex + "',PageSize:'" + pagesize + "'}",
                 dataType: 'json',
                 success: function (result) {
-                    //$(".trcenter").remove();
+                    //$(".center").remove();
                     if (result.d != null) {
                         var strtr = "";
                         $.each(result.d.returnData, function (i, item) {
                             var names = subString(item.Name, 28);
-                            strtr += "<tr class='center'>";
+                            strtr += "<tr class='center trcenter'>";
                             strtr += "<td align='center'><input data-id='" + item.ID + "' type='checkbox'></td>";
                             strtr += "<td><a href='/View.aspx?partid=" + item.ID + "' target='_blank' ><img src='" + item.PreviewSmall + "' alt='' /></a></td>";
                             strtr += "<td><button data-classid='" + item.ClassifyID + "' data-id='" + item.ID + "' type='button' class='_button' data-event='Class_L'>" + item.classname + "</button></td>";
@@ -253,7 +254,7 @@
                         <td class="Top center" width="120">操作</td>
                     </tr>
 
-                    <%--  <tr class="trcenter">
+                    <%--  <tr class="center">
                         <td align="center">
                             <input type="checkbox"></td>
                         <td>

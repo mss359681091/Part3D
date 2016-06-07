@@ -29,9 +29,9 @@
 * {
     margin: 0;
     padding: 0;
-    -webkit-box-sizing: border-box;
+    /*-webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
-    box-sizing: border-box;
+    box-sizing: border-box;*/
 }
 
 body {
@@ -268,6 +268,7 @@ header .navbar a:hover {
     }
 
     .Top_divM .SearchM {
+        box-sizing: border-box;
         width: 520px;
         border-radius: 5px;
         background: rgba(0,0,0,0.15);
@@ -277,7 +278,9 @@ header .navbar a:hover {
         float: right;
     }
 
+
         .Top_divM .SearchM .Class {
+            box-sizing: border-box;
             width: 80px;
             background: #f5f5f5;
             float: left;
@@ -307,6 +310,7 @@ header .navbar a:hover {
             }
 
         .Top_divM .SearchM input {
+            box-sizing: border-box;
             float: left;
             border: none;
             height: 52px;
@@ -316,6 +320,7 @@ header .navbar a:hover {
         }
 
         .Top_divM .SearchM button {
+            box-sizing: border-box;
             float: left;
             border-bottom-right-radius: 5px;
             border-top-right-radius: 5px;
@@ -348,6 +353,7 @@ header .navbar a:hover {
 }
 
 .Search {
+    box-sizing: border-box;
     width: 660px;
     border-radius: 5px;
     background: rgba(0,0,0,0.15);
@@ -359,6 +365,7 @@ header .navbar a:hover {
 }
 
     .Search .Class {
+        box-sizing: border-box;
         width: 80px;
         background: #f5f5f5;
         float: left;
@@ -391,6 +398,7 @@ header .navbar a:hover {
         }
 
     .Search input {
+        box-sizing: border-box;
         float: left;
         border: none;
         height: 52px;
@@ -404,6 +412,7 @@ header .navbar a:hover {
     }
 
     .Search button {
+        box-sizing: border-box;
         float: left;
         border-bottom-right-radius: 5px;
         border-top-right-radius: 5px;
@@ -1398,6 +1407,7 @@ header .navbar a:hover {
 }
 
     .User_TM .SearchM {
+        box-sizing: border-box;
         width: 500px;
         border-radius: 3px;
         background: rgba(0,0,0,0.15);
@@ -1408,6 +1418,7 @@ header .navbar a:hover {
     }
 
         .User_TM .SearchM .Class {
+            box-sizing: border-box;
             width: 80px;
             background: #f5f5f5;
             float: left;
@@ -1437,6 +1448,7 @@ header .navbar a:hover {
             }
 
         .User_TM .SearchM input {
+            box-sizing: border-box;
             float: left;
             border: none;
             height: 40px;
@@ -1446,6 +1458,7 @@ header .navbar a:hover {
         }
 
         .User_TM .SearchM button {
+            box-sizing: border-box;
             float: left;
             border-bottom-right-radius: 3px;
             border-top-right-radius: 3px;
@@ -1760,7 +1773,11 @@ header .navbar a:hover {
 .center {
     text-align: center;
 }
-.bold {
 
+.bold {
     font-weight: bold;
 }
+
+/*.laydate_ym {
+    box-sizing:unset;
+}*/
