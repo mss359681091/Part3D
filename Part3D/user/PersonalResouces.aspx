@@ -80,7 +80,7 @@
                         var strtr = "";
                         $.each(result.d.returnData, function (i, item) {
                             var names = subString(item.Name, 28);
-                            strtr += "<tr class='trcenter'>";
+                            strtr += "<tr class='center'>";
                             strtr += "<td align='center'><input data-id='" + item.ID + "' type='checkbox'></td>";
                             strtr += "<td><a href='/View.aspx?partid=" + item.ID + "' target='_blank' ><img src='" + item.PreviewSmall + "' alt='' /></a></td>";
                             strtr += "<td><button data-classid='" + item.ClassifyID + "' data-id='" + item.ID + "' type='button' class='_button' data-event='Class_L'>" + item.classname + "</button></td>";
@@ -241,7 +241,7 @@
             <uc4:WUCPersonalBanner ID="WUCPersonalBanner1" runat="server" />
             <div class="User_List Container">
                 <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                    <tr id="trtop">
+                    <tr id="trtop" class="bold">
                         <td class="Top center" width="70">
                             <input id="chkall" onclick="fnchk()" type="checkbox"></td>
                         <td class="Top center">缩略图</td>

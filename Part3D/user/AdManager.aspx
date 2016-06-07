@@ -102,7 +102,7 @@
                             var val_ADStartDate = item.ADStartDate;
                             var var_ADEndDate = item.ADEndDate;
 
-                            strtr += "<tr class='trcenter'>";
+                            strtr += "<tr class='center'>";
                             strtr += "<td align='center'><input data-id='" + item.ID + "' type='checkbox'></td>";
                             strtr += "<td><button title='" + item.Manufacturer + "' data-id='" + item.ID + "' type='button' class='_button' data-event='setManufacturer'>" + val_Manufacturer + "</button></td>";
                             strtr += "<td id='td" + item.ID + "' ><a data-id='" + item.ID + "' href='javascript:void(0)' onclick='fnchoose(this)' ><img src='" + val_PicturePath + "' /></a></td>";
@@ -434,7 +434,7 @@
             <uc4:WUCPersonalBanner ID="WUCPersonalBanner1" runat="server" />
             <div class="User_List Container">
                 <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                    <tr id="trtop">
+                    <tr id="trtop" class=" bold">
                         <td class="Top center" width="70">
                             <input id="chkall" onclick="fnchk()" type="checkbox"></td>
                         <td class="Top center">厂商</td>

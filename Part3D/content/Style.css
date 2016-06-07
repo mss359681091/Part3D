@@ -1499,14 +1499,14 @@ header .navbar a:hover {
 }
 
     .User_Maun .Maunx {
-        padding-left: 120px;
+        padding-left: 50px;
         color: #CCC;
     }
 
         .User_Maun .Maunx a {
             display: inline-block;
             font-size: 16px;
-            padding: 0 40px;
+            padding: 0 30px;
             height: 58px;
         }
 
@@ -1759,5 +1759,8 @@ header .navbar a:hover {
 
 .center {
     text-align: center;
+}
+.bold {
+
     font-weight: bold;
 }

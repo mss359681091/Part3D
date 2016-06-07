@@ -20,6 +20,13 @@
             case "/user/AdManager.aspx":
                 $("#pcm a").eq(4).addClass("hover");
                 break;
+            case "/user/DownloadCount.aspx":
+                $("#pcm a").eq(5).addClass("hover");
+                break;
+            case "/user/SearchCount.aspx":
+                $("#pcm a").eq(6).addClass("hover");
+                break;
+
             default:
                 $("#pcm a").eq(0).addClass("hover");
                 break;
@@ -67,6 +74,8 @@
         <a href="/user/PersonalInfo.aspx">个人信息</a><span id="sp_yqlj" runat="server" visible="false">|</span>
 
         <a id="lnk_yqlj" runat="server" visible="false" href="/user/LinksManager.aspx">友情链接</a><span id="sp_ad" runat="server" visible="false">|</span>
-        <a id="lnk_ad" runat="server" visible="false" href="/user/AdManager.aspx">广告管理</a>
+        <a id="lnk_ad" runat="server" visible="false" href="/user/AdManager.aspx">广告管理</a><span id="sp_download" runat="server" visible="false">|</span>
+        <a id="lnk_download" runat="server" visible="false" href="/user/DownloadCount.aspx">下载统计</a><span id="sp_search" runat="server" visible="false">|</span>
+        <a id="lnk_search" runat="server" visible="false" href="/user/SearchCount.aspx">搜索统计</a>
     </div>
 </div>

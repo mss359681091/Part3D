@@ -22,6 +22,10 @@ namespace Part3D
                         this.lnk_yqlj.Visible = true;//显示友情链接模块
                         this.sp_ad.Visible = true;
                         this.sp_yqlj.Visible = true;
+                        this.lnk_download.Visible = true;//显示下载统计
+                        this.sp_download.Visible = true;
+                        this.lnk_search.Visible = true;//显示搜索
+                        this.sp_search.Visible = true;
                     }
                 }
                 if (Session[sysUser.Nickname] != null)

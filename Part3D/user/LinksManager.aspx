@@ -73,7 +73,7 @@
                             linkname = linkname == "" ? "请选择" : linkname;
                             var linkurl = item.LinkUrl;
                             linkurl = linkurl == "" ? "请选择" : linkurl;
-                            strtr += "<tr class='trcenter'>";
+                            strtr += "<tr class='center'>";
                             strtr += "<td align='center'><input data-id='" + item.ID + "' type='checkbox'></td>";
                             strtr += "<td><button data-id='" + item.ID + "' type='button' class='_button' data-event='SetLinkName'>" + linkname + "</button></td>";
                             strtr += "<td><button data-id='" + item.ID + "' type='button' class='_button' data-event='SetLinkUrl'>" + linkurl + "</button></td>";
@@ -266,7 +266,7 @@
             <uc4:WUCPersonalBanner ID="WUCPersonalBanner1" runat="server" />
             <div class="User_List Container">
                 <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                    <tr id="trtop">
+                    <tr id="trtop" class=" bold">
                         <td class="Top center" width="70">
                             <input id="chkall" onclick="fnchk()" type="checkbox"></td>
                         <td class="Top center">链接名称</td>
