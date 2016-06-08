@@ -486,6 +486,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Demo\" />
+    <Folder Include="errlog\" />
     <Folder Include="user\jqUploadify\uploads\f\" />
     <Folder Include="user\jqUploadify\uploads\s\" />
   </ItemGroup>

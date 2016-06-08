@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI.WebControls;
+using System.Xml;
 
 namespace Part3D.models
 {
@@ -360,6 +361,210 @@ namespace Part3D.models
             return ipv4;
         }
         #endregion
+
+        #region 修改config文件  
+
+        /// <summary>  
+
+        /// 修改config文件(AppSetting节点)  
+
+        /// </summary>  
+
+        /// <param name="key">键</param>  
+
+        /// <param name="value">要修改成的值</param>  
+
+        public static void UpdateAppSetting(string key, string value)
+
+        {
+
+            XmlDocument doc = new XmlDocument();
+
+            //获得配置文件的全路径   
+
+            string strFileName = AppDomain.CurrentDomain.BaseDirectory.ToString() + "Log4Net.config";
+
+            doc.Load(strFileName);
+
+            //找出名称为“add”的所有元素   
+
+            XmlNodeList nodes = doc.GetElementsByTagName("param");
+
+            for (int i = 0; i < nodes.Count; i++)
+
+            {
+
+                //获得将当前元素的key属性   
+
+                XmlAttribute _key = nodes[i].Attributes["name"];
+
+                //根据元素的第一个属性来判断当前的元素是不是目标元素   
+
+                if (_key != null)
+
+                {
+
+                    if (_key.Value == key)
+
+                    {
+
+                        //对目标元素中的第二个属性赋值   
+
+                        _key = nodes[i].Attributes["value"];
+
+
+
+                        _key.Value = value;
+
+                        break;
+
+                    }
+
+                }
+
+            }
+
+            //保存上面的修改   
+
+            doc.Save(strFileName);
+
+        }
+
+
+
+        /// <summary>  
+
+        /// 修改config文件(ConnectionString节点)  
+
+        /// </summary>  
+
+        /// <param name="name">键</param>  
+
+        /// <param name="value">要修改成的值</param>  
+
+        public static void UpdateConnectionString(string name, string value)
+
+        {
+
+            XmlDocument doc = new XmlDocument();
+
+            //获得配置文件的全路径   
+
+            string strFileName = AppDomain.CurrentDomain.BaseDirectory.ToString() + "Web.config";
+
+            doc.Load(strFileName);
+
+            //找出名称为“add”的所有元素   
+
+            XmlNodeList nodes = doc.GetElementsByTagName("add");
+
+            for (int i = 0; i < nodes.Count; i++)
+
+            {
+
+                //获得将当前元素的key属性   
+
+                XmlAttribute _name = nodes[i].Attributes["name"];
+
+                //根据元素的第一个属性来判断当前的元素是不是目标元素   
+
+                if (_name != null)
+
+                {
+
+                    if (_name.Value == name)
+
+                    {
+
+                        //对目标元素中的第二个属性赋值   
+
+                        _name = nodes[i].Attributes["connectionString"];
+
+
+
+                        _name.Value = value;
+
+                        break;
+
+                    }
+
+                }
+
+            }
+
+            //保存上面的修改   
+
+            doc.Save(strFileName);
+
+        }
+
+        #endregion
+
+        /// <summary>
+        /// 取得网站的根目录的URL
+        /// </summary>
+        /// <returns></returns>
+        public static string GetRootURI()
+        {
+            string AppPath = "";
+            HttpContext HttpCurrent = HttpContext.Current;
+            HttpRequest Req;
+            if (HttpCurrent != null)
+            {
+                Req = HttpCurrent.Request;
+
+                string UrlAuthority = Req.Url.GetLeftPart(UriPartial.Authority);
+                if (Req.ApplicationPath == null || Req.ApplicationPath == "/")
+                    //直接安装在   Web   站点   
+                    AppPath = UrlAuthority;
+                else
+                    //安装在虚拟子目录下   
+                    AppPath = UrlAuthority + Req.ApplicationPath;
+            }
+            return AppPath;
+        }
+
+        /// <summary>
+        /// 取得网站的根目录的URL
+        /// </summary>
+        /// <param name="Req"></param>
+        /// <returns></returns>
+        public static string GetRootURI(HttpRequest Req)
+        {
+            string AppPath = "";
+            if (Req != null)
+            {
+                string UrlAuthority = Req.Url.GetLeftPart(UriPartial.Authority);
+                if (Req.ApplicationPath == null || Req.ApplicationPath == "/")
+                    //直接安装在   Web   站点   
+                    AppPath = UrlAuthority;
+                else
+                    //安装在虚拟子目录下   
+                    AppPath = UrlAuthority + Req.ApplicationPath;
+            }
+            return AppPath;
+        }
+
+        /// <summary>
+        /// 取得网站根目录的物理路径
+        /// </summary>
+        /// <returns></returns>
+        public static string GetRootPath()
+        {
+            string AppPath = "";
+            HttpContext HttpCurrent = HttpContext.Current;
+            if (HttpCurrent != null)
+            {
+                AppPath = HttpCurrent.Server.MapPath("~");
+            }
+            else
+            {
+                AppPath = AppDomain.CurrentDomain.BaseDirectory;
+                if (Regex.Match(AppPath, @"\\$", RegexOptions.Compiled).Success)
+                    AppPath = AppPath.Substring(0, AppPath.Length - 1);
+            }
+            return AppPath;
+        }
 
     }
 }
