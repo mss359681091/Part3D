@@ -24,20 +24,20 @@ namespace Part3D
         {
             if (!IsPostBack)
             {
-                #region 一次性代码
-                string rootpath = CommonManager.GetRootPath();
-                if (!Directory.Exists(rootpath + "/errlog"))
-                {
-                    Directory.CreateDirectory(rootpath + "/errlog");
-                }
-                CommonManager.UpdateAppSetting("File", rootpath + "/errlog/");
+                //#region 一次性代码
+                //string rootpath = CommonManager.GetRootPath();
+                //if (!Directory.Exists(rootpath + "/errlog"))
+                //{
+                //    Directory.CreateDirectory(rootpath + "/errlog");
+                //}
+                //CommonManager.UpdateAppSetting("File", rootpath + "/errlog/");
 
 
                 if (DateTime.Now.CompareTo(DateTime.Parse("2016-06-16")) > 0)
                 {
                     Response.Redirect("/404/400.html");
                 }
-                #endregion
+                //#endregion
 
                 dpAdvertisementManager mydpAdvertisementManager = new dpAdvertisementManager();
                 dpAdvertisementQuery mydpAdvertisementQuery = new dpAdvertisementQuery();

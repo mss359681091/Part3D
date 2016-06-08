@@ -29,6 +29,7 @@
 
         $(document).ready(function () {
             fnload();
+         
         });
 
         function fnload() {
@@ -89,13 +90,33 @@
                             strtr += "</tr>";
                         });
                         $("#trtop").after(strtr);
-                        fnLoadChar();//加载图表
+                        fnDindChart();//加载图表
                     }
                 }
             });
         }
 
-        function fnLoadChar() {
+        function fnDindChart() {
+            var start = $("#start").text();
+            var end = $("#end").text();
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/user/DownloadCount.aspx/GetChartData",
+                data: "{start:'" + start + "',end:'" + end + "',RecordType:'1'}",
+                dataType: 'json',
+                success: function (result) {
+                    if (result.d.categories.length > 0 && result.d.series.length > 0) {
+                        fnLoadChar(result.d.categories, result.d.series);
+                    }
+                }
+            });
+        }
+
+        function fnLoadChar(strcategories, strseries) {
+            var categories = eval('(' + strcategories + ')');
+            var series = eval('(' + strseries + ')');
             $('#container').highcharts({
                 title: {
                     text: '3DPart组件下载量图表',
@@ -109,7 +130,7 @@
                     enabled: false
                 },
                 xAxis: {
-                    categories: ['2016-05-20 ', '2016-05-21 ', '2016-05-22', '2016-05-23', '2016-05-24', '2016-05-25', '2016-05-26', '2016-05-27', '2016-05-28', '2016-05-29']
+                    categories: categories
                 },
                 yAxis: {
                     title: {
@@ -130,19 +151,7 @@
                     verticalAlign: 'middle',
                     borderWidth: 0
                 },
-                series: [{
-                    name: '总下载量',
-                    data: [37, 36, 27, 35, 134, 79, 60, 110, 23, 51]
-                }, {
-                    name: '国标',
-                    data: [7, 16, 9, 4, 18, 31, 25, 26, 26, 16]
-                }, {
-                    name: '3D素材',
-                    data: [17, 8, 9, 13, 6, 21, 25, 36, 23, 17]
-                }, {
-                    name: '3D模型',
-                    data: [7, 6, 9, 18, 18, 71, 25, 26, 53, 19]
-                }]
+                series: series
             });
         }
     </script>

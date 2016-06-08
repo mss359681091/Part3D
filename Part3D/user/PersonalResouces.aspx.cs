@@ -131,7 +131,10 @@ namespace Part3D
                             DelPreview(str[i].ToString().Trim());//删除组件缩略图
                             dpPartManager mydpPartManager = new dpPartManager();
                             dpPartQuery mydpPartQuery = new dpPartQuery();
-                            mydpPartQuery.UserID = HttpContext.Current.Session[sysUser.ID].ToString();
+                            if (HttpContext.Current.Session[sysUser.Username].ToString().Trim().ToLower() != "admin")
+                            {
+                                mydpPartQuery.UserID = HttpContext.Current.Session[sysUser.ID].ToString();
+                            }
                             mydpPartQuery.ID = str[i].ToString().Trim();
                             returnValue = mydpPartManager.DeleteParams(mydpPartQuery);
                         }

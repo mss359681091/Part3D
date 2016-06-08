@@ -72,5 +72,74 @@ namespace Part3D
             return new { status = status, errmsg = errmsg, returnData = returnData };
         }
 
+        /// <summary>
+        /// 填充图表
+        /// </summary>
+        /// <param name="start">起始日期</param>
+        /// <param name="end">结束日</param>
+        /// <param name="RecordType">记录类别，0：浏览，1：下载</param>
+        /// <returns></returns>
+        [WebMethod(Description = "填充图表", EnableSession = true)]
+        public static dynamic GetChartData(string start, string end, string RecordType)
+        {
+
+            string categories = string.Empty;
+            string series = string.Empty;
+            dpDownRecordManager mydpDownRecordManager = new dpDownRecordManager();
+            dpDownRecordQuery mydpDownRecordQuery = new dpDownRecordQuery();
+            mydpDownRecordQuery.start = start;
+            mydpDownRecordQuery.end = end;
+            mydpDownRecordQuery.RecordType = RecordType;
+            DataSet myDataSet = mydpDownRecordManager.SearchChart(mydpDownRecordQuery);
+            if (myDataSet.Tables[0].Rows.Count > 0)
+            {
+                categories += "[";
+                series += "[";
+                string strall = string.Empty;
+                string strgb = string.Empty;
+                string strsc = string.Empty;
+                string strmx = string.Empty;
+                for (int i = 0; i < myDataSet.Tables[0].Rows.Count; i++)
+                {
+                    categories += "'" + myDataSet.Tables[0].Rows[i]["date_day"].ToString().Trim() + "',";
+                    strall += myDataSet.Tables[0].Rows[i]["all_count"].ToString().Trim() + ",";
+                    strgb += myDataSet.Tables[0].Rows[i]["gb_count"].ToString().Trim() + ",";
+                    strsc += myDataSet.Tables[0].Rows[i]["sc_count"].ToString().Trim() + ",";
+                    strmx += myDataSet.Tables[0].Rows[i]["mx_count"].ToString().Trim() + ",";
+                }
+                if (strall.Contains(","))
+                {
+                    strall = strall.Substring(0, strall.Length - 1);
+                }
+                if (strgb.Contains(","))
+                {
+                    strgb = strgb.Substring(0, strgb.Length - 1);
+                }
+                if (strsc.Contains(","))
+                {
+                    strsc = strsc.Substring(0, strsc.Length - 1);
+                }
+                if (strmx.Contains(","))
+                {
+                    strmx = strmx.Substring(0, strmx.Length - 1);
+                }
+
+                series += "{ name: '总下载量', data: [" + strall + "]},";
+                series += "{ name: '国标', data: [" + strgb + "]},";
+                series += "{ name: '3D素材', data: [" + strsc + "]},";
+                series += "{ name: '3D模型', data: [" + strmx + "]}";
+
+
+                if (categories.Contains(","))
+                {
+                    categories = categories.Substring(0, categories.Length - 1);
+                }
+                series += "]";
+                categories += "]";
+            }
+            return new { categories = categories, series = series };
+
+        }
+
     }
 }

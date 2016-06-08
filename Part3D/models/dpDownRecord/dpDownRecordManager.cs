@@ -316,7 +316,6 @@ namespace _3DPart.DAL.BULayer
             return returnValue;
         }
 
-
         public string SearchDownCount(dpDownRecordQuery QueryData)
         {
             string returnValue = string.Empty;
@@ -424,6 +423,85 @@ namespace _3DPart.DAL.BULayer
             return myDs;
         }
 
+
+        public DataSet SearchChart(dpDownRecordQuery QueryData)
+        {
+
+            string strQuery = @"SELECT top 10 ";
+
+            strQuery += " count(*) as all_count, ";
+            strQuery += " SUM(case when dp_Classify.ParentID=1 then 1 else 0 end ) as gb_count, ";
+            strQuery += " SUM(case when dp_Classify.ParentID=12 then 1 else 0 end ) as sc_count, ";
+            strQuery += " SUM(case when dp_Classify.ParentID=13 then 1 else 0 end ) as mx_count, ";
+            strQuery += "  convert(varchar(100)," + dpDownRecord.CreateDate_FULL + ", 23) as date_day ";
+            strQuery += "  from  " + dpDownRecord.TABLENAME;
+            strQuery += " left join dp_Part on dp_DownRecord.partid=dp_Part.id ";
+            strQuery += " left join dp_Classify on dp_Part.ClassifyID=dp_Classify.id ";
+            strQuery += " where 1=1 ";
+
+            Hashtable myParam = new Hashtable();
+
+            if (QueryData.PartID.Length > 0)
+            {
+                strQuery += " AND " + dpDownRecord.PartID_FULL + " = @PartID ";
+                myParam.Add("@PartID", QueryData.PartID);
+            }
+
+            if (QueryData.UserID.Length > 0)
+            {
+                strQuery += " AND " + dpDownRecord.UserID_FULL + " = @UserID ";
+                myParam.Add("@UserID", QueryData.UserID);
+            }
+
+            if (QueryData.RecordType.Length > 0)
+            {
+                strQuery += " AND " + dpDownRecord.RecordType_FULL + " = @RecordType ";
+                myParam.Add("@RecordType", QueryData.RecordType);
+            }
+
+            if (QueryData.Enabled.Length > 0)
+            {
+                strQuery += " AND " + dpDownRecord.Enabled_FULL + " = @Enabled ";
+                myParam.Add("@Enabled", QueryData.Enabled);
+            }
+
+            if (QueryData.start.Length > 0)
+            {
+                strQuery += " AND " + dpDownRecord.CreateDate_FULL + " >= @start ";
+                myParam.Add("@start", QueryData.start);
+            }
+
+            if (QueryData.end.Length > 0)
+            {
+                strQuery += " AND " + dpDownRecord.CreateDate_FULL + " <= @end ";
+                myParam.Add("@end", QueryData.end);
+            }
+
+            if (QueryData.ParentID.Length > 0)
+            {
+                strQuery += " AND " + dpClassify.ParentID_FULL + " = @ParentID ";
+                myParam.Add("@ParentID", QueryData.ParentID);
+            }
+            strQuery += " group by  ";
+            strQuery += " CONVERT(varchar(100),dp_DownRecord.createdate, 23)  ";
+            strQuery += " order by date_day asc ";
+            DataSet myDs = new DataSet();
+            try
+            {
+                myDs = SQLHelper.GetDataSet(strQuery, myParam);
+            }
+            catch (Exception myEx)
+            {
+
+                throw new Exception(myEx.Message + "\r\n SQL:" + strQuery);
+            }
+            finally
+            {
+
+            }
+            return myDs;
+        }
+
     }
 
     [Serializable()]
@@ -437,6 +515,7 @@ namespace _3DPart.DAL.BULayer
         public string CreateDate = string.Empty;
         public string start = string.Empty;
         public string end = string.Empty;
+        public string ParentID = string.Empty;
 
         public string IP = string.Empty;
         public int CurrentIndex = 1;
