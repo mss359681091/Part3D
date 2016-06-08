@@ -239,7 +239,7 @@ namespace Part3D
         /// 文件下载
         /// </summary>
         /// <param name="strid">文件id</param>
-        private void DowmLoad(string strid)
+        public static void DowmLoad(string strid)
         {
             try
             {
@@ -249,16 +249,17 @@ namespace Part3D
                 DataSet myDataSet = mydpModelFileManager.Search(mydpModelFileQuery);
                 if (myDataSet.Tables[0].Rows.Count > 0)
                 {
-                    string fullPathUrl = Server.MapPath(myDataSet.Tables[0].Rows[0][dpModelFile.Location].ToString());//获取下载文件的路劲
+
+                    string fullPathUrl = HttpContext.Current.Server.MapPath(myDataSet.Tables[0].Rows[0][dpModelFile.Location].ToString());//获取下载文件的路劲
                     System.IO.FileInfo file = new System.IO.FileInfo(fullPathUrl);
 
                     if (file.Exists)//判断文件是否存在
                     {
                         //添加下载记录
                         Hashtable myHashtable = new Hashtable();
-                        if (Session[sysUser.ID] != null)
+                        if (HttpContext.Current.Session[sysUser.ID] != null)
                         {
-                            myHashtable.Add(dpDownRecord.UserID, Session[sysUser.ID].ToString());
+                            myHashtable.Add(dpDownRecord.UserID, HttpContext.Current.Session[sysUser.ID].ToString());
                         }
                         else
                         {
@@ -266,18 +267,19 @@ namespace Part3D
                         }
                         myHashtable.Add(dpDownRecord.PartID, myDataSet.Tables[0].Rows[0][dpModelFile.PartID].ToString());
                         myHashtable.Add(dpDownRecord.IPAddress, CommonManager.GetClientIPv4Address());
+                        myHashtable.Add(dpDownRecord.RecordType, "1");
                         SQLHelper.ExcuteProc("sp_DownRecord", myHashtable);//执行存储过程注册
                         //执行下载
-                        Response.Clear();
-                        Response.ClearHeaders();
-                        Response.Buffer = false;
-                        Response.AddHeader("content-disposition", "attachment;filename=" + file.Name);
-                        Response.AddHeader("cintent_length", "attachment;filename=" + HttpUtility.UrlDecode(file.Name));
-                        Response.AddHeader("cintent_length", file.Length.ToString());
-                        Response.ContentType = "application/octet-stream";
-                        Response.WriteFile(file.FullName);//通过response对象，执行下载操作
-                        Response.Flush();
-                        Response.End();
+                        HttpContext.Current.Response.Clear();
+                        HttpContext.Current.Response.ClearHeaders();
+                        HttpContext.Current.Response.Buffer = false;
+                        HttpContext.Current.Response.AddHeader("content-disposition", "attachment;filename=" + file.Name);
+                        HttpContext.Current.Response.AddHeader("cintent_length", "attachment;filename=" + HttpUtility.UrlDecode(file.Name));
+                        HttpContext.Current.Response.AddHeader("cintent_length", file.Length.ToString());
+                        HttpContext.Current.Response.ContentType = "application/octet-stream";
+                        HttpContext.Current.Response.WriteFile(file.FullName);//通过response对象，执行下载操作
+                        HttpContext.Current.Response.Flush();
+                        HttpContext.Current.Response.End();
 
                     }
                 }
@@ -299,15 +301,11 @@ namespace Part3D
             }
             else
             {
-                ////如果有UpdatePanel就用如下代码调用前台js
-                //ScriptManager.RegisterStartupScript(UpdatePanel1, this.Page.GetType(), "", "Ceshi();", true);
-                //如果没有就如下代码
-                //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "", "<script>fntip();</script>", true);
                 Response.Write("<script>alert('非注册用户每天只能下载10次！')</script>");
             }
         }
 
-        private bool ChkIP()
+        public static bool ChkIP()
         {
             bool returnValue = false;
             string currentip = CommonManager.GetClientIPv4Address();
@@ -315,6 +313,7 @@ namespace Part3D
             dpDownRecordQuery mydpDownRecordQuery = new dpDownRecordQuery();
             mydpDownRecordQuery.CreateDate = DateTime.Now.ToString("yyyy-MM-dd");
             mydpDownRecordQuery.IP = currentip.Trim();
+            mydpDownRecordQuery.RecordType = "1";
             string count = mydpDownRecordManager.SearchIP(mydpDownRecordQuery);
             if (count.Length > 0)
             {

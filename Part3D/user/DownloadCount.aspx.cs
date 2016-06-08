@@ -31,6 +31,7 @@ namespace Part3D
                 dpDownRecordQuery mydpDownRecordQuery = new dpDownRecordQuery();
                 mydpDownRecordQuery.start = start;
                 mydpDownRecordQuery.end = end;
+                mydpDownRecordQuery.RecordType = "1";
                 string strAllCount = mydpDownRecordManager.SearchDownCount(mydpDownRecordQuery);
                 strAllCount = strAllCount == "" ? "0" : strAllCount;
                 returnValue = strAllCount;
@@ -57,6 +58,7 @@ namespace Part3D
                 mydpDownRecordQuery.PageSize = Convert.ToInt32(PageSize);
                 mydpDownRecordQuery.start = start;
                 mydpDownRecordQuery.end = end;
+                mydpDownRecordQuery.RecordType = "1";
                 DataSet myDs = mydpDownRecordManager.SearchDownPaging(mydpDownRecordQuery);
                 if (myDs.Tables[0].Rows.Count > 0)
                 {

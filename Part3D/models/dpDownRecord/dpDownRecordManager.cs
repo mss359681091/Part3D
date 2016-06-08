@@ -36,6 +36,7 @@ namespace _3DPart.DAL.BULayer
             + dpDownRecord.CreateStaff_FULL + ","
             + dpDownRecord.CreateDate_FULL + ","
             + dpDownRecord.ModifyStaff_FULL + ","
+            + dpDownRecord.RecordType_FULL + ","
             + dpDownRecord.ModifyDate_FULL
              + " FROM " + dpDownRecord.TABLENAME + " WHERE 1 = 1 ";
 
@@ -58,6 +59,12 @@ namespace _3DPart.DAL.BULayer
             {
                 strQuery += " AND " + dpDownRecord.UserID_FULL + " = @UserID ";
                 myParam.Add("@UserID", QueryData.UserID);
+            }
+
+            if (QueryData.RecordType.Length > 0)
+            {
+                strQuery += " AND " + dpDownRecord.RecordType_FULL + " = @RecordType ";
+                myParam.Add("@RecordType", QueryData.RecordType);
             }
 
             if (QueryData.Enabled.Length > 0)
@@ -104,6 +111,12 @@ namespace _3DPart.DAL.BULayer
             {
                 strQuery += " AND " + dpDownRecord.PartID_FULL + " = @PartID ";
                 myParam.Add("@PartID", QueryData.PartID);
+            }
+
+            if (QueryData.RecordType.Length > 0)
+            {
+                strQuery += " AND " + dpDownRecord.RecordType_FULL + " = @RecordType ";
+                myParam.Add("@RecordType", QueryData.RecordType);
             }
 
             if (QueryData.UserID.Length > 0)
@@ -183,6 +196,12 @@ namespace _3DPart.DAL.BULayer
                 myParam.Add("@UserID", QueryData.UserID);
             }
 
+            if (QueryData.RecordType.Length > 0)
+            {
+                strQuery += " AND " + dpDownRecord.RecordType_FULL + " = @RecordType ";
+                myParam.Add("@RecordType", QueryData.RecordType);
+            }
+
             if (QueryData.Enabled.Length > 0)
             {
                 strQuery += " AND " + dpDownRecord.Enabled_FULL + " = @Enabled ";
@@ -210,13 +229,6 @@ namespace _3DPart.DAL.BULayer
             return myDs;
         }
 
-        /// <summary>
-        /// 删除下载记录
-        /// </summary>
-        /// <param name="strParam">修改字段</param>
-        /// <param name="strValue">字段值</param>
-        /// <param name="strPartID">组件ID</param>
-        /// <returns></returns>
         public string DeleteParams(dpDownRecordQuery QueryData)
         {
             string returnValue = string.Empty;
@@ -228,7 +240,11 @@ namespace _3DPart.DAL.BULayer
                 strQuery += " AND " + dpDownRecord.PartID_FULL + " =@PartID";
                 myParam.Add("@PartID", QueryData.PartID);
             }
-
+            if (QueryData.RecordType.Length > 0)
+            {
+                strQuery += " AND " + dpDownRecord.RecordType_FULL + " = @RecordType ";
+                myParam.Add("@RecordType", QueryData.RecordType);
+            }
             try
             {
                 returnValue = SQLHelper.ExcuteSQL(strQuery, myParam).ToString();
@@ -271,6 +287,13 @@ namespace _3DPart.DAL.BULayer
                 strQuery += " AND CONVERT(varchar(100), " + dpDownRecord.CreateDate_FULL + ", 23) = @CreateDate ";
                 myParam.Add("@CreateDate", QueryData.CreateDate);
             }
+
+            if (QueryData.RecordType.Length > 0)
+            {
+                strQuery += " AND " + dpDownRecord.RecordType_FULL + " = @RecordType ";
+                myParam.Add("@RecordType", QueryData.RecordType);
+            }
+
             if (QueryData.IP.Length > 0)
             {
                 strQuery += " AND " + dpDownRecord.IPAddress_FULL + " = @IPAddress ";
@@ -313,6 +336,12 @@ namespace _3DPart.DAL.BULayer
             {
                 strQuery += " AND " + dpDownRecord.CreateDate_FULL + " >= @start ";
                 myParam.Add("@start", QueryData.start);
+            }
+
+            if (QueryData.RecordType.Length > 0)
+            {
+                strQuery += " AND " + dpDownRecord.RecordType_FULL + " = @RecordType ";
+                myParam.Add("@RecordType", QueryData.RecordType);
             }
 
             if (QueryData.end.Length > 0)
@@ -364,6 +393,11 @@ namespace _3DPart.DAL.BULayer
                 myParam.Add("@end", QueryData.end);
             }
 
+            if (QueryData.RecordType.Length > 0)
+            {
+                strQuery += " AND " + dpDownRecord.RecordType_FULL + " = @RecordType ";
+                myParam.Add("@RecordType", QueryData.RecordType);
+            }
 
             strQuery += " group by dp_part.id,PreviewSmall,dp_Classify.Name,dp_part.name  ";
             strQuery += " ) temp ";
@@ -398,6 +432,7 @@ namespace _3DPart.DAL.BULayer
         public string ID = string.Empty;
         public string PartID = string.Empty;
         public string UserID = string.Empty;
+        public string RecordType = string.Empty;//默认搜索
         public string Enabled = string.Empty;
         public string CreateDate = string.Empty;
         public string start = string.Empty;

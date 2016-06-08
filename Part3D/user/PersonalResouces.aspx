@@ -88,6 +88,7 @@
                             strtr += "<td><button data-id='" + item.ID + "' type='button' class='_button' data-event='setpartname'>" + names + "</button></li></td>";
                             strtr += "<td>" + item.Accesslog + "</td>";
                             strtr += "<td>" + item.mycount + "</td>";
+                            strtr += "<td>" + item.Remark + "</td>";
                             strtr += "<td>" + item.CreateDate1 + "</td>";
                             strtr += "<td align='center' style='color: #CCC;'> <button type='button' class='_button'  onclick='fnDel(" + item.ID + ")'>删除</button></td>";
                             strtr += "</tr>";
@@ -250,8 +251,9 @@
                         <td class="Top center">名称</td>
                         <td class="Top center">浏览量</td>
                         <td class="Top center">下载量</td>
-                        <td class="Top center" width="160">创建时间</td>
-                        <td class="Top center" width="120">操作</td>
+                        <td class="Top center">创建人</td>
+                        <td class="Top center" width="100">创建时间</td>
+                        <td class="Top center" width="60">操作</td>
                     </tr>
 
                     <%--  <tr class="center">

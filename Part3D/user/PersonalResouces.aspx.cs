@@ -38,7 +38,10 @@ namespace Part3D
                 {
                     dpPartManager my = new dpPartManager();
                     dpPartQuery myquery = new dpPartQuery();
-                    myquery.UserID = HttpContext.Current.Session[sysUser.ID].ToString();
+                    if (HttpContext.Current.Session[sysUser.Username].ToString().ToLower().Trim() != "admin")
+                    {
+                        myquery.UserID = HttpContext.Current.Session[sysUser.ID].ToString();
+                    }
                     myquery.CurrentIndex = Convert.ToInt32(CurrentIndex == "" ? "1" : CurrentIndex);
                     myquery.PageSize = Convert.ToInt32(PageSize == "" ? "12" : PageSize);
                     DataSet myds = my.SearchMyPart(myquery);
@@ -110,7 +113,7 @@ namespace Part3D
                     {
                         if (str[i].ToString().Trim().Length > 0)
                         {
-                            //删除下载记录
+                            //删除下载和浏览记录
                             dpDownRecordManager mydpDownRecordManager = new dpDownRecordManager();
                             dpDownRecordQuery mydpDownRecordQuery = new dpDownRecordQuery();
                             mydpDownRecordQuery.PartID = str[i].ToString().Trim();

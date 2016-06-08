@@ -521,11 +521,13 @@ namespace _3DPart.DAL.BULayer
             + " where 1=1 "
             + " and dp1.userid = " + dpPart.UserID_FULL
             + " and dp1.id= " + dpPart.ID_FULL
+            + " and  " + dpDownRecord.RecordType_FULL + " =1 "
             + " ) as mycount , "
-
-            + "CONVERT(varchar(100)," + dpPart.CreateDate_FULL + ", 120) as CreateDate1 "
+            + sysUser.Username_FULL + " as Remark ,"
+            + "CONVERT(varchar(100)," + dpPart.CreateDate_FULL + ", 23) as CreateDate1 "
             + " FROM " + dpPart.TABLENAME
             + " LEFT JOIN " + dpClassify.TABLENAME + " ON " + dpPart.ClassifyID_FULL + " = " + dpClassify.ID_FULL
+            + " LEFT JOIN " + sysUser.TABLENAME + " ON " + dpPart.UserID_FULL + " = " + sysUser.ID_FULL
             + " WHERE 1 = 1 ";
 
 

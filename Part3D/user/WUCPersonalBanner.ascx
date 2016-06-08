@@ -76,6 +76,6 @@
         <a id="lnk_yqlj" runat="server" visible="false" href="/user/LinksManager.aspx">友情链接</a><span id="sp_ad" runat="server" visible="false">|</span>
         <a id="lnk_ad" runat="server" visible="false" href="/user/AdManager.aspx">广告管理</a><span id="sp_download" runat="server" visible="false">|</span>
         <a id="lnk_download" runat="server" visible="false" href="/user/DownloadCount.aspx">下载统计</a><span id="sp_search" runat="server" visible="false">|</span>
-        <a id="lnk_search" runat="server" visible="false" href="/user/SearchCount.aspx">搜索统计</a>
+        <a id="lnk_search" runat="server" visible="false" href="/user/SearchCount.aspx">浏览统计</a>
     </div>
 </div>

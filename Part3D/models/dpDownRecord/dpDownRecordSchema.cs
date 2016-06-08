@@ -80,7 +80,23 @@ namespace _3DPart.DAL.BULayer.Schema {
         /// </summary>
         public static string IPAddress_TABLE_FULL = "dp_DownRecordIPAddress";
 
-        
+
+        /// <summary>
+        /// 记录类别
+        /// </summary>
+        public static string RecordType = "RecordType";
+
+        /// <summary>
+        /// 记录类别
+        /// </summary>
+        public static string RecordType_FULL = "dp_DownRecord.RecordType";
+
+        /// <summary>
+        /// 记录类别
+        /// </summary>
+        public static string RecordType_TABLE_FULL = "dp_DownRecordRecordType";
+
+
         /// <summary>
         /// 备注
         /// </summary>

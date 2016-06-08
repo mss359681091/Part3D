@@ -102,15 +102,15 @@ namespace _3DPart.DAL.BULayer.Data
             set { _ModifyDate = value; }
         }
 
-        //private int _partid1 = 0;
-        ///// <summary>
-        ///// 组件ID
-        ///// </summary>
-        //public int partid1
-        //{
-        //    get { return _partid1; }
-        //    set { _partid1 = value; }
-        //}
+        private int _RecordType = 0;
+        /// <summary>
+        /// 记录类别
+        /// </summary>
+        public int RecordType
+        {
+            get { return _RecordType; }
+            set { _RecordType = value; }
+        }
 
         private string _PreviewSmall = string.Empty;
         /// <summary>
