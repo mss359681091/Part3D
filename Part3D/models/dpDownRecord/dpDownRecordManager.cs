@@ -430,9 +430,9 @@ namespace _3DPart.DAL.BULayer
             string strQuery = @"SELECT top 10 ";
 
             strQuery += " count(*) as all_count, ";
-            strQuery += " SUM(case when dp_Classify.ParentID=1 then 1 else 0 end ) as gb_count, ";
-            strQuery += " SUM(case when dp_Classify.ParentID=12 then 1 else 0 end ) as sc_count, ";
-            strQuery += " SUM(case when dp_Classify.ParentID=13 then 1 else 0 end ) as mx_count, ";
+            strQuery += " SUM(case when dp_Classify.ParentID=1 then 1  when dp_Classify.ID=1 then 1 when dp_Classify.ID=1 then 1 else 0 end ) as gb_count, ";
+            strQuery += " SUM(case when dp_Classify.ParentID=12 then 1 when dp_Classify.ID=12 then 1 else 0 end ) as sc_count, ";
+            strQuery += " SUM(case when dp_Classify.ParentID=13 then 1 when dp_Classify.ID=13 then 1 else 0 end ) as mx_count, ";
             strQuery += "  convert(varchar(100)," + dpDownRecord.CreateDate_FULL + ", 23) as date_day ";
             strQuery += "  from  " + dpDownRecord.TABLENAME;
             strQuery += " left join dp_Part on dp_DownRecord.partid=dp_Part.id ";
@@ -479,7 +479,7 @@ namespace _3DPart.DAL.BULayer
 
             if (QueryData.ParentID.Length > 0)
             {
-                strQuery += " AND " + dpClassify.ParentID_FULL + " = @ParentID ";
+                strQuery += " AND (" + dpClassify.ParentID_FULL + " = @ParentID or " + dpClassify.ID_FULL + " = @ParentID )";
                 myParam.Add("@ParentID", QueryData.ParentID);
             }
             strQuery += " group by  ";

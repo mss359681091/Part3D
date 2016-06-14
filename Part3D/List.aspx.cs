@@ -21,21 +21,46 @@ namespace Part3D
 
             if (!IsPostBack)
             {
+                LoadAd();
+            }
+        }
+
+        private void LoadAd()
+        {
+
+            //缓存
+            DataSet myDataSet = new DataSet();
+
+            string CacheKey = "SearchAd_列表页";
+            object objModel = CommonManager.GetCache(CacheKey);//从缓存中获取
+            if (objModel == null)//缓存里没有
+            {
                 dpAdvertisementManager mydpAdvertisementManager = new dpAdvertisementManager();
                 dpAdvertisementQuery mydpAdvertisementQuery = new dpAdvertisementQuery();
-                //mydpAdvertisementQuery.ClassifyID = myDataSet.Tables[0].Rows[0][dpPart.ClassifyID].ToString();
                 mydpAdvertisementQuery.ADPosition = "列表页";
-                DataSet ds = mydpAdvertisementManager.Search(mydpAdvertisementQuery);
-                if (ds.Tables[0].Rows.Count > 0)
+                myDataSet = mydpAdvertisementManager.Search(mydpAdvertisementQuery);
+                objModel = myDataSet;//把数据存入缓存
+                if (objModel != null)
                 {
-                    this.lnkad.HRef = ds.Tables[0].Rows[0][dpAdvertisement.ADLink].ToString();
-                    this.imgad.Src = ds.Tables[0].Rows[0][dpAdvertisement.PicturePath].ToString();
-                    this.lnkad.Visible = true;
+                    //依赖数据库codematic中的P_Product表变化 来更新缓存
+                    System.Web.Caching.SqlCacheDependency dep = new System.Web.Caching.SqlCacheDependency(ConfigurationManager.AppSettings["DataBase"].ToString(), dpAdvertisement.TABLENAME);
+                    CommonManager.SetCache(CacheKey, objModel, dep);//写入缓存
                 }
-                else
-                {
-                    this.lnkad.Visible = false;
-                }
+            }
+            else
+            {
+                myDataSet = (DataSet)objModel;
+            }
+
+            if (myDataSet.Tables[0].Rows.Count > 0)
+            {
+                this.lnkad.HRef = myDataSet.Tables[0].Rows[0][dpAdvertisement.ADLink].ToString();
+                this.imgad.Src = myDataSet.Tables[0].Rows[0][dpAdvertisement.PicturePath].ToString();
+                this.lnkad.Visible = true;
+            }
+            else
+            {
+                this.lnkad.Visible = false;
             }
         }
 
@@ -49,16 +74,26 @@ namespace Part3D
             {
                 if (type == "0")
                 {
-                    dpPartManager mydp_Part = new dpPartManager();
-                    dpPartQuery mydpPartQuery = new dpPartQuery();
-                    mydpPartQuery.ParentID = ParentID;
-                    mydpPartQuery.UserID = UserID;
-                    mydpPartQuery.ClassifyID = ClassifyID;
-                    mydpPartQuery.Name = Name;
-                    mydpPartQuery.CurrentIndex = Convert.ToInt32(CurrentIndex == "" ? "1" : CurrentIndex);
-                    mydpPartQuery.PageSize = Convert.ToInt32(PageSize == "" ? "12" : PageSize);
 
-                    DataSet myDataSet = mydp_Part.SearchPaging(mydpPartQuery);
+                    DataSet myDataSet = new DataSet();
+                    //缓存
+                    string CacheKey = "GetPartList_" + ParentID + "_" + UserID + "_" + ClassifyID + "_" + Name + "_" + CurrentIndex + "_" + PageSize + "_" + type;
+                    object objModel = CommonManager.GetCache(CacheKey);//从缓存中获取
+                    if (objModel == null)//缓存里没有
+                    {
+                        myDataSet = GetDataSetPart(ParentID, UserID, ClassifyID, Name, CurrentIndex, PageSize);
+                        objModel = myDataSet;//把数据存入缓存
+                        if (objModel != null)
+                        {
+                            //依赖数据库codematic中的P_Product表变化 来更新缓存
+                            System.Web.Caching.SqlCacheDependency dep = new System.Web.Caching.SqlCacheDependency(ConfigurationManager.AppSettings["DataBase"].ToString(), "dp_Part");
+                            CommonManager.SetCache(CacheKey, objModel, dep);//写入缓存
+                        }
+                    }
+                    else
+                    {
+                        myDataSet = (DataSet)objModel;
+                    }
 
                     if (myDataSet.Tables[0].Rows.Count > 0)
                     {
@@ -67,14 +102,26 @@ namespace Part3D
                 }
                 else
                 {
-                    dpDownRecordManager my = new dpDownRecordManager();
-                    dpDownRecordQuery myquery = new dpDownRecordQuery();
-                    myquery.UserID = HttpContext.Current.Session[sysUser.ID].ToString();
-                    myquery.CurrentIndex = Convert.ToInt32(CurrentIndex == "" ? "1" : CurrentIndex);
-                    myquery.PageSize = Convert.ToInt32(PageSize == "" ? "12" : PageSize);
-                    myquery.RecordType = "1";
-                    DataSet myDataSet = my.SearchPaging(myquery);
+                    //缓存
+                    DataSet myDataSet = new DataSet();
 
+                    string CacheKey = "GetDataSetDownRecord_" + CurrentIndex + "_" + PageSize;
+                    object objModel = CommonManager.GetCache(CacheKey);//从缓存中获取
+                    if (objModel == null)//缓存里没有
+                    {
+                        myDataSet = GetDataSetDownRecord(CurrentIndex, PageSize);
+                        objModel = myDataSet;//把数据存入缓存
+                        if (objModel != null)
+                        {
+                            //依赖数据库codematic中的P_Product表变化 来更新缓存
+                            System.Web.Caching.SqlCacheDependency dep = new System.Web.Caching.SqlCacheDependency(ConfigurationManager.AppSettings["DataBase"].ToString(), "dp_DownRecord");
+                            CommonManager.SetCache(CacheKey, objModel, dep);//写入缓存
+                        }
+                    }
+                    else
+                    {
+                        myDataSet = (DataSet)objModel;
+                    }
                     if (myDataSet.Tables[0].Rows.Count > 0)
                     {
                         returnData = CommonManager.GetList<dpPartData>(myDataSet.Tables[0]);//转换实体类list
@@ -87,6 +134,32 @@ namespace Part3D
                 m_log.Error(ex.Message);
             }
             return new { status = status, errmsg = errmsg, returnData = returnData };
+        }
+
+        private static DataSet GetDataSetDownRecord(string CurrentIndex, string PageSize)
+        {
+            dpDownRecordManager my = new dpDownRecordManager();
+            dpDownRecordQuery myquery = new dpDownRecordQuery();
+            myquery.UserID = HttpContext.Current.Session[sysUser.ID].ToString();
+            myquery.CurrentIndex = Convert.ToInt32(CurrentIndex == "" ? "1" : CurrentIndex);
+            myquery.PageSize = Convert.ToInt32(PageSize == "" ? "12" : PageSize);
+            myquery.RecordType = "1";
+            DataSet myDataSet = my.SearchPaging(myquery);
+            return myDataSet;
+        }
+
+        private static DataSet GetDataSetPart(string ParentID, string UserID, string ClassifyID, string Name, string CurrentIndex, string PageSize)
+        {
+            dpPartManager mydp_Part = new dpPartManager();
+            dpPartQuery mydpPartQuery = new dpPartQuery();
+            mydpPartQuery.ParentID = ParentID;
+            mydpPartQuery.UserID = UserID;
+            mydpPartQuery.ClassifyID = ClassifyID;
+            mydpPartQuery.Name = Name;
+            mydpPartQuery.CurrentIndex = Convert.ToInt32(CurrentIndex == "" ? "1" : CurrentIndex);
+            mydpPartQuery.PageSize = Convert.ToInt32(PageSize == "" ? "12" : PageSize);
+            DataSet myDataSet = mydp_Part.SearchPaging(mydpPartQuery);
+            return myDataSet;
         }
 
         [WebMethod(Description = "获取各个分类总数", EnableSession = true)]
@@ -123,26 +196,74 @@ namespace Part3D
             {
                 if (type == "0")
                 {
-                    dpPartManager mydpPartManager = new dpPartManager();
-                    dpPartQuery mydpPartQuery = new dpPartQuery();
-                    mydpPartQuery.ClassifyID = classid;
-                    mydpPartQuery.Name = partname;
-                    DataSet myDataSet = mydpPartManager.SearchAllCount(mydpPartQuery);
-                    if (myDataSet.Tables[0].Rows.Count > 0)
+                    //缓存
+                    DataSet myDataSet = new DataSet();
+
+                    string CacheKey = "SearchAllCount_" + classid + "_" + partname + "_" + type;
+                    object objModel = CommonManager.GetCache(CacheKey);//从缓存中获取
+                    if (objModel == null)//缓存里没有
                     {
-                        reutrnValue = myDataSet.Tables[0].Rows[0]["countall"].ToString();
+                        dpPartManager mydpPartManager = new dpPartManager();
+                        dpPartQuery mydpPartQuery = new dpPartQuery();
+                        mydpPartQuery.ClassifyID = classid;
+                        mydpPartQuery.Name = partname;
+                        myDataSet = mydpPartManager.SearchAllCount(mydpPartQuery);
+
+                        objModel = myDataSet;//把数据存入缓存
+                        if (objModel != null)
+                        {
+                            //依赖数据库codematic中的P_Product表变化 来更新缓存
+                            System.Web.Caching.SqlCacheDependency dep = new System.Web.Caching.SqlCacheDependency(ConfigurationManager.AppSettings["DataBase"].ToString(), dpPart.TABLENAME);
+                            CommonManager.SetCache(CacheKey, objModel, dep);//写入缓存
+                        }
                     }
+                    else
+                    {
+                        myDataSet = (DataSet)objModel;
+                    }
+                    reutrnValue = myDataSet.Tables[0].Rows[0]["countall"].ToString();
+
+                    //dpPartManager mydpPartManager = new dpPartManager();
+                    //dpPartQuery mydpPartQuery = new dpPartQuery();
+                    //mydpPartQuery.ClassifyID = classid;
+                    //mydpPartQuery.Name = partname;
+                    //DataSet myDataSet = mydpPartManager.SearchAllCount(mydpPartQuery);
+                    //if (myDataSet.Tables[0].Rows.Count > 0)
+                    //{
+                    //    reutrnValue = myDataSet.Tables[0].Rows[0]["countall"].ToString();
+                    //}
                 }
                 else
                 {
-                    dpDownRecordManager my = new dpDownRecordManager();
-                    dpDownRecordQuery myquery = new dpDownRecordQuery();
-                    myquery.UserID = HttpContext.Current.Session[sysUser.ID].ToString();
-                    DataSet myDataSet = my.SearchAllCount(myquery);
-                    if (myDataSet.Tables[0].Rows.Count > 0)
+                    //缓存
+                    DataSet myDataSet = new DataSet();
+
+                    string CacheKey = "GetDataSetDownRecord_1_999999999";
+                    object objModel = CommonManager.GetCache(CacheKey);//从缓存中获取
+                    if (objModel == null)//缓存里没有
                     {
-                        reutrnValue = myDataSet.Tables[0].Rows[0]["countall"].ToString();
+                        myDataSet = GetDataSetDownRecord("1", "999999999");
+                        objModel = myDataSet;//把数据存入缓存
+                        if (objModel != null)
+                        {
+                            //依赖数据库codematic中的P_Product表变化 来更新缓存
+                            System.Web.Caching.SqlCacheDependency dep = new System.Web.Caching.SqlCacheDependency(ConfigurationManager.AppSettings["DataBase"].ToString(), dpDownRecord.TABLENAME);
+                            CommonManager.SetCache(CacheKey, objModel, dep);//写入缓存
+                        }
                     }
+                    else
+                    {
+                        myDataSet = (DataSet)objModel;
+                    }
+                    reutrnValue = myDataSet.Tables[0].Rows.Count.ToString();
+                    //dpDownRecordManager my = new dpDownRecordManager();
+                    //dpDownRecordQuery myquery = new dpDownRecordQuery();
+                    //myquery.UserID = HttpContext.Current.Session[sysUser.ID].ToString();
+                    //DataSet myDataSet = my.SearchAllCount(myquery);
+                    //if (myDataSet.Tables[0].Rows.Count > 0)
+                    //{
+                    //    reutrnValue = myDataSet.Tables[0].Rows[0]["countall"].ToString();
+                    //}
 
                 }
             }
@@ -163,14 +284,33 @@ namespace Part3D
 
             try
             {
-                dpPartManager mydp_Part = new dpPartManager();
-                dpPartQuery mydpPartQuery = new dpPartQuery();
-                mydpPartQuery.UserID = UserID;
-                mydpPartQuery.ClassifyID = ClassifyID;
-                mydpPartQuery.ID = ID;
+                //缓存
+                DataSet myDataSet = new DataSet();
 
-                DataSet myDataSet = mydp_Part.SearchRecommend(mydpPartQuery);
+                string CacheKey = "SearchRecommend_" + UserID + "_" + ClassifyID + "_" + ID;
+                object objModel = CommonManager.GetCache(CacheKey);//从缓存中获取
+                if (objModel == null)//缓存里没有
+                {
+                    dpPartManager mydp_Part = new dpPartManager();
+                    dpPartQuery mydpPartQuery = new dpPartQuery();
+                    mydpPartQuery.UserID = UserID;
+                    mydpPartQuery.ClassifyID = ClassifyID;
+                    mydpPartQuery.ID = ID;
 
+                    myDataSet = mydp_Part.SearchRecommend(mydpPartQuery);
+
+                    objModel = myDataSet;//把数据存入缓存
+                    if (objModel != null)
+                    {
+                        //依赖数据库codematic中的P_Product表变化 来更新缓存
+                        System.Web.Caching.SqlCacheDependency dep = new System.Web.Caching.SqlCacheDependency(ConfigurationManager.AppSettings["DataBase"].ToString(), dpPart.TABLENAME);
+                        CommonManager.SetCache(CacheKey, objModel, dep);//写入缓存
+                    }
+                }
+                else
+                {
+                    myDataSet = (DataSet)objModel;
+                }
                 if (myDataSet.Tables[0].Rows.Count > 0)
                 {
                     returnData = CommonManager.GetList<dpPartData>(myDataSet.Tables[0]);//转换实体类list
@@ -196,7 +336,7 @@ namespace Part3D
                 Response.Write("<script>alert('非注册用户每天只能下载10次！')</script>");
             }
         }
-     
+
 
     }
 }

@@ -36,21 +36,10 @@ namespace Part3D
                         {
                             this.hidid.Value = Request.QueryString["partid"];
                             this.hidclassid.Value = myDataSet.Tables[0].Rows[0][dpPart.ClassifyID].ToString();
-                            dpAdvertisementManager mydpAdvertisementManager = new dpAdvertisementManager();
-                            dpAdvertisementQuery mydpAdvertisementQuery = new dpAdvertisementQuery();
-                            mydpAdvertisementQuery.ClassifyID = myDataSet.Tables[0].Rows[0][dpPart.ClassifyID].ToString();
-                            mydpAdvertisementQuery.ADPosition = "下载页";
-                            DataSet ds = mydpAdvertisementManager.Search(mydpAdvertisementQuery);
-                            if (ds.Tables[0].Rows.Count > 0)
-                            {
-                                this.lnkad.HRef = ds.Tables[0].Rows[0][dpAdvertisement.ADLink].ToString();
-                                this.imgad.Src = ds.Tables[0].Rows[0][dpAdvertisement.PicturePath].ToString();
-                                this.lnkad.Visible = true;
-                            }
-                            else
-                            {
-                                this.lnkad.Visible = false;
-                            }
+
+                            string strClassifyID = myDataSet.Tables[0].Rows[0][dpPart.ClassifyID].ToString();
+
+                            LoadAd(strClassifyID);//加载广告
 
                             this.btitle.InnerText = myDataSet.Tables[0].Rows[0][dpPart.Name].ToString();
                             this.ausername.InnerText = myDataSet.Tables[0].Rows[0][sysUser.Nickname].ToString();
@@ -88,6 +77,45 @@ namespace Part3D
                     Response.Redirect("/Index.aspx");
                 }
 
+            }
+        }
+
+        private void LoadAd(string strClassifyID)
+        {
+            //缓存
+            DataSet myDataSet = new DataSet();
+
+            string CacheKey = "SearchAd_下载页";
+            object objModel = CommonManager.GetCache(CacheKey);//从缓存中获取
+            if (objModel == null)//缓存里没有
+            {
+                dpAdvertisementManager mydpAdvertisementManager = new dpAdvertisementManager();
+                dpAdvertisementQuery mydpAdvertisementQuery = new dpAdvertisementQuery();
+                mydpAdvertisementQuery.ADPosition = "下载页";
+                mydpAdvertisementQuery.ClassifyID = strClassifyID;
+                myDataSet = mydpAdvertisementManager.Search(mydpAdvertisementQuery);
+                objModel = myDataSet;//把数据存入缓存
+                if (objModel != null)
+                {
+                    //依赖数据库codematic中的P_Product表变化 来更新缓存
+                    System.Web.Caching.SqlCacheDependency dep = new System.Web.Caching.SqlCacheDependency(ConfigurationManager.AppSettings["DataBase"].ToString(), dpAdvertisement.TABLENAME);
+                    CommonManager.SetCache(CacheKey, objModel, dep);//写入缓存
+                }
+            }
+            else
+            {
+                myDataSet = (DataSet)objModel;
+            }
+
+            if (myDataSet.Tables[0].Rows.Count > 0)
+            {
+                this.lnkad.HRef = myDataSet.Tables[0].Rows[0][dpAdvertisement.ADLink].ToString();
+                this.imgad.Src = myDataSet.Tables[0].Rows[0][dpAdvertisement.PicturePath].ToString();
+                this.lnkad.Visible = true;
+            }
+            else
+            {
+                this.lnkad.Visible = false;
             }
         }
 

@@ -24,36 +24,46 @@ namespace Part3D
         {
             if (!IsPostBack)
             {
-                //#region 一次性代码
-                //string rootpath = CommonManager.GetRootPath();
-                //if (!Directory.Exists(rootpath + "/errlog"))
-                //{
-                //    Directory.CreateDirectory(rootpath + "/errlog");
-                //}
-                //CommonManager.UpdateAppSetting("File", rootpath + "/errlog/");
+                LoadAd();
+            }
+        }
 
+        private void LoadAd()
+        {
 
-                if (DateTime.Now.CompareTo(DateTime.Parse("2016-06-16")) > 0)
-                {
-                    Response.Redirect("/404/400.html");
-                }
-                //#endregion
+            //缓存
+            DataSet myDataSet = new DataSet();
 
+            string CacheKey = "SearchAd_首页";
+            object objModel = CommonManager.GetCache(CacheKey);//从缓存中获取
+            if (objModel == null)//缓存里没有
+            {
                 dpAdvertisementManager mydpAdvertisementManager = new dpAdvertisementManager();
                 dpAdvertisementQuery mydpAdvertisementQuery = new dpAdvertisementQuery();
-                //mydpAdvertisementQuery.ClassifyID = myDataSet.Tables[0].Rows[0][dpPart.ClassifyID].ToString();
                 mydpAdvertisementQuery.ADPosition = "首页";
-                DataSet ds = mydpAdvertisementManager.Search(mydpAdvertisementQuery);
-                if (ds.Tables[0].Rows.Count > 0)
+                myDataSet = mydpAdvertisementManager.Search(mydpAdvertisementQuery);
+                objModel = myDataSet;//把数据存入缓存
+                if (objModel != null)
                 {
-                    this.lnkad.HRef = ds.Tables[0].Rows[0][dpAdvertisement.ADLink].ToString();
-                    this.imgad.Src = ds.Tables[0].Rows[0][dpAdvertisement.PicturePath].ToString();
-                    this.lnkad.Visible = true;
+                    //依赖数据库codematic中的P_Product表变化 来更新缓存
+                    System.Web.Caching.SqlCacheDependency dep = new System.Web.Caching.SqlCacheDependency(ConfigurationManager.AppSettings["DataBase"].ToString(), dpAdvertisement.TABLENAME);
+                    CommonManager.SetCache(CacheKey, objModel, dep);//写入缓存
                 }
-                else
-                {
-                    this.lnkad.Visible = false;
-                }
+            }
+            else
+            {
+                myDataSet = (DataSet)objModel;
+            }
+
+            if (myDataSet.Tables[0].Rows.Count > 0)
+            {
+                this.lnkad.HRef = myDataSet.Tables[0].Rows[0][dpAdvertisement.ADLink].ToString();
+                this.imgad.Src = myDataSet.Tables[0].Rows[0][dpAdvertisement.PicturePath].ToString();
+                this.lnkad.Visible = true;
+            }
+            else
+            {
+                this.lnkad.Visible = false;
             }
         }
 
@@ -319,21 +329,30 @@ namespace Part3D
         public static bool ChkIP()
         {
             bool returnValue = false;
-            string currentip = CommonManager.GetClientIPv4Address();
-            dpDownRecordManager mydpDownRecordManager = new dpDownRecordManager();
-            dpDownRecordQuery mydpDownRecordQuery = new dpDownRecordQuery();
-            mydpDownRecordQuery.CreateDate = DateTime.Now.ToString("yyyy-MM-dd");
-            mydpDownRecordQuery.IP = currentip.Trim();
-            mydpDownRecordQuery.RecordType = "1";
-            string count = mydpDownRecordManager.SearchIP(mydpDownRecordQuery);
-            if (count.Length > 0)
+
+            if (HttpContext.Current.Session[sysUser.ID] != null)
             {
-                int defaultcount = Convert.ToInt32(ConfigurationManager.AppSettings["UploadCount"].ToString());//默认非用户可下载数量
-                if (int.Parse(count) < defaultcount)
+                returnValue = true;
+            }
+            else
+            {
+                string currentip = CommonManager.GetClientIPv4Address();
+                dpDownRecordManager mydpDownRecordManager = new dpDownRecordManager();
+                dpDownRecordQuery mydpDownRecordQuery = new dpDownRecordQuery();
+                mydpDownRecordQuery.CreateDate = DateTime.Now.ToString("yyyy-MM-dd");
+                mydpDownRecordQuery.IP = currentip.Trim();
+                mydpDownRecordQuery.RecordType = "1";
+                string count = mydpDownRecordManager.SearchIP(mydpDownRecordQuery);
+                if (count.Length > 0)
                 {
-                    returnValue = true;
+                    int defaultcount = Convert.ToInt32(ConfigurationManager.AppSettings["UploadCount"].ToString());//默认非用户可下载数量
+                    if (int.Parse(count) < defaultcount)
+                    {
+                        returnValue = true;
+                    }
                 }
             }
+
             return returnValue;
         }
 
@@ -351,14 +370,35 @@ namespace Part3D
             IList<dpLinksData> returnData = null;//返回实体列表
             try
             {
-                dpLinksManager mydpLinksManager = new dpLinksManager();
-                dpLinksQuery mydpLinksQuery = new dpLinksQuery();
-                mydpLinksQuery.CurrentIndex = Convert.ToInt32(CurrentIndex == "" ? "1" : CurrentIndex);
-                mydpLinksQuery.PageSize = Convert.ToInt32(PageSize == "" ? "12" : PageSize);
-                DataSet myds = mydpLinksManager.SearchBind(mydpLinksQuery);
-                if (myds.Tables[0].Rows.Count > 0)
+                //缓存
+                DataSet myDataSet = new DataSet();
+
+                string CacheKey = "SearchBindLinks_" + CurrentIndex + "_" + PageSize;
+                object objModel = CommonManager.GetCache(CacheKey);//从缓存中获取
+                if (objModel == null)//缓存里没有
                 {
-                    returnData = CommonManager.GetList<dpLinksData>(myds.Tables[0]);//转换实体类list
+                    dpLinksManager mydpLinksManager = new dpLinksManager();
+                    dpLinksQuery mydpLinksQuery = new dpLinksQuery();
+                    mydpLinksQuery.CurrentIndex = Convert.ToInt32(CurrentIndex == "" ? "1" : CurrentIndex);
+                    mydpLinksQuery.PageSize = Convert.ToInt32(PageSize == "" ? "12" : PageSize);
+                    myDataSet = mydpLinksManager.SearchBind(mydpLinksQuery);
+
+                    objModel = myDataSet;//把数据存入缓存
+                    if (objModel != null)
+                    {
+                        //依赖数据库codematic中的P_Product表变化 来更新缓存
+                        System.Web.Caching.SqlCacheDependency dep = new System.Web.Caching.SqlCacheDependency(ConfigurationManager.AppSettings["DataBase"].ToString(), dpAdvertisement.TABLENAME);
+                        CommonManager.SetCache(CacheKey, objModel, dep);//写入缓存
+                    }
+                }
+                else
+                {
+                    myDataSet = (DataSet)objModel;
+                }
+
+                if (myDataSet.Tables[0].Rows.Count > 0)
+                {
+                    returnData = CommonManager.GetList<dpLinksData>(myDataSet.Tables[0]);//转换实体类list
                 }
 
             }

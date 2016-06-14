@@ -652,7 +652,7 @@ function binddate(type) {
             if (result.d.length > 0) {
 
                 //开始执行分页
-                var nums = 9; //每页出现的数量
+                var nums = 12; //每页出现的数量
                 //allcount = (allcount < nums) ? nums : allcount;
                 var all = result.d;
                 var pages = Math.ceil(all / nums); //得到总页数

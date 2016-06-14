@@ -52,6 +52,15 @@ namespace Part3D
             IList<dpDownRecordData> returnData = null;//返回实体列表
             try
             {
+                if (end.Length > 0)
+                {
+                    DateTime dtend = DateTime.Parse(end);
+                    if (dtend.Hour.ToString() == "0" && dtend.Minute.ToString() == "0" && dtend.Second.ToString() == "0")
+                    {
+                        dtend = dtend.AddDays(1);
+                    }
+                    end = dtend.ToString();
+                }
                 dpDownRecordManager mydpDownRecordManager = new dpDownRecordManager();
                 dpDownRecordQuery mydpDownRecordQuery = new dpDownRecordQuery();
                 mydpDownRecordQuery.CurrentIndex = Convert.ToInt32(CurrentIndex);
@@ -82,7 +91,15 @@ namespace Part3D
         [WebMethod(Description = "填充图表", EnableSession = true)]
         public static dynamic GetChartData(string start, string end, string RecordType)
         {
-
+            if (end.Length > 0)
+            {
+                DateTime dtend = DateTime.Parse(end);
+                if (dtend.Hour.ToString() == "0" && dtend.Minute.ToString() == "0" && dtend.Second.ToString() == "0")
+                {
+                    dtend = dtend.AddDays(1);
+                }
+                end = dtend.ToString();
+            }
             string categories = string.Empty;
             string series = string.Empty;
             dpDownRecordManager mydpDownRecordManager = new dpDownRecordManager();
