@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Part3D", "Part3D\Part3D.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbManager", "DbManager\DbManager.csproj", "{CB0D0BF7-A8E6-4DC4-8B8D-554CF86F6D29}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JqueryMobile", "JqueryMobile\JqueryMobile.csproj", "{134A1FEC-4446-476D-92B2-5F3754DA1914}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{CB0D0BF7-A8E6-4DC4-8B8D-554CF86F6D29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB0D0BF7-A8E6-4DC4-8B8D-554CF86F6D29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB0D0BF7-A8E6-4DC4-8B8D-554CF86F6D29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{134A1FEC-4446-476D-92B2-5F3754DA1914}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{134A1FEC-4446-476D-92B2-5F3754DA1914}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{134A1FEC-4446-476D-92B2-5F3754DA1914}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{134A1FEC-4446-476D-92B2-5F3754DA1914}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
