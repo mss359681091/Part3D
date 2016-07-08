@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Services;
 
 namespace Part3D
@@ -138,5 +139,20 @@ namespace Part3D
             return returnValue;
         }
 
+
+        [WebMethod(Description = "判断验证码", EnableSession = true)]
+        public static string ChkCode(string paramCheckCode)
+        {
+            string returnValue = string.Empty;
+
+            if (HttpContext.Current.Session["CheckCode"] != null)
+            {
+                if (HttpContext.Current.Session["CheckCode"].ToString().ToUpper() == paramCheckCode.ToUpper())
+                {
+                    returnValue = "1";//验证成功
+                }
+            }
+            return returnValue;
+        }
     }
 }

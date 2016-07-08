@@ -33,7 +33,7 @@
     <script src="/scripts/jquery-ui-1.10.4.min.js"></script>
     <!-- SliderLock -->
     <link href="/content/sliderlock.css" rel="stylesheet" media="screen">
-    <script type="text/javascript" src="/scripts/sliderlock.js"></script>
+    <%--    <script type="text/javascript" src="/scripts/sliderlock.js"></script>--%>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -87,13 +87,18 @@
                             <li><span>密码：</span><input id="txt_regPassword" maxlength="20" type="password" placeholder="请填写6-20个字符..." class="inp"><i></i></li>
                             <li><span>确认密码：</span><input id="txt_regPassword1" maxlength="50" type="password" placeholder="请再输入一次密码..." class="inp"><i></i></li>
                             <li>
-                                <span>验证：</span>
-                                <div style="width: 400px; height: 40px; line-height: 40px; margin-top: 8px; float: left;">
-                                    <div id="slider" class="sliderLock" style="height: 40px; line-height: 40px;">
+                                <span>验证码：</span>
+                                <div id="idchk" style="height: 40px; line-height: 40px; float: left;">
+                                    <%--   <div id="slider" class="sliderLock" style="height: 40px; line-height: 40px;">
                                         <p>用鼠标点击箭头向右滑动解锁</p>
-                                    </div>
+                                    </div>--%>
+                                    <input type="text" id="txtCheckCode" maxlength="4"
+                                        class="inp" style="width: 200px;" />
+                                    <img id="checkCode" src="CreateCheckCode.aspx" title="点击刷新验证码..." width="81"
+                                        height="37" onclick="javascript:this.src=this.src+'?'+new Date().getTime().toString(36);"
+                                        style="cursor: pointer; margin: 10px 0 0 20px;">
                                 </div>
-                                <i class="slider_tip">通过验证才能注册！</i>
+                                <i></i>
                             </li>
                             <li>
                                 <label>

@@ -19,7 +19,7 @@
                 </ul>
             </div>
         </b>
-        <span>|</span><a href="#">论坛</a>
+        <span>|</span><a target="_blank" href="http://tieba.baidu.com/f?kw=3d%E7%BB%84%E4%BB%B6%E5%BA%93">论坛</a>
     </div>
     <div class="Right">
 

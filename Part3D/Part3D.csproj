@@ -200,6 +200,7 @@
     <Content Include="controls\layer\skin\default\loading-1.gif" />
     <Content Include="controls\layer\skin\default\loading-2.gif" />
     <Content Include="controls\layer\skin\layer.css" />
+    <Content Include="CreateCheckCode.aspx" />
     <Content Include="images\favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -280,6 +281,13 @@
     <Content Include="View.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CreateCheckCode.aspx.cs">
+      <DependentUpon>CreateCheckCode.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CreateCheckCode.aspx.designer.cs">
+      <DependentUpon>CreateCheckCode.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -291,6 +299,7 @@
       <DependentUpon>Index.aspx</DependentUpon>
     </Compile>
     <Compile Include="LogHelper.cs" />
+    <Compile Include="models\CookiesHelper.cs" />
     <Compile Include="models\DESEncrypt.cs" />
     <Compile Include="models\dpAdvertisement\dpAdvertisementData.cs" />
     <Compile Include="models\dpDownRecord\dpDownRecordData.cs" />

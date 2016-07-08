@@ -109,6 +109,7 @@ function fnChecked() {
         var email = $("#txt_regEmail").val();
         var nickname = $("#txt_regNickname").val();
         var mobile = $("#txt_regMobile").val();
+        var txtCheckCode = $("#txtCheckCode").val();
         $("#main0 i").text("");
         if (username.trim() == "") {
             $("#txt_regUsername").next("i").text("用户名不能为空！");
@@ -131,8 +132,31 @@ function fnChecked() {
             return;
         }
 
-        fnRegister(username, password, nickname, email, mobile);
+        if (txtCheckCode.trim() == "") {
+            $("#idchk").next("i").text("请输入验证码！");
+            $("#txtCheckCode").focus();
+            return;
+        }
 
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/Login.aspx/ChkCode",
+            data: "{paramCheckCode:'" + txtCheckCode + "'}",
+            async: false,
+            dataType: 'json',
+            success: function (result) {
+                if (result.d != "1") {
+                    $("#idchk").next("i").text("验证码错误！");
+                    $("#txtCheckCode").focus();
+                    return;
+                }
+                else {
+                    $("#idchk").next("i").text("");
+                    fnRegister(username, password, nickname, email, mobile);
+                }
+            }
+        });
     }
     else {
         alert("请阅读并接受相关条款！");
@@ -229,6 +253,7 @@ function fnRegister(username, password, nickname, email, mobile) {
             switch (result.d) {
                 case "1":
                     alert("注册成功!");
+                    $("#checkCode").click();
                     $("#txtusername").val(username);
                     setTab_T(0, 0);
                     return;

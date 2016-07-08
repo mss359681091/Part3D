@@ -35,7 +35,7 @@ namespace Part3D
             DataSet myDataSet = new DataSet();
 
             string CacheKey = "SearchAd_首页";
-            object objModel = CommonManager.GetCache(CacheKey);//从缓存中获取
+            object objModel = CookiesHelper.GetCache(CacheKey);//从缓存中获取
             if (objModel == null)//缓存里没有
             {
                 dpAdvertisementManager mydpAdvertisementManager = new dpAdvertisementManager();
@@ -47,7 +47,7 @@ namespace Part3D
                 {
                     //依赖数据库codematic中的P_Product表变化 来更新缓存
                     System.Web.Caching.SqlCacheDependency dep = new System.Web.Caching.SqlCacheDependency(ConfigurationManager.AppSettings["DataBase"].ToString(), dpAdvertisement.TABLENAME);
-                    CommonManager.SetCache(CacheKey, objModel, dep);//写入缓存
+                    CookiesHelper.SetCache(CacheKey, objModel, dep);//写入缓存
                 }
             }
             else
@@ -374,7 +374,7 @@ namespace Part3D
                 DataSet myDataSet = new DataSet();
 
                 string CacheKey = "SearchBindLinks_" + CurrentIndex + "_" + PageSize;
-                object objModel = CommonManager.GetCache(CacheKey);//从缓存中获取
+                object objModel = CookiesHelper.GetCache(CacheKey);//从缓存中获取
                 if (objModel == null)//缓存里没有
                 {
                     dpLinksManager mydpLinksManager = new dpLinksManager();
@@ -388,7 +388,7 @@ namespace Part3D
                     {
                         //依赖数据库codematic中的P_Product表变化 来更新缓存
                         System.Web.Caching.SqlCacheDependency dep = new System.Web.Caching.SqlCacheDependency(ConfigurationManager.AppSettings["DataBase"].ToString(), dpAdvertisement.TABLENAME);
-                        CommonManager.SetCache(CacheKey, objModel, dep);//写入缓存
+                        CookiesHelper.SetCache(CacheKey, objModel, dep);//写入缓存
                     }
                 }
                 else

@@ -567,16 +567,17 @@ namespace Part3D.models
         }
 
 
-        /// <summary>
-        /// 获取当前应用程序指定CacheKey的Cache对象值
-        /// </summary>
-        /// <param name="CacheKey">索引键值</param>
-        /// <returns>返回缓存对象</returns>
-        public static object GetCache(string CacheKey)
-        {
-            System.Web.Caching.Cache objCache = HttpRuntime.Cache;
-            return objCache[CacheKey];
-        }
+        ///// <summary>
+        ///// 获取当前应用程序指定CacheKey的Cache对象值
+        ///// </summary>
+        ///// <param name="CacheKey">索引键值</param>
+        ///// <returns>返回缓存对象</returns>
+        //public static object GetCache(string CacheKey)
+        //{
+        //    System.Web.Caching.Cache objCache = HttpRuntime.Cache;
+        //    return objCache[CacheKey];
+        //}
+
         /// <summary>
         /// 设置以缓存依赖的方式缓存数据
         /// </summary>
