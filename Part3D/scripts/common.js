@@ -410,20 +410,6 @@ function closeLoad() {
     $('#file_upload').uploadify('cancel', '*');
 }
 
-function fnSaveImg(filenames, successcount) {
-    var options = {
-        url: "/user/jqUploadify/WebUpload.aspx",
-        success: function () {
-            $("#fm1").resetForm();
-            $("#preview").hide();
-            $("#addpic").show();
-            //alert("上传成功！");
-            window.location.href = "/user/PersonalResouces.aspx";
-
-        }
-    };
-    $("#fm1").ajaxForm(options);
-}
 
 function fnsearch() {
     var searchkey = $("#txtkey").val();
