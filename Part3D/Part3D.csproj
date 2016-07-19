@@ -229,6 +229,7 @@
     <Content Include="images\user_li.png" />
     <Content Include="images\user_T.jpg" />
     <Content Include="Index.aspx" />
+    <Content Include="scripts\ajaxfileupload.js" />
     <Content Include="scripts\jquery.form.js" />
     <Content Include="scripts\laypage\laypage.js" />
     <Content Include="scripts\laypage\skin\laypage.css" />

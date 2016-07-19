@@ -16,12 +16,14 @@ namespace Part3D
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Request["txtPartname"] != null && Request["hidClassifyId"] != null)
+            if (Request["partname"] != null && Request["classifyId"] != null)
             {
-                string strName = Request["txtPartname"];
-                string strClassify = this.hidClassifyId.Value;
+                string strName = Request["partname"];
+                string strClassify = Request["classifyId"];
 
                 HttpFileCollection file = System.Web.HttpContext.Current.Request.Files;
+
+
 
                 if (strName.Length > 0 && strClassify.Length > 0)
                 {
@@ -96,6 +98,10 @@ namespace Part3D
         {
             try
             {
+
+                string msg = string.Empty;
+                string error = string.Empty;
+
                 //第一步上传封面
                 string fileExtname, ran;
                 UploadPreview(inputfile, out fileExtname, out ran);
@@ -116,6 +122,12 @@ namespace Part3D
 
                 //第三部插入附件表
                 InsertModelFile(partid);
+
+                //返回
+                string res = "{ error:'" + error + "', msg:'" + msg + "'}";
+                Response.Write(res);
+                Response.End();
+
             }
             catch (Exception ex)
             {
@@ -145,9 +157,9 @@ namespace Part3D
                             {
                                 string standard = str[0].Split(' ')[0];
 
-                                if (str[0].Contains("x"))
+                                if (str[0].ToString().ToUpper().Contains("X"))
                                 {
-                                    strmodels = str[0].Split(' ')[1].Split('x')[0];
+                                    strmodels = str[0].ToString().ToUpper().Split(' ')[1].Split('X')[0];
                                 }
                                 savestandard(standard, partid);//保存标准
                             }
@@ -195,7 +207,7 @@ namespace Part3D
                 //检测并添加或获取标准id
                 dpStandardManager mydpStandardManager = new dpStandardManager();
                 dpStandardQuery mydpStandardQuery = new dpStandardQuery();
-                mydpStandardQuery.Name = standard.ToLower();//转小写
+                mydpStandardQuery.Name = standard.ToUpper();//转大写
                 string standardid = mydpStandardManager.CheckISNull(mydpStandardQuery);//返回id
                 if (standardid.Trim().Length == 0)
                 {

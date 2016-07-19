@@ -72,7 +72,10 @@ namespace Part3D
                 {
                     dpPartManager my = new dpPartManager();
                     dpPartQuery myquery = new dpPartQuery();
-                    myquery.UserID = HttpContext.Current.Session[sysUser.ID].ToString();
+                    if (HttpContext.Current.Session[sysUser.Username].ToString().ToLower().Trim() != "admin")
+                    {
+                        myquery.UserID = HttpContext.Current.Session[sysUser.ID].ToString();
+                    }
                     DataSet myds = my.SearchAllCount(myquery);
                     if (myds.Tables[0].Rows.Count > 0)
                     {

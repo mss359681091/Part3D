@@ -107,7 +107,7 @@ namespace _3DPart.DAL.BULayer
         public DataSet SearchBind(dpLinksQuery QueryData)
         {
             string strQuery = @" SELECT TOP " + QueryData.PageSize + " * FROM ( "
-            + " SELECT ROW_NUMBER() OVER ( ORDER BY " + dpLinks.ID_FULL + " DESC ) AS RowNumber , "
+            + " SELECT ROW_NUMBER() OVER ( ORDER BY CONVERT( int , " + dpLinks.ID_FULL + ") DESC ) AS RowNumber , "
             + dpLinks.ID_FULL + ","
             + dpLinks.UserID_FULL + ","
             + dpLinks.LinkName_FULL + ","

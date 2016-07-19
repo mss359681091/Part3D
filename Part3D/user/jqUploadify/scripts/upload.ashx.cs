@@ -39,8 +39,8 @@ namespace jqUploadify.scripts
                 }
                 //string ran = DateTime.Now.ToString("yyyyMMddHHmmss") + new Random().Next(100, 999);
                 string ran = "_" + new Random().Next(100, 999).ToString();
-                string fileExtname = System.IO.Path.GetExtension(uploadPath + file.FileName).ToLower();//文件扩展名
-                string fileName = System.IO.Path.GetFileNameWithoutExtension(uploadPath + file.FileName).ToLower();//文件扩展名
+                string fileExtname = System.IO.Path.GetExtension(uploadPath + file.FileName).ToUpper();//文件扩展名
+                string fileName = System.IO.Path.GetFileNameWithoutExtension(uploadPath + file.FileName).ToUpper();//文件扩展名
                 file.SaveAs(uploadPath + fileName.Replace(" ", "") + ran + fileExtname);
                 //生成缩略图
                 // MakeThumbnail(uploadPath + ran + fileExtname, uploadPath + "\\s\\" + ran + fileExtname, 240, 170);

@@ -150,8 +150,7 @@ namespace _3DPart.DAL.BULayer
 
         public DataSet SearchPaging(dpDownRecordQuery QueryData)
         {
-
-            string strQuery = @" SELECT TOP " + QueryData.PageSize + "  * FROM ( SELECT  ROW_NUMBER() OVER ( ORDER BY " + dpDownRecord.PartID + " DESC ) AS RowNumber ,* FROM ( "
+            string strQuery = @" SELECT TOP " + QueryData.PageSize + "  * FROM ( SELECT  ROW_NUMBER() OVER ( ORDER BY CONVERT( int ,ID ) DESC ) AS RowNumber ,* FROM ( "
             + " SELECT distinct(" + dpDownRecord.PartID_FULL + "),"
             + dpPart.ID_FULL + ","
             + dpPart.ParentID_FULL + ","

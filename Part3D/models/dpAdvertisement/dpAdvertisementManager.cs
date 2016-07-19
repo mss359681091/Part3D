@@ -90,7 +90,7 @@ namespace _3DPart.DAL.BULayer
         public DataSet SearchPaging(dpAdvertisementQuery QueryData)
         {
             string strQuery = @" SELECT TOP " + QueryData.PageSize + " * FROM ( "
-            + " SELECT ROW_NUMBER() OVER ( ORDER BY " + dpAdvertisement.ID_FULL + " DESC ) AS RowNumber , "
+            + " SELECT ROW_NUMBER() OVER ( ORDER BY CONVERT( int , " + dpAdvertisement.ID_FULL + ") DESC ) AS RowNumber , "
             + dpAdvertisement.ID_FULL + ","
             + dpAdvertisement.ClassifyID_FULL + ","
             + dpAdvertisement.UserID_FULL + ","

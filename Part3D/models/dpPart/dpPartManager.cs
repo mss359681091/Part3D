@@ -183,7 +183,7 @@ namespace _3DPart.DAL.BULayer
         {
 
             string strQuery = @" SELECT TOP " + QueryData.PageSize + " * FROM ( "
-            + " SELECT ROW_NUMBER() OVER ( ORDER BY " + dpPart.ID_FULL + " DESC ) AS RowNumber , "
+            + " SELECT ROW_NUMBER() OVER ( ORDER BY CONVERT( int , " + dpPart.ID_FULL + ") DESC ) AS RowNumber , "
             + dpPart.ID_FULL + ","
             + dpPart.ParentID_FULL + ","
             + dpPart.UserID_FULL + ","
@@ -509,7 +509,7 @@ namespace _3DPart.DAL.BULayer
         public DataSet SearchMyPart(dpPartQuery QueryData)
         {
             string strQuery = @" SELECT TOP " + QueryData.PageSize + " * FROM ( "
-            + " SELECT ROW_NUMBER() OVER ( ORDER BY " + dpPart.ID_FULL + " DESC ) AS RowNumber , "
+            + " SELECT ROW_NUMBER() OVER ( ORDER BY CONVERT( int , " + dpPart.ID_FULL + ") DESC ) AS RowNumber , "
             + dpPart.ID_FULL + ","
             + dpPart.PreviewSmall_FULL + ","
             + dpPart.Name_FULL + ","

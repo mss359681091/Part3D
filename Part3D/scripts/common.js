@@ -410,20 +410,6 @@ function closeLoad() {
     $('#file_upload').uploadify('cancel', '*');
 }
 
-function fnSaveImg(filenames, successcount) {
-    var options = {
-        url: "/user/jqUploadify/WebUpload.aspx",
-        success: function () {
-            $("#fm1").resetForm();
-            $("#preview").hide();
-            $("#addpic").show();
-            //alert("上传成功！");
-            window.location.href = "/user/PersonalResouces.aspx";
-
-        }
-    };
-    $("#fm1").ajaxForm(options);
-}
 
 function fnsearch() {
     var searchkey = $("#txtkey").val();
@@ -474,19 +460,33 @@ function fnGetList(ParentID, UserID, ClassifyID, Name, CurrentIndex, PageSize, t
             if (returnData != null) {
                 var strli = "";
                 $.each(returnData, function (i, item) {
+
+
                     var names = subString(item.Name, 28);
+
+
                     strli += "<li><span>";
-                    strli += "<button type='button' data-partid='" + item.ID + "' data-format='.igs' data-event='D_Step'>IGS</button>";
-                    strli += "<button type='button' data-partid='" + item.ID + "' data-format='.step' data-event='D_Step'>STEP</button>";
-                    strli += "<button type='button' data-partid='" + item.ID + "' data-format='.x_t' data-event='D_Step'>X_T</button></span>";
+                    if (item.ClassifyID == 2) {
+
+                        strli += "<button type='button' data-partid='" + item.ID + "'>组合件</button></span>";
+                    }
+                    else {
+                        strli += "<button type='button' data-partid='" + item.ID + "' data-format='.igs' data-event='D_Step'>IGS</button>";
+                        strli += "<button type='button' data-partid='" + item.ID + "' data-format='.step' data-event='D_Step'>STEP</button>";
+                        strli += "<button type='button' data-partid='" + item.ID + "' data-format='.x_t' data-event='D_Step'>X_T</button></span>";
+                    }
                     strli += "<p>";
                     strli += "<a target='_blank' href='/View.aspx?partid=" + item.ID + "' style='padding: 0'><img  src='" + item.PreviewSmall + "' alt='" + item.Name + "' /></a>";
                     strli += "</p>";
                     strli += "<a title='" + item.Name + "' target='_blank' href='/View.aspx?partid=" + item.ID + "'>" + names + "</a></li>";
+
+
                 });
                 $(".Index_List li").remove();
                 $(".Index_List ul").append(strli);
                 $('button[data-event=D_Step]').unbind("click");
+
+
                 $('button[data-event=D_Step]').bind('click', function () {
                     var partid = $(this).data("partid");
                     var format = $(this).data("format");
@@ -497,6 +497,7 @@ function fnGetList(ParentID, UserID, ClassifyID, Name, CurrentIndex, PageSize, t
                     getStandard(partid, title);
 
                 });
+
             }
         }
     });
@@ -524,9 +525,16 @@ function fnRecommend(UserID, ClassifyID, ID) {
                     }
 
                     strli += "<li><span>";
-                    strli += "<button type='button' data-partid='" + item.ID + "' data-format='.igs' data-event='D_Step'>IGS</button>";
-                    strli += "<button type='button' data-partid='" + item.ID + "' data-format='.step' data-event='D_Step'>STEP</button>";
-                    strli += "<button type='button' data-partid='" + item.ID + "' data-format='.x_t' data-event='D_Step'>X_T</button></span>";
+
+                    if (item.ClassifyID == 2) {
+
+                        strli += "<button type='button' data-partid='" + item.ID + "'>组合件</button></span>";
+                    }
+                    else {
+                        strli += "<button type='button' data-partid='" + item.ID + "' data-format='.igs' data-event='D_Step'>IGS</button>";
+                        strli += "<button type='button' data-partid='" + item.ID + "' data-format='.step' data-event='D_Step'>STEP</button>";
+                        strli += "<button type='button' data-partid='" + item.ID + "' data-format='.x_t' data-event='D_Step'>X_T</button></span>";
+                    }
                     strli += "<p>";
                     strli += "<a target='_blank' href='/View.aspx?partid=" + item.ID + "' style='padding: 0'><img  src='" + item.PreviewSmall + "' alt='" + item.Name + "' /></a>";
                     strli += "</p>";

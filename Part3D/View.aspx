@@ -21,7 +21,7 @@
     <script type="text/javascript" src="/scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="/scripts/dialog.js"></script>
     <script type="text/javascript" src="/scripts/common.js"></script>
-      <script src="/scripts/laypage/laypage.js"></script>
+    <script src="/scripts/laypage/laypage.js"></script>
     <script type="text/javascript">
 
         $(document).ready(function () {
@@ -30,10 +30,31 @@
             $("#btn button").eq(0).data("partid", id);
             $("#btn button").eq(1).data("partid", id);
             $("#btn button").eq(2).data("partid", id);
+            //如果是组合件
+            if (classid == 2) {
+                $("#btn button").remove();
+                bindzhj(id);//绑定组合件
+            }
             //加载最新推荐
             fnRecommend('', classid, id);
 
         });
+
+        //绑定组合件附件
+        function bindzhj(partid) {
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/View.aspx/GetModelFile",
+                data: "{partid:'" + partid + "'}",
+                dataType: 'json',
+                success: function (result) {
+                    $("#btn button").remove();
+                    $("#btn").append(result.d);
+                }
+            });
+        }
+
         //下载js
         function fndw(strid) {
             $("#hidfileid").val(strid);
@@ -77,7 +98,9 @@
                     <h5 id="btn">
                         <button type="button" data-format=".igs" data-event="D_Step">下载IGS</button>
                         <button type="button" data-format=".step" data-event="D_Step">下载STEP</button>
-                        <button type="button" data-format=".x_t" data-event="D_Step">下载X_T</button></h5>
+                        <button type="button" data-format=".x_t" data-event="D_Step">下载X_T</button>
+
+                    </h5>
                 </div>
             </div>
 

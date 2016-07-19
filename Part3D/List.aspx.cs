@@ -238,11 +238,11 @@ namespace Part3D
                     //缓存
                     DataSet myDataSet = new DataSet();
 
-                    string CacheKey = "GetDataSetDownRecord_1_999999999";
+                    string CacheKey = "GetDataSetDownRecord_1_999999";
                     object objModel = CookiesHelper.GetCache(CacheKey);//从缓存中获取
                     if (objModel == null)//缓存里没有
                     {
-                        myDataSet = GetDataSetDownRecord("1", "999999999");
+                        myDataSet = GetDataSetDownRecord("1", "999999");
                         objModel = myDataSet;//把数据存入缓存
                         if (objModel != null)
                         {

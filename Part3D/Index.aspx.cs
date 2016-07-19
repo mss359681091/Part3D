@@ -198,7 +198,7 @@ namespace Part3D
                 dpModelFileManager mydpModelFileManager = new dpModelFileManager();
                 dpModelFileQuery mydpModelFileQuery = new dpModelFileQuery();
                 mydpModelFileQuery.PartID = partid;
-                mydpModelFileQuery.Format = format;
+                mydpModelFileQuery.Format = format.ToUpper();
                 DataSet myDataSet = mydpModelFileManager.SearchModels(mydpModelFileQuery);
                 if (myDataSet.Tables[0].Rows.Count > 0)
                 {
@@ -234,7 +234,7 @@ namespace Part3D
                 dpModelFileQuery mydpModelFileQuery = new dpModelFileQuery();
                 mydpModelFileQuery.PartID = partid;
                 mydpModelFileQuery.Name = modelsname;
-                mydpModelFileQuery.Format = format;
+                mydpModelFileQuery.Format = format.ToUpper();
                 mydpModelFileQuery.Models = models;
                 DataSet myDataSet = mydpModelFileManager.Search(mydpModelFileQuery);
                 if (myDataSet.Tables[0].Rows.Count > 0)

@@ -11,6 +11,7 @@ using System.Collections;
 using Part3D.models;
 using log4net;
 using System.Configuration;
+using System.Web.Services;
 
 namespace Part3D
 {
@@ -132,6 +133,32 @@ namespace Part3D
             }
         }
 
+        [WebMethod(Description = "获取", EnableSession = true)]
+        public static string GetModelFile(string partid)
+        {
+            string reutrnValue = string.Empty;
+            try
+            {
+                dpModelFileManager mydpModelFileManager = new dpModelFileManager();
+                dpModelFileQuery mydpModelFileQuery = new dpModelFileQuery();
+                mydpModelFileQuery.PartID = partid;
+                DataSet myDataSet = mydpModelFileManager.Search(mydpModelFileQuery);
+                if (myDataSet.Tables[0].Rows.Count > 0)
+                {
+                    for (int i = 0; i < myDataSet.Tables[0].Rows.Count; i++)
+                    {
+                        reutrnValue += " <button type=\"button\" title='"+ myDataSet.Tables[0].Rows[i][dpModelFile.Name].ToString() + "' onclick=\"fndw(" + myDataSet.Tables[0].Rows[i][dpModelFile.ID] + ")\" >" + CommonManager.bSubstring(myDataSet.Tables[0].Rows[i][dpModelFile.Name].ToString(), 15) + "</button>";
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                m_log.Error(ex.Message);
+            }
+
+            return reutrnValue;
+        }
 
     }
 }
