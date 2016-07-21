@@ -131,6 +131,7 @@ namespace _3DPart.DAL.BULayer
                 strQuery += " AND " + dpModelFile.Models_FULL + " = @Models ";
                 myParam.Add("@Models", QueryData.Models);
             }
+            strQuery += " order by  " + dpModelFile.Models_FULL + " asc ";
 
             DataSet myDs = new DataSet();
             try

@@ -277,7 +277,7 @@
                     </tr>
 
                     <tr>
-                        <td class="Top" colspan="2">
+                        <td class="Top" colspan="3">
                             <a onclick="fnchkall()" href="javascript:void(0);">全选</a>
                             <button type="button" class="_button" onclick="fnDel('')"><i class="iconfont">&#xe60a;</i>删除</button>
                             <button type="button" class="_button" data-event='AddLink'><i class="iconfont">&#xe60f;</i>添加</button>
@@ -303,7 +303,7 @@
                                 });
                             </script>
                         </td>
-                        <td class="Top" colspan="5" align="right">
+                        <td class="Top" colspan="4" align="right">
 
                             <%-- <div class="Page_U"><a href="#"><</a><a href="#" class="hover">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">></a></div>--%>
                             <div id="page" class="Page">

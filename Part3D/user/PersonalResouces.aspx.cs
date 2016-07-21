@@ -116,6 +116,26 @@ namespace Part3D
                     {
                         if (str[i].ToString().Trim().Length > 0)
                         {
+                            //获取类别ID
+                            dpPartManager mydpPartManager = new dpPartManager();
+                            dpPartQuery mydpPartQuery = new dpPartQuery();
+                            mydpPartQuery.ID = str[i].ToString().Trim();
+                            string strClassifyID = string.Empty;
+                            DataSet myDataSet = new DataSet();
+                            myDataSet = mydpPartManager.Search(mydpPartQuery);
+                            if (myDataSet.Tables[0].Rows.Count > 0)
+                            {
+                                strClassifyID = myDataSet.Tables[0].Rows[0][dpPart.ClassifyID].ToString();
+                            }
+
+
+                            //删除组件文件
+                            DelModelFile(str[i].ToString().Trim());
+
+                            //删除组件缩略图
+                            DelPreview(str[i].ToString().Trim());
+
+
                             //删除下载和浏览记录
                             dpDownRecordManager mydpDownRecordManager = new dpDownRecordManager();
                             dpDownRecordQuery mydpDownRecordQuery = new dpDownRecordQuery();
@@ -128,12 +148,9 @@ namespace Part3D
                             mydpStandardMappingQuery.PartID = str[i].ToString().Trim();
                             mydpStandardMappingManager.DeleteParams(mydpStandardMappingQuery);
 
-                            DelModelFile(str[i].ToString().Trim());//删除组件文件
-
-                            //删除组件
-                            DelPreview(str[i].ToString().Trim());//删除组件缩略图
-                            dpPartManager mydpPartManager = new dpPartManager();
-                            dpPartQuery mydpPartQuery = new dpPartQuery();
+                            //最后，删除组件
+                            mydpPartManager = new dpPartManager();
+                            mydpPartQuery = new dpPartQuery();
                             if (HttpContext.Current.Session[sysUser.Username].ToString().Trim().ToLower() != "admin")
                             {
                                 mydpPartQuery.UserID = HttpContext.Current.Session[sysUser.ID].ToString();

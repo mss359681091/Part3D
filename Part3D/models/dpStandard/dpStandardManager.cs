@@ -87,7 +87,10 @@ namespace _3DPart.DAL.BULayer
 
             try
             {
-                returnValue = SQLHelper.GetObject(strQuery, myParam).ToString();
+                if (SQLHelper.GetObject(strQuery, myParam) != null)
+                {
+                    returnValue = SQLHelper.GetObject(strQuery, myParam).ToString();
+                }
             }
             catch (Exception myEx)
             {

@@ -111,6 +111,7 @@ namespace Part3D
             try
             {
                 string password = DESEncrypt.Encrypt(oldpassword);//加密
+                
                 string strPassword = new sysUserManager().GetParams(new sysUserQuery() { Username = HttpContext.Current.Session[sysUser.Username].ToString() }, sysUser.Password);
 
                 if (password != strPassword)
@@ -118,10 +119,10 @@ namespace Part3D
                     return "-1";
                 }
                 sysUserManager mysysUserManager = new sysUserManager();
-                returnValue = mysysUserManager.UpdateParams(sysUser.Password, password, HttpContext.Current.Session[sysUser.ID].ToString());
+                returnValue = mysysUserManager.UpdateParams(sysUser.Password, DESEncrypt.Encrypt(newpassword), HttpContext.Current.Session[sysUser.ID].ToString());
                 if (returnValue == "1")
                 {
-                    HttpContext.Current.Session[sysUser.Password] = password;
+                    HttpContext.Current.Session[sysUser.Password] = DESEncrypt.Encrypt(newpassword);
                 }
 
             }

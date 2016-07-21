@@ -45,7 +45,7 @@
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
-                url: "/View.aspx/GetModelFile",
+                url: "/View.aspx/GetPartlist",
                 data: "{partid:'" + partid + "'}",
                 dataType: 'json',
                 success: function (result) {
@@ -57,8 +57,9 @@
 
         //下载js
         function fndw(strid) {
-            $("#hidfileid").val(strid);
-            document.getElementById('<%=LinkButton1.ClientID %>').click();
+            <%-- $("#hidfileid").val(strid);
+            document.getElementById('<%=LinkButton1.ClientID %>').click();--%>
+            window.open("/View.aspx?partid=" + strid);
         }
 
     </script>

@@ -576,6 +576,59 @@ namespace _3DPart.DAL.BULayer
             }
             return myDs;
         }
+
+        /// <summary>
+        /// 获取组合件下面所有组件列表
+        /// </summary>
+        /// <param name="QueryData"></param>
+        /// <returns></returns>
+        public DataSet SearchPartList(dpPartQuery QueryData)
+        {
+            string strQuery = @"SELECT "
+            + dpPart.ID_FULL + ","
+            + dpPart.Name_FULL
+            + " FROM " + dpPart.TABLENAME
+            + " LEFT JOIN " + dpStandardMapping.TABLENAME + " ON " + dpStandardMapping.PartID_FULL + " = " + dpPart.ID_FULL
+            + " LEFT JOIN " + dpStandard.TABLENAME + " ON " + dpStandard.ID_FULL + " = " + dpStandardMapping.StandardID_FULL
+            + " WHERE 1 = 1 ";
+
+            Hashtable myParam = new Hashtable();
+
+            if (QueryData.ID.Length > 0)
+            {
+                strQuery += " AND " + dpPart.ID_FULL + "<> @ID ";
+                myParam.Add("@ID", QueryData.ID);
+            }
+            strQuery += " AND  " + dpStandard.Name_FULL + " =( ";
+
+            strQuery += " SELECT top 1 " + dpStandard.Name_FULL + " from  " + dpStandard.TABLENAME;
+            strQuery += " LEFT JOIN " + dpStandardMapping.TABLENAME + " ON " + dpStandardMapping.StandardID_FULL + " = " + dpStandard.ID_FULL;
+            strQuery += " LEFT JOIN " + dpPart.TABLENAME + " ON " + dpPart.ID_FULL + " = " + dpStandardMapping.PartID_FULL;
+            strQuery += " WHERE 1=1 ";
+            if (QueryData.ID.Length > 0)
+            {
+                strQuery += " AND " + dpPart.ID_FULL + "<> @ID ";
+            }
+            strQuery += " ) ";
+
+            DataSet myDs = new DataSet();
+            try
+            {
+
+                myDs = SQLHelper.GetDataSet(strQuery, myParam);
+            }
+            catch (Exception myEx)
+            {
+
+                throw new Exception(myEx.Message + "\r\n SQL:" + strQuery);
+            }
+            finally
+            {
+
+            }
+            return myDs;
+        }
+
     }
 
     [Serializable()]

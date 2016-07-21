@@ -27,8 +27,7 @@
     <link href="scripts/default.css" rel="stylesheet" type="text/css" />
     <%--  图片预览--%>
     <style type="text/css">
-        #imghead
-        {
+        #imghead {
             filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=image);
         }
     </style>
@@ -98,10 +97,7 @@
                     //do something
                 },
                 'onQueueComplete': function (queueData) {
-                    //  fnSaveImg(filenames, queueData.uploadsSuccessful);//记录上传文件
-
-                    //                    $("#Submit1").click();
-                    fnSaveImg();
+                    fnSaveImg("0");
                 }
             });
             $(".swfupload").css("left", "0");
@@ -109,7 +105,8 @@
     </script>
     <script type="text/javascript">
 
-        function fnSaveImg() {
+        //type=0：普通组件，type=1：组合件
+        function fnSaveImg(type) {
 
             var txtpartname = $("#txtPartname").val();
             var txtclassifyId = $('#<%=this.hidClassifyId.ClientID %>').val();
@@ -122,7 +119,7 @@
                     fileElementId: 'btnfile', //文件上传空间的id属性  <input type="file" id="file" name="file" />
                     dataType: 'json', //返回值类型 一般设置为json
 
-                    data: { "partname": txtpartname, "classifyId": txtclassifyId }, //附加参数，json格式
+                    data: { "partname": txtpartname, "classifyId": txtclassifyId, "paramtype": type }, //附加参数，json格式
                     success: function (data, status)  //服务器成功响应处理函数
                     {
                         if (typeof (data.error) != 'undefined') {
@@ -142,114 +139,122 @@
                 }
             )
             return false;
-
-            //            var options = {
-            //                url: "/user/jqUploadify/WebUpload.aspx",
-            //                success: function () {
-            //                    $("#fm1").resetForm();
-            //                    $("#preview").hide();
-            //                    $("#addpic").show();
-            //                    //alert("上传成功！");
-            //                    window.location.href = "/user/PersonalResouces.aspx";
-
-            //                }
-            //            };
-            //            $("#fm1").ajaxForm(options);
         }
     </script>
 </head>
 <body>
     <form id="fm1" runat="server" method="post">
-    <div>
-        <input id="hidfileid" type="hidden" value="" runat="server" />
-        <asp:LinkButton ID="LinkButton1" class="lnkdown" Style="display: none" runat="server"
-            OnClick="LinkButton1_Click"></asp:LinkButton>
-        <div class="navbarM">
-            <uc2:WUCTop ID="WUCTop1" runat="server" />
-        </div>
-        <div class="Clear">
-        </div>
-        <div class="Top_divM">
-            <uc4:WUCBanner ID="WUCBanner1" runat="server" />
-        </div>
-        <div class="upload_List Container">
-            <ul class="Left">
-                <li style="margin-bottom: 2px;"><span class="_span"><b>预览图：</b><i>格式:JPG,PNG,GIF，推荐大小：小于2M</i></span></li>
-                <!--<div><img src="Img/img.png" alt="" /></div>-->
-                <!--己上传完成。显示图片。-->
-                <div id="addpic" class="Up _div">
-                    <a style="line-height: 36px;" href="javascript:void(0);" onclick="fnChooseImg();"><i
-                        class="iconfont">&#xe608;</i>上传图片</a></div>
-                <div id="preview" class="Up _div" runat="server" style="display: none">
-                    <img id="imghead" class="imghead" width="230" height="160" border="0" src='' onclick="fnChooseImg();" />
-                </div>
-                <input id="btnfile" type="file" name="btnfile" onchange="previewImage(this)" style="display: none" />
-                <!--显示上传按钮-->
-            </ul>
-            <ul class="Right">
-                <li><span class="_span"><b>名称：</b><i></i></span><input type="text" id="txtPartname"
-                    name="txtPartname" maxlength="30" placeholder="请在这里输入名称..." /></li>
-                <li><span class="_span"><b>分类：</b></span><input type="text" placeholder="请选择分类..."
-                    data-event="Class_L" class="inp txtClassifyID"><strong class="iconfont" data-event="Class_L">&#xe607;</strong>
-                </li>
-            </ul>
-            <ul class="Clear">
-            </ul>
-            <%--         <input id="Submit1" type="submit" value="submit" onclick="fnSaveImg('', '')" style="display: none" />--%>
-            <ul class="Clear">
-            </ul>
-            <ul class="All">
-                <li style="margin-bottom: 3px;"><span class="_span"><b>3D上传文件：</b><i>推荐大小：单个文件10M之内</i></span></li>
-                <div class="_div" style="max-height: 300px; overflow-y: scroll">
-                    <button type="button">
-                        <div id="file_upload">
+        <div>
+            <input id="hidfileid" type="hidden" value="" runat="server" />
+            <asp:LinkButton ID="LinkButton1" class="lnkdown" Style="display: none" runat="server"
+                OnClick="LinkButton1_Click"></asp:LinkButton>
+            <div class="navbarM">
+                <uc2:WUCTop ID="WUCTop1" runat="server" />
+            </div>
+            <div class="Clear">
+            </div>
+            <div class="Top_divM">
+                <uc4:WUCBanner ID="WUCBanner1" runat="server" />
+            </div>
+            <div class="upload_List Container">
+                <ul class="Left">
+                    <li style="margin-bottom: 2px;"><span class="_span"><b>预览图：</b><i>格式:JPG,PNG,GIF，推荐大小：小于2M</i></span></li>
+                    <!--<div><img src="Img/img.png" alt="" /></div>-->
+                    <!--己上传完成。显示图片。-->
+                    <div id="addpic" class="Up _div">
+                        <a style="line-height: 36px;" href="javascript:void(0);" onclick="fnChooseImg();"><i
+                            class="iconfont">&#xe608;</i>上传图片</a>
+                    </div>
+                    <div id="preview" class="Up _div" runat="server" style="display: none">
+                        <img id="imghead" class="imghead" width="230" height="160" border="0" src='' onclick="fnChooseImg();" />
+                    </div>
+                    <input id="btnfile" type="file" name="btnfile" onchange="previewImage(this)" style="display: none" />
+                    <!--显示上传按钮-->
+                </ul>
+                <ul class="Right">
+                    <li><span class="_span"><b>名称：</b><i></i></span><input type="text" id="txtPartname"
+                        name="txtPartname" maxlength="30" placeholder="请在这里输入名称..." /></li>
+                    <li><span class="_span"><b>分类：</b></span><input type="text" placeholder="请选择分类..."
+                        data-event="Class_L" class="inp txtClassifyID"><strong class="iconfont" data-event="Class_L">&#xe607;</strong>
+                    </li>
+                </ul>
+                <ul class="Clear">
+                </ul>
+                <%--         <input id="Submit1" type="submit" value="submit" onclick="fnSaveImg('', '')" style="display: none" />--%>
+                <ul class="Clear">
+                </ul>
+                <div id="divUpload">
+                    <ul class="All">
+                        <li style="margin-bottom: 3px;"><span class="_span"><b>3D上传文件：</b><i>推荐大小：单个文件10M之内</i></span></li>
+                        <div class="_div" style="max-height: 300px; overflow-y: scroll">
+                            <button type="button">
+                                <div id="file_upload">
+                                </div>
+                            </button>
+                            <%-- <strong>己导入 <font>10</font>个文件</strong>--%>
+                            <ul class="Clear">
+                            </ul>
+                            <dl>
+                                <div id="uploadfileQueue" style="padding: 3px;">
+                                </div>
+                            </dl>
                         </div>
-                    </button>
-                    <%-- <strong>己导入 <font>10</font>个文件</strong>--%>
+                    </ul>
                     <ul class="Clear">
                     </ul>
-                    <dl>
-                        <div id="uploadfileQueue" style="padding: 3px;">
-                        </div>
-                    </dl>
+                    <button type="button" class="But" onclick="closeLoad()">
+                        取消上传</button>
+                    <button type="button" style="margin-right: 15px" class="But" onclick="doUplaod()">
+                        上传文件</button>
                 </div>
-            </ul>
-            <ul class="Clear">
-            </ul>
-            <button type="button" class="But" onclick="closeLoad()">
-                取消上传</button>
-            <button type="button" style="margin-right: 15px" class="But" onclick="doUplaod()">
-                上传文件</button>
-        </div>
-        <!--弹出下载窗口-->
-        <script type="text/ecmascript">
-            $('[data-event=Class_L]').on('click', function () {
-                var d = dialog({
-                    fixed: true,
-                    title: '选择分类',
-                    content: document.getElementById('Class_L'),
-                    okValue: '确定',
-                    ok: function () { }
-                })
-                d.width(460);
-                d.showModal();
-            });
+
+                <div id="divOk" style="display: none">
+                    <button type="button" style="margin-right: 15px" class="But" onclick="fnSaveImg('1')">
+                        确定</button>
+
+                </div>
+            </div>
+            <!--弹出下载窗口-->
+            <script type="text/ecmascript">
+                $('[data-event=Class_L]').on('click', function () {
+                    var d = dialog({
+                        fixed: true,
+                        title: '选择分类',
+                        content: document.getElementById('Class_L'),
+                        okValue: '确定',
+                        ok: function () {
+
+                            var txtclassifyId = $('#<%=this.hidClassifyId.ClientID %>').val();
+                            if (txtclassifyId == 2) {
+                                $("#divUpload").hide();
+                                $("#divOk").show();
+                            }
+                            else {
+                                $("#divUpload").show();
+                                $("#divOk").hide();
+                            }
+
+                        }
+                    })
+                    d.width(460);
+                    d.showModal();
+                });
             </script>
-        <asp:HiddenField ID="hidClassifyId" runat="server" />
-        <div id="Class_L" style="display: none;">
-            <ul id="ulclassify">
-            </ul>
+            <asp:HiddenField ID="hidClassifyId" runat="server" />
+            <div id="Class_L" style="display: none;">
+                <ul id="ulclassify">
+                </ul>
+            </div>
+            <div class="Index_Foot">
+                <uc3:WUCLink ID="WUCLink1" runat="server" />
+            </div>
+            <div class="Index_FootB">
+                <uc1:WUCBottom ID="WUCBottom1" runat="server" />
+            </div>
         </div>
-        <div class="Index_Foot">
-            <uc3:WUCLink ID="WUCLink1" runat="server" />
-        </div>
-        <div class="Index_FootB">
-            <uc1:WUCBottom ID="WUCBottom1" runat="server" />
-        </div>
-    </div>
-    <!--上传控件-->
-    <script src="scripts/swfobject.js" type="text/javascript"></script>
-    <script src="scripts/jquery.uploadify.min.js" type="text/javascript"></script>
+        <!--上传控件-->
+        <script src="scripts/swfobject.js" type="text/javascript"></script>
+        <script src="scripts/jquery.uploadify.min.js" type="text/javascript"></script>
     </form>
 </body>
 </html>

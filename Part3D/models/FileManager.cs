@@ -243,7 +243,7 @@ namespace Part3D
             {
 
                 Rn += "<option value=\"" + dirinfo.Name.ToString() + "\"";
-                if (tplPath.ToLower() == dirinfo.Name.ToString().ToLower())
+                if (tplPath.ToUpper() == dirinfo.Name.ToString().ToUpper())
                 {
                     Rn += " selected ";
                 }
@@ -269,7 +269,7 @@ namespace Part3D
                 foreach (FileInfo fInfo in fileInfo)
                 {
                     Rn += "<option value=\"" + dirinfo.Name.ToString() + "/" + fInfo.Name.ToString() + "\"";
-                    if (tplPath.ToLower() == fInfo.Name.ToString().ToLower())
+                    if (tplPath.ToUpper() == fInfo.Name.ToString().ToUpper())
                     {
                         Rn += " selected ";
                     }
