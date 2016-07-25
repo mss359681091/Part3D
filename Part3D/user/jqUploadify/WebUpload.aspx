@@ -225,14 +225,14 @@
                         ok: function () {
 
                             var txtclassifyId = $('#<%=this.hidClassifyId.ClientID %>').val();
-                            if (txtclassifyId == 2) {
-                                $("#divUpload").hide();
-                                $("#divOk").show();
-                            }
-                            else {
-                                $("#divUpload").show();
-                                $("#divOk").hide();
-                            }
+                            //if (txtclassifyId == 2) {
+                            //    $("#divUpload").hide();
+                            //    $("#divOk").show();
+                            //}
+                            //else {
+                            //    $("#divUpload").show();
+                            //    $("#divOk").hide();
+                            //}
 
                         }
                     })

@@ -332,7 +332,13 @@ function fnNext() {
 
 //图片上传预览    IE是用了滤镜。
 function previewImage(file) {
-    var flagname = file.files[0].name.split('.')[0].toString();
+
+    var temp = file.files[0].name;
+    var count = (temp.split('.')).length - 1;
+    var extension = temp.split('.')[count].toString();
+
+    //var flagname = file.files[0].name.split('.')[0].toString();
+    var flagname = temp.replace("." + extension, "");
     $("#txtPartname").val(flagname);
     var MAXWIDTH = 260;
     var MAXHEIGHT = 180;

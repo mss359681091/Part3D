@@ -1,4 +1,4 @@
-/* CSS3滚动条 */
+﻿/* CSS3滚动条 */
 ::selection {
     background: #444;
     color: white;
@@ -1781,3 +1781,10 @@ header .navbar a:hover {
 /*.laydate_ym {
     box-sizing:unset;
 }*/
+
+
+.ui-dialog-content
+{
+   max-height:500px;
+   overflow-y:scroll;
+} 	

@@ -134,7 +134,10 @@ namespace Part3D
                                 }
                                 else if (paramtype == "1")
                                 {
-                                    flag += "<a href ='javascript:void(0);' onclick='fnChooseme(" + myDs.Tables[0].Rows[j][dpClassify.ID] + ",this);'>" + myDs.Tables[0].Rows[j][dpClassify.Name] + "</a><span>/</span>";
+                                    if (myDs.Tables[0].Rows[j][dpClassify.ID].ToString() != "2")
+                                    {
+                                        flag += "<a href ='javascript:void(0);' onclick='fnChooseme(" + myDs.Tables[0].Rows[j][dpClassify.ID] + ",this);'>" + myDs.Tables[0].Rows[j][dpClassify.Name] + "</a><span>/</span>";
+                                    }
                                 }
                                 else
                                 {

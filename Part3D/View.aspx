@@ -57,11 +57,15 @@
 
         //下载js
         function fndw(strid) {
-            <%-- $("#hidfileid").val(strid);
-            document.getElementById('<%=LinkButton1.ClientID %>').click();--%>
-            window.open("/View.aspx?partid=" + strid);
+           $("#hidfileid").val(strid);
+            document.getElementById('<%=LinkButton1.ClientID %>').click();
+        
         }
 
+        function fngo(strid)
+        {
+            window.open("/View.aspx?partid=" + strid);
+        }
     </script>
 </head>
 <body>

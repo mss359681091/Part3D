@@ -147,7 +147,7 @@ namespace Part3D
                 {
                     for (int i = 0; i < myDataSet.Tables[0].Rows.Count; i++)
                     {
-                        reutrnValue += " <button type=\"button\" title='" + myDataSet.Tables[0].Rows[i][dpPart.Name].ToString() + "' onclick=\"fndw(" + myDataSet.Tables[0].Rows[i][dpPart.ID] + ")\" >" + CommonManager.bSubstring(myDataSet.Tables[0].Rows[i][dpPart.Name].ToString(), 15) + "</button>";
+                        reutrnValue += " <button type=\"button\" title='" + myDataSet.Tables[0].Rows[i][dpPart.Name].ToString() + "' onclick=\"fngo(" + myDataSet.Tables[0].Rows[i][dpPart.ID] + ")\" >" + CommonManager.bSubstring(myDataSet.Tables[0].Rows[i][dpPart.Name].ToString(), 15) + "</button>";
                     }
                 }
             }

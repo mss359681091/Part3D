@@ -584,7 +584,7 @@ namespace _3DPart.DAL.BULayer
         /// <returns></returns>
         public DataSet SearchPartList(dpPartQuery QueryData)
         {
-            string strQuery = @"SELECT "
+            string strQuery = @"SELECT distinct "
             + dpPart.ID_FULL + ","
             + dpPart.Name_FULL
             + " FROM " + dpPart.TABLENAME
@@ -599,15 +599,14 @@ namespace _3DPart.DAL.BULayer
                 strQuery += " AND " + dpPart.ID_FULL + "<> @ID ";
                 myParam.Add("@ID", QueryData.ID);
             }
-            strQuery += " AND  " + dpStandard.Name_FULL + " =( ";
 
-            strQuery += " SELECT top 1 " + dpStandard.Name_FULL + " from  " + dpStandard.TABLENAME;
-            strQuery += " LEFT JOIN " + dpStandardMapping.TABLENAME + " ON " + dpStandardMapping.StandardID_FULL + " = " + dpStandard.ID_FULL;
-            strQuery += " LEFT JOIN " + dpPart.TABLENAME + " ON " + dpPart.ID_FULL + " = " + dpStandardMapping.PartID_FULL;
+            strQuery += " AND  " + dpStandard.ID_FULL + " IN ( ";
+            strQuery += " SELECT " + dpStandardMapping.StandardID_FULL + " from  " + dpStandardMapping.TABLENAME;
             strQuery += " WHERE 1=1 ";
+
             if (QueryData.ID.Length > 0)
             {
-                strQuery += " AND " + dpPart.ID_FULL + "<> @ID ";
+                strQuery += " AND " + dpStandardMapping.PartID_FULL + "= @ID ";
             }
             strQuery += " ) ";
 
