@@ -468,7 +468,7 @@ function fnGetList(ParentID, UserID, ClassifyID, Name, CurrentIndex, PageSize, t
                 $.each(returnData, function (i, item) {
 
 
-                    var names = subString(item.Name, 28);
+                    var names = subString(item.Name, 26);
 
 
                     strli += "<li><span>";
@@ -525,10 +525,8 @@ function fnRecommend(UserID, ClassifyID, ID) {
             if (returnData != null) {
                 var strli = "";
                 $.each(returnData, function (i, item) {
-                    var names = item.Name;
-                    if (names.length > 14) {
-                        names = names.substring(0, 14);
-                    }
+
+                    var names = subString(item.Name, 26);
 
                     strli += "<li><span>";
 
